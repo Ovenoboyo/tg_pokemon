@@ -1,33 +1,29 @@
-#include<player.h>
+#include "player.h"
 
-Player::Player(std::string name,enum Genders gender){
-    Player::Name = name;
-    Player::Gender = gender;
-    Player::teamCount = 0;
+Player::Player(std::string uid, std::string name,enum Genders gender) {
+    this->UID = uid;
+    this->Name = name;
+    this->Gender = gender;
+    this->teamCount = 0;
 };
 
-bool Player::addTeam(Pokemon p){
-    if (Player::teamCount<6){
-        Player::Team[Player::teamCount] = p;
-        Player::teamCount+=1;
+bool Player::addPokemonInTeam(Pokemon p){
+    if (this->teamCount<6){
+        this->Team[Player::teamCount] = p;
+        this->teamCount+=1;
         return true;
     }
     return false;
 }
 
-bool Player::addBox(Pokemon p){
-    if (Player::boxCount<6){
-        Player::Team[Player::boxCount] = p;
-        Player::boxCount+=1;
-        return true;
-    }
-    return false;
+Box Player::getBox(int i) {
+    return this->Boxes[i];
 }
 
-Pokemon * Player::getTeam(){
-    return Player::Team;
+Pokemon *Player::getTeam(){
+    return this->Team;
 }
 
-Box Player::getBox(int i){
-    return Player::Boxes[i];
+std::string Player::getUID() {
+    return this->UID;
 }
