@@ -7,6 +7,8 @@ enum Genders {MALE,FEMALE};
 class Player{
     private:
     std::string Name;
+    int teamCount;
+    int boxCount;
     
     // TODO: Name object
     Genders Gender; 
@@ -16,7 +18,10 @@ class Player{
 
     public:
     Player(std::string,enum Genders);
-
+    bool addTeam(Pokemon);
+    bool addBox(Pokemon);
+    Pokemon * getTeam();
+    Box getBox(int);
 };
 
 class Bag{
