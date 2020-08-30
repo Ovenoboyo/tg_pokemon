@@ -1,17 +1,21 @@
 #include<string>
 #include<pokemon.h>
 
-enum Gender {MALE,FEMALE};
+enum Genders {MALE,FEMALE};
 
 
 class Player{
     private:
     std::string Name;
+    
     // TODO: Name object
-    Gender gender; 
-    Pokemon team[6];
-    Box boxes[10];
-    Bag bag;
+    Genders Gender; 
+    Pokemon Team[6];
+    Box Boxes[10];
+    Bag Bag;
+
+    public:
+    Player(std::string,enum Genders);
 
 };
 
