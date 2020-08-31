@@ -6,6 +6,8 @@
 #ifndef Player_H
 #define Player_H
 
+typedef std::string UID;
+
 enum Genders {MALE,FEMALE};
 
 class Bag{
@@ -16,7 +18,7 @@ class Bag{
 class Player{
     private:
         // Unique ID
-        std::string UID;
+        UID Uid;
 
         // Name of player
         std::string Name;
@@ -40,15 +42,15 @@ class Player{
         Move moveset[4];
 
     public:
-        Player(std::string, std::string, enum Genders);
+        Player(UID, std::string, enum Genders);
         Player() = default;
 
         bool addPokemonInTeam(Pokemon);
 
+        // Getters
         Pokemon * getTeam();
         Box getBox(int);
-
-        std::string getUID();
+        UID getUID();
     };
 
 #endif

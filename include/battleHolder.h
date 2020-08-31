@@ -4,10 +4,14 @@
 class BattleHolder {
     private:
         Player Players[2];
-        std::map<std::string, Pokemon*> Pokemons;
-        std::map<std::string, Pokemon> activePokemon;
+        std::map<UID, Pokemon*> Pokemons;
+        std::map<UID, Pokemon> activePokemon;
+
+        std::string whosMove;
 
     public:
         BattleHolder(Player, Player);
-        Player FirstMove();
+
+        UID FirstMove();
+
 };

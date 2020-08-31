@@ -1,7 +1,7 @@
 #include "pokemon.h"
 #include "moves.h"
 
-Pokemon::Pokemon(std::string name, Stats stats, ElementType types[2], Move moveset) {
+Pokemon::Pokemon(std::string name, Stats stats, ElementType types[2], Move moveset[]) {
     Pokemon::Nickname = name;
     Pokemon::baseStats = stats;
     Pokemon::MoveSet = moveset;

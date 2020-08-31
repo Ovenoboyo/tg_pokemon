@@ -15,7 +15,7 @@ BattleHolder::BattleHolder(Player p1, Player p2) {
     }
 }
 
-Player BattleHolder::FirstMove() {
+UID BattleHolder::FirstMove() {
     srand(time(0));
-    return this->Players[(std::rand() % 2)];
+    return this->Players[(std::rand() % 2)].getUID();
 }

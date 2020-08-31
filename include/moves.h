@@ -1,5 +1,5 @@
 #include<string>
-#include "pokemon.h"
+#include "global.h"
 
 #ifndef MOVES_H
 #define MOVES_H
@@ -22,14 +22,6 @@ class Move {
         int GetPP();
         int GetDamage();
         int GetAccuracy();
-
-        //Setters
-        void SetName(std::string);
-        void SetType(ElementType);
-        void SetPP(int);
-        void SetDamage(int);
-        void SetAccuracy(int);
-      
 };
 
 

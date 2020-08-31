@@ -1,7 +1,7 @@
 #include "player.h"
 
-Player::Player(std::string uid, std::string name,enum Genders gender) {
-    this->UID = uid;
+Player::Player(UID uid, std::string name, enum Genders gender) {
+    this->Uid = uid;
     this->Name = name;
     this->Gender = gender;
     this->teamCount = 0;
@@ -24,6 +24,6 @@ Pokemon *Player::getTeam(){
     return this->Team;
 }
 
-std::string Player::getUID() {
-    return this->UID;
+UID Player::getUID() {
+    return this->Uid;
 }

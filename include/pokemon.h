@@ -1,11 +1,11 @@
 #include<string>
+#include "moves.h"
+#include "global.h"
 
 #ifndef Pokemon_H
 #define Pokemon_H
 
 typedef int Stat; 
-
-enum ElementType {NORMAL, FIGHT, FLYING, POISON, GROUND, ROCK, BUG, GHOST, FIRE, WATER, GRASS, ELECTRIC, PSYCH, ICE, DRAGON};
 
 struct Stats
 {
@@ -25,10 +25,10 @@ class Pokemon {
         Stats baseStats;
         ElementType type[2];
 
-        Move MoveSet;
+        Move *MoveSet;
 
     public:
-        Pokemon(std::string, Stats, ElementType *, Move);
+        Pokemon(std::string, Stats, ElementType *, Move*);
         Pokemon() = default;
 
         std::string getNickname();
