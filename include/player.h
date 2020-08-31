@@ -33,7 +33,7 @@ class Player{
         Box Boxes[10];
 
         // Bag of items
-        Bag Bag;
+        Bag bag;
 
         // Count of pokemons in team
         int teamCount;
