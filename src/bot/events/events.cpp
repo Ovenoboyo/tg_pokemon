@@ -1,5 +1,5 @@
+#include <tgbot/tgbot.h>
 #include "bot/events/events.h"
-#include "tgbot/tgbot.h"
 
 #include "player.h"
 #include "pokemon.h"

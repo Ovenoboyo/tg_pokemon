@@ -45,5 +45,8 @@
         "sstream": "cpp",
         "map": "cpp",
         "xtree": "cpp"
-    }
+    },
+    "C_Cpp.default.intelliSenseMode": "msvc-x64",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
 }

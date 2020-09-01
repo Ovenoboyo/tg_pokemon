@@ -1,5 +1,8 @@
 #include "bot/bot.h"
-#include "string"
+#include <string>
+#include <tgbot/tgbot.h>
+#include <cstdio>
+
 
 TgBot::Bot registerBot(std::string token) {
     return TgBot::Bot(token);
