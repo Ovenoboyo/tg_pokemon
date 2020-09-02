@@ -16,14 +16,10 @@ ElementType Move::GetType() {
         return this->type;
 }
 
-int Move::GetPP() {
-        return this->PP;
-}
-
 int Move::GetDamage() {
-        return this->Damage;
+    return this->Damage;
 }
 
 int Move::GetAccuracy() {
-        return this->Accuracy;
+    return this->Accuracy;
 }

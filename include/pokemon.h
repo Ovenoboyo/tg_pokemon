@@ -1,15 +1,15 @@
+#ifndef Pokemon_H
+#define Pokemon_H
+
 #include<string>
 #include "moves.h"
 #include "global.h"
-
-#ifndef Pokemon_H
-#define Pokemon_H
 
 typedef int Stat; 
 
 struct Stats
 {
-    Stat HP;
+    Stat MaxHP;
     Stat Attack;
     Stat Defence;
     Stat SPAttack;
@@ -17,21 +17,28 @@ struct Stats
     Stat Speed;
 };
 
+struct MoveSet {
+    Move move1;
+    Move move2;
+    Move move3;
+    Move move4;
+};
+
 class Pokemon {
     private:
-        std::string Nickname;
-        std::string IconPath;
-
+        // Calculation vars
         Stats baseStats;
         ElementType type[2];
 
-        Move *MoveSet;
-
     public:
-        Pokemon(std::string, Stats, ElementType *, Move*);
+        std::string Nickname;
+        std::string IconPath;
+        MoveSet Moveset;
+        Stat Health;
+
+        Pokemon(std::string, Stats, ElementType *, MoveSet);
         Pokemon() = default;
 
-        std::string getNickname();
 };
 
 #endif

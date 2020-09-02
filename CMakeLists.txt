@@ -37,6 +37,9 @@ file(GLOB_RECURSE SOURCES src/*.cpp)
 add_executable(Pokemon_TG ${SOURCES})
 include_directories(include)
 target_link_libraries(Pokemon_TG ${CONAN_LIBS})
+set_target_properties(Pokemon_TG PROPERTIES
+            CXX_STANDARD 17
+            )
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

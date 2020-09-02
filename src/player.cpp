@@ -15,15 +15,3 @@ bool Player::addPokemonInTeam(Pokemon p){
     }
     return false;
 }
-
-Box Player::getBox(int i) {
-    return this->Boxes[i];
-}
-
-Pokemon *Player::getTeam(){
-    return this->Team;
-}
-
-UID Player::getUID() {
-    return this->Uid;
-}

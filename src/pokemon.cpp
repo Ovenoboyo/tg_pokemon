@@ -1,16 +1,13 @@
 #include "pokemon.h"
 #include "moves.h"
 
-Pokemon::Pokemon(std::string name, Stats stats, ElementType types[2], Move moveset[]) {
-    Pokemon::Nickname = name;
-    Pokemon::baseStats = stats;
-    Pokemon::MoveSet = moveset;
+Pokemon::Pokemon(std::string name, Stats stats, ElementType types[2], MoveSet moveset) {
+    this->Nickname = name;
+    this->baseStats = stats;
+    this->Moveset = moveset;
+    this->Health = stats.MaxHP;
 
     for (int i = 0; i < 2; i++) {
-        Pokemon::type[i] = types[i];
+        this->type[i] = types[i];
     }
-};
-
-std::string Pokemon::getNickname() {
-    return this->Nickname;
 }

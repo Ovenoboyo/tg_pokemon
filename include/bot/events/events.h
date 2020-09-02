@@ -1,4 +1,10 @@
 #include <tgbot/tgbot.h>
 
-void startCommand(TgBot::Bot* bot);
-void battleCommand(TgBot::Bot* bot);
+#ifndef EVENTS_H
+#define EVENTS_H
+
+void registerStartCommand(TgBot::Bot* bot);
+void registerBattleCommand(TgBot::Bot* bot);
+void registerTextCommands(TgBot::Bot* bot);
+
+#endif
