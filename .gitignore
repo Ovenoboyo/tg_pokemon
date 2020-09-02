@@ -1,7 +1,4 @@
 build/*
 vc140.pdb
-.vscode/c_cpp_properties.json
-.vscode/launch.json
-.vscode/settings.json
-.vscode/cmake_configurations.json
-environment.env
+*.env
+.vscode/*
