@@ -3,14 +3,15 @@
 
 #include "pokemon.h"
 
-class Box{
-    private:
-        int pokemonCount;
-        Pokemon pokemons[30];
+class Box
+{
+private:
+    Pokemon pokemons[30];
+    int pokemonCount;
 
-    public:
-        bool addPokemonInBox(Pokemon);
-        Pokemon getPokemonInBox(int);
-
+public:
+    Pokemon getPokemonInBox(int);
+    bool addPokemonInBox(Pokemon);
 };
+
 #endif

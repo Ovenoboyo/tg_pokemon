@@ -11,3 +11,12 @@ Pokemon::Pokemon(std::string name, Stats stats, ElementType types[2], MoveSet mo
         this->type[i] = types[i];
     }
 }
+
+Pokemon::Pokemon() {
+    this->Nickname = "";
+    this->baseStats = Stats{};
+    this->Moveset = MoveSet{};
+    this->Health = 0;
+    this->type[0] = NIL;
+    this->isEmpty = true;
+}

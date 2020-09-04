@@ -7,7 +7,7 @@ Player::Player(UID uid, std::string name, enum Genders gender) {
     this->teamCount = 0;
 };
 
-bool Player::addPokemonInTeam(Pokemon p){
+bool Player::addPokemonInTeam(Pokemon *p){
     if (this->teamCount<6){
         this->Team[Player::teamCount] = p;
         this->teamCount+=1;

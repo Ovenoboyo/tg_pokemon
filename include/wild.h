@@ -8,7 +8,7 @@ class Wild {
         Pokemon pokemon;
 
     public:
-        Wild(Pokemon);
+        Wild(Pokemon p);
         Wild() = default;
 };
 

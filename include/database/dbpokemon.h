@@ -3,6 +3,6 @@
 
 #include <pokemon.h>
 
-Pokemon FetchPokemon();
+Pokemon *FetchPokemon();
 
 #endif

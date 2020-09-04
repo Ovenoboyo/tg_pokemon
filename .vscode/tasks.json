@@ -15,5 +15,11 @@
             // Use the standard MS compiler pattern to detect errors, warnings and infos
             "problemMatcher": "$msCompile"
         },
+        {
+            "label": "docker build",
+            "type": "shell",
+            "command": "docker build --pull --rm -f \"Dockerfile\" -t tgpokemon:latest \".\"",
+            "group": "build",
+        }
     ]
 }

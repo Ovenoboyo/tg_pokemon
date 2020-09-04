@@ -1,11 +1,21 @@
 #include "moves.h"
 
-Move::Move(std::string name, ElementType type, int pp, int damage, int accuracy) {
+Move::Move(const std::string name, ElementType type, int pp, int damage, int accuracy) {
     this->name = name;
     this->type = type;
     this->PP = pp;
     this->Damage = damage;
     this->Accuracy = accuracy;
+    this->isEmpty = false;
+}
+
+Move::Move() {
+    this->name = "";
+    this->type = NIL;
+    this->PP = 0;
+    this->Damage = 0;
+    this->Accuracy = 0;
+    this->isEmpty = true;
 }
 
 std::string Move::GetName() {

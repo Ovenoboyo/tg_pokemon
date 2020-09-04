@@ -27,10 +27,7 @@ class Player{
         Genders Gender;
 
         // Team of pokemons
-        Pokemon Team[6];
-
-        // Pokemon box storage
-        Box Boxes[10];
+        Pokemon* Team[6];
 
         // Bag of items
         Bag bag;
@@ -41,7 +38,7 @@ class Player{
         Player(UID, std::string, enum Genders);
         Player() = default;
 
-        bool addPokemonInTeam(Pokemon);
+        bool addPokemonInTeam(Pokemon*);
     };
 
 #endif

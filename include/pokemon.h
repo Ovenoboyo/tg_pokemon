@@ -36,9 +36,10 @@ class Pokemon {
         MoveSet Moveset;
         Stat Health;
 
-        Pokemon(std::string, Stats, ElementType *, MoveSet);
-        Pokemon() = default;
+        bool isEmpty;
 
+        Pokemon(std::string, Stats, ElementType *, MoveSet);
+        Pokemon();
 };
 
 #endif

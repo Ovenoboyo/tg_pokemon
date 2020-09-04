@@ -1,6 +1,6 @@
 #include "wild.h"
 #include "pokemon.h"
 
-Wild::Wild(Pokemon pk) {
-    this->pokemon = pk;
+Wild::Wild(Pokemon p) {
+    this->pokemon = p;
 }

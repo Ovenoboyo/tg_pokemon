@@ -16,9 +16,9 @@ BattleHolder::BattleHolder(Player *p1, Player *p2) {
 
     for(int i = 0; i < 2; i++) {
         std::string uid = (i == 0) ? (p1->Uid) : (p2->Uid);
-        Pokemon team = (i == 0) ? (p2->Team[0]) : (p2->Team[0]);
+        Pokemon *team = (i == 0) ? (p2->Team[0]) : (p2->Team[0]);
 
-        this->activePokemon.insert({uid, &team});
+        this->activePokemon.insert({uid, team});
     }
 }
 

@@ -5,6 +5,34 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name":"Flask DB Migrate",
+      "type":"python",
+      "request":"launch",
+      "module":"flask",
+      "env":{
+        "FLASK_APP":"scripts/migrator/app.py",
+        "FLASK_ENV":"development",
+        "FLASK_DEBUG":"0"
+      },
+      "envFile": "${workspaceFolder}/environment.env",
+      "args":["db","migrate"],
+      "jinja":true
+    },
+    {
+      "name":"Flask DB Upgrade",
+      "type":"python",
+      "request":"launch",
+      "module":"flask",
+      "env":{
+        "FLASK_APP":"scripts/migrator/app.py",
+        "FLASK_ENV":"development",
+        "FLASK_DEBUG":"0"
+      },
+      "envFile": "${workspaceFolder}/environment.env",
+      "args":["db", "upgrade"],
+      "jinja":true
+    },
+    {
       "name": "(gdb) Launch",
       "type": "cppdbg",
       "request": "launch",
@@ -12,7 +40,7 @@
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
-      "environment": [],
+      "envFile": "${workspaceFolder}/environment.env",
       "externalConsole": false,
       "MIMode": "gdb",
       "setupCommands": [
