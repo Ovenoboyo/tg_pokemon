@@ -1,6 +1,6 @@
 #include "moves.h"
 
-Move::Move(const std::string name, ElementType type, int pp, int damage, int accuracy) {
+Move::Move(const std::string name, ElementType type, int damage, int accuracy, int pp) {
     this->name = name;
     this->type = type;
     this->PP = pp;

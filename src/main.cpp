@@ -13,8 +13,9 @@ int main(int argc, char const *argv[], char *envp[])
     std::cout << "hello";
     
     TgBot::Bot bot = registerBot(token);
-    registerStartCommand(&bot);
-    registerBattleCommand(&bot);
-    registerTextCommands(&bot);
-    pollBot(&bot);
+
+    registerStartCommand(bot);
+    registerBattleCommand(bot);
+    registerTextCommands(bot);
+    pollBot(bot);
 }

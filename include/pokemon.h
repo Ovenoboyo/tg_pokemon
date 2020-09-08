@@ -15,6 +15,9 @@ struct Stats
     Stat SPAttack;
     Stat SPDefence;
     Stat Speed;
+
+    Stats(Stat HP, Stat Attack, Stat Defence, Stat SPDefence, Stat SPAttack, Stat Speed);
+    Stats() = default;
 };
 
 struct MoveSet {
@@ -25,20 +28,23 @@ struct MoveSet {
 };
 
 class Pokemon {
-    private:
-        // Calculation vars
-        Stats baseStats;
-        ElementType type[2];
-
     public:
         std::string Nickname;
         std::string IconPath;
+        ElementType type[2];
+
+        Stats baseStats;
+        Stats IVStats;
+        Stats EVStats;
+
         MoveSet Moveset;
         Stat Health;
 
+        int Level;
+
         bool isEmpty;
 
-        Pokemon(std::string, Stats, ElementType *, MoveSet);
+        Pokemon(std::string name, ElementType *types, int level, MoveSet moveset, Stats baseStats, Stats IVStats, Stats EVStats);
         Pokemon();
 };
 

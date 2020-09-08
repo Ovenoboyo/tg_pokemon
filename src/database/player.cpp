@@ -9,12 +9,10 @@
 #include <boost/uuid/uuid_io.hpp> 
 #include <string>
 
-Player *FetchPlayer() {
+Player *FetchPlayer(std::string uid) {
     auto pokemon1 = FetchPokemon(); 
 
-    boost::uuids::uuid uuid = boost::uuids::random_generator()();
-
-    auto player = new Player(boost::uuids::to_string(uuid), "player", MALE);
+    auto player = new Player(uid, "player", MALE);
     player->addPokemonInTeam(pokemon1);
 
     return player;

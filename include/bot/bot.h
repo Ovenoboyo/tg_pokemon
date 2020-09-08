@@ -5,6 +5,6 @@
 #define BOT_H
 
 TgBot::Bot registerBot(std::string token);
-void pollBot(TgBot::Bot* bot);
+void pollBot(TgBot::Bot &bot);
 
 #endif

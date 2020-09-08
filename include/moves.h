@@ -16,7 +16,7 @@ public:
     int PP;
     bool isEmpty;
 
-    Move(std::string, ElementType, int, int, int);
+    Move(std::string name, ElementType type, int damage, int accuracy, int pp);
     Move();
 
     // Getters
