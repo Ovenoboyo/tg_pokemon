@@ -11,9 +11,9 @@
 
 Player *FetchPlayer(std::string uid) {
     auto pokemon1 = FetchPokemon(); 
+    Pokemon* team[6] = {pokemon1};
 
-    auto player = new Player(uid, "player", MALE);
-    player->addPokemonInTeam(pokemon1);
+    auto player = new Player(uid, "player", MALE, team);
 
     return player;
 }

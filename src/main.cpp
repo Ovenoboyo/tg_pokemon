@@ -9,8 +9,6 @@ int main(int argc, char const *argv[], char *envp[])
 {
     char *token;
     token = getenv("TG_BOT_TOKEN");
-
-    std::cout << "hello";
     
     TgBot::Bot bot = registerBot(token);
 

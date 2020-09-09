@@ -31,6 +31,8 @@ void registerBattleCommand(TgBot::Bot &bot) {
             registerBattle(player1->Uid, battle);
             registerBattle(player2->Uid, battle);
 
+            std::cout << battle->Players[player1->Uid]->Team[0]->Nickname << std::endl;
+
             bot.getApi().sendMessage(message->chat->id, battle->generateBattleSummary());
             bot.getApi().sendMessage(message->chat->id, "player 1" + battle->generateMoveSummary(player1->Uid));
             bot.getApi().sendMessage(message->chat->id, "player 2" + battle->generateMoveSummary(player2->Uid));

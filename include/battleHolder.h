@@ -28,7 +28,7 @@ class BattleHolder {
     public:
         // Player P1;
         // Player P2;
-        std::map<UID, Player> Players;
+        std::map<UID, Player*> Players;
 
         bool isWild;
         int roundEndCounter;

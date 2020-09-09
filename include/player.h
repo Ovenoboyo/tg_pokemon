@@ -35,10 +35,8 @@ class Player{
         // Count of pokemons in team
         int teamCount;
 
-        Player(UID, std::string, enum Genders);
+        Player(UID uid, std::string name, enum Genders gender, Pokemon* *team);
         Player() = default;
-
-        bool addPokemonInTeam(Pokemon*);
     };
 
 #endif

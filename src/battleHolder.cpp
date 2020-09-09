@@ -15,15 +15,10 @@ BattleHolder::BattleHolder(Player *p1, Player *p2, std::list<int32_t> chatIDs) {
     this->isWild = false;
     this->roundEndCounter = 2;
 
-    this->Players.insert(std::pair<UID, Player>(p1->Uid, *p1));
-    this->Players.insert(std::pair<UID, Player>(p2->Uid, *p2));
+    this->Players.insert(std::pair<UID, Player*>(p1->Uid, p1));
+    this->Players.insert(std::pair<UID, Player*>(p2->Uid, p2));
 
     this->botReportID.merge(chatIDs);
-
-    for(int i = 0; i < 2; i++) {
-        std::string uid = (i == 0) ? (p1->Uid) : (p2->Uid);
-        Pokemon *team = (i == 0) ? (p2->Team[0]) : (p2->Team[0]);
-    }
 }
 
 int getStats(int base, int iv, int ev, int level, bool isHP) {
@@ -46,7 +41,7 @@ float getAttackModifier(ElementType pkType[], ElementType akType) {
 }
 
 BattleHolder::BattleHolder(Player *p1, Wild com, std::list<int32_t> chatIDs) {
-    this->Players.insert(std::pair<UID, Player>(p1->Uid, *p1));
+    this->Players.insert(std::pair<UID, Player*>(p1->Uid, p1));
     this->Com = com;
     this->isWild = true;
 
@@ -81,10 +76,10 @@ int BattleHolder::calculateDamage(Player attacker, Player defender) {
 void BattleHolder::ApplyMoves() {
     for (auto m : this->playedMove) {
         UID uid = m.first;
-        auto attacker = &(this->Players[uid]);
+        auto attacker = (this->Players[uid]);
         for (auto p : this->Players) {
             if (p.first != uid) {
-                auto defender = &(p.second);
+                auto defender = (p.second);
                 int damage = calculateDamage(*attacker, *defender);
 
                 defender->Team[0]->Health -= damage;
@@ -97,13 +92,13 @@ void BattleHolder::ApplyMoves() {
 std::string BattleHolder::generateBattleSummary() {
     std::string ret = "";
     for (auto p : this->Players) {
-        ret.append("pokemon health: " + std::to_string(p.second.Team[0]->Health) + "\n");
+        ret.append("pokemon health: " + std::to_string(p.second->Team[0]->Health) + "\n");
     }
     return ret;
 }
 
 std::string BattleHolder::generateMoveSummary(UID uid) {
-    auto moveset = this->Players[uid].Team[0]->Moveset;
+    auto moveset = this->Players[uid]->Team[0]->Moveset;
     return "Move 1: " + moveset.move1.GetName() + "\n"
          + "Move 2: " + moveset.move2.GetName() + "\n"
          + "Move 3: " + moveset.move3.GetName() + "\n"
@@ -114,13 +109,13 @@ Move BattleHolder::getMoveFromIndex(UID uid, int moveNo) {
     switch (moveNo)
     {
     case 1:
-        return this->Players[uid].Team[0]->Moveset.move1;
+        return this->Players[uid]->Team[0]->Moveset.move1;
     case 2:
-        return this->Players[uid].Team[0]->Moveset.move2;
+        return this->Players[uid]->Team[0]->Moveset.move2;
     case 3:
-        return this->Players[uid].Team[0]->Moveset.move3;
+        return this->Players[uid]->Team[0]->Moveset.move3;
     case 4:
-        return this->Players[uid].Team[0]->Moveset.move4;
+        return this->Players[uid]->Team[0]->Moveset.move4;
     }
     return Move();
 }
@@ -156,7 +151,7 @@ bool registerBattle(UID p1, BattleHolder *battle) {
 bool deregisterBattle(UID uid) {
     std::map<UID, BattleHolder*>::iterator it = allBattles.find(uid);
     if (it != allBattles.end()) {
-        allBattles[uid]->~BattleHolder();
+        delete allBattles[uid];
         allBattles.erase(it);
         return true;
     }
