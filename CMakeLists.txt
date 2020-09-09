@@ -24,6 +24,11 @@ if(WIN32)
     add_definitions(-D_WIN32_WINNT=${ver})
 endif()
 
+find_program(iwyu_path NAMES include-what-you-use iwyu)
+if(NOT iwyu_path)
+  message(FATAL_ERROR "Could not find the program include-what-you-use")
+endif()
+
 set(Boost_USE_MULTITHREADED ON)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
@@ -40,6 +45,8 @@ target_link_libraries(Pokemon_TG ${CONAN_LIBS})
 set_target_properties(Pokemon_TG PROPERTIES
             CXX_STANDARD 17
             )
+
+# set_property(TARGET Pokemon_TG PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

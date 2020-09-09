@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "player.h"
 
 Player::Player(UID uid, std::string name, enum Genders gender, Pokemon **team) {

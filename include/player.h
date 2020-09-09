@@ -1,10 +1,9 @@
 #ifndef Player_H
 #define Player_H
 
-#include "box.h"
-#include "moves.h"
-#include "pokemon.h"
 #include <string>
+
+class Pokemon;
 
 typedef std::string UID;
 
