@@ -1,5 +1,5 @@
-#include <tgbot/tgbot.h>
 #include "string"
+#include <tgbot/tgbot.h>
 
 #ifndef BOT_H
 #define BOT_H

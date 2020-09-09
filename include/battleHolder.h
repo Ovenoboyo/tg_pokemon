@@ -2,52 +2,51 @@
 #define BATTLEHOLDER_H
 
 #include "player.h"
-#include <map>
-#include <string>
-#include <list>
 #include <boost/asio.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <list>
+#include <map>
+#include <string>
 
+#include "player.h"
 #include "pokemon.h"
 #include "wild.h"
-#include "player.h"
 
 class BattleHolder {
-    private:
-        Wild Com;
-        std::map<UID, Move> playedMove;
+private:
+  Wild Com;
+  std::map<UID, Move> playedMove;
 
-        std::list<int32_t> botReportID;
+  std::list<int32_t> botReportID;
 
-        Move getMoveFromIndex(UID, int);
+  Move getMoveFromIndex(UID, int);
 
-        void ApplyMoves();
+  void ApplyMoves();
 
-        int calculateDamage(Player attacker, Player defender);
+  int calculateDamage(Player attacker, Player defender);
 
-    public:
-        // Player P1;
-        // Player P2;
-        std::map<UID, Player*> Players;
+public:
+  // Player P1;
+  // Player P2;
+  std::map<UID, Player *> Players;
 
-        bool isWild;
-        int roundEndCounter;
+  bool isWild;
+  int roundEndCounter;
 
-        BattleHolder(Player* p1, Player* p2, std::list<int32_t> chatIDs);
-        BattleHolder(Player* p1, Wild com, std::list<int32_t> chatIDs);
-        ~BattleHolder() = default;
+  BattleHolder(Player *p1, Player *p2, std::list<int32_t> chatIDs);
+  BattleHolder(Player *p1, Wild com, std::list<int32_t> chatIDs);
+  ~BattleHolder() = default;
 
-        // String generators
-        std::string generateBattleSummary();
-        std::string generateMoveSummary(UID);
+  // String generators
+  std::string generateBattleSummary();
+  std::string generateMoveSummary(UID);
 
-        void HandlePlayerChoice(UID uid, int moveNo);
-
+  void HandlePlayerChoice(UID uid, int moveNo);
 };
 
-inline std::map<UID, BattleHolder*> allBattles;
+inline std::map<UID, BattleHolder *> allBattles;
 
-bool registerBattle(UID, BattleHolder*);
+bool registerBattle(UID, BattleHolder *);
 bool deregisterBattle(UID);
 bool isBattleActive(UID);
 

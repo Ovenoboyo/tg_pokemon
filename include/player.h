@@ -1,42 +1,42 @@
 #ifndef Player_H
 #define Player_H
 
-#include <string>
-#include "pokemon.h"
 #include "box.h"
 #include "moves.h"
+#include "pokemon.h"
+#include <string>
 
 typedef std::string UID;
 
-enum Genders {MALE,FEMALE};
+enum Genders { MALE, FEMALE };
 
-class Bag{
-    private:
-    // TODO: Bag class
+class Bag {
+private:
+  // TODO: Bag class
 };
 
-class Player{
-    public:
-        // Unique ID
-        UID Uid;
+class Player {
+public:
+  // Unique ID
+  UID Uid;
 
-        // Name of player
-        std::string Name;
-        
-        // Gender of player
-        Genders Gender;
+  // Name of player
+  std::string Name;
 
-        // Team of pokemons
-        Pokemon* Team[6];
+  // Gender of player
+  Genders Gender;
 
-        // Bag of items
-        Bag bag;
+  // Team of pokemons
+  Pokemon *Team[6];
 
-        // Count of pokemons in team
-        int teamCount;
+  // Bag of items
+  Bag bag;
 
-        Player(UID uid, std::string name, enum Genders gender, Pokemon* *team);
-        Player() = default;
-    };
+  // Count of pokemons in team
+  int teamCount;
+
+  Player(UID uid, std::string name, enum Genders gender, Pokemon **team);
+  Player() = default;
+};
 
 #endif
