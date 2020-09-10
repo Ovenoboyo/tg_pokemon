@@ -3,6 +3,6 @@
 
 #include "player.h"
 
-Player *FetchPlayer();
+Player *FetchPlayer(std::string uid);
 
 #endif

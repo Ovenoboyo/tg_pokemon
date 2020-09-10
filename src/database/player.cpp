@@ -1,21 +1,15 @@
-#include "database/dbplayer.h"
+#include "player.h"
 #include "database/dbplayer.h"
 #include "database/dbpokemon.h"
-#include "pokemon.h"
-#include "player.h"
-#include <iostream>
-#include <boost/uuid/uuid.hpp>
-#include <boost/uuid/uuid_generators.hpp>
-#include <boost/uuid/uuid_io.hpp> 
 #include <string>
 
-Player *FetchPlayer() {
-    auto pokemon1 = FetchPokemon(); 
+class Pokemon;
 
-    boost::uuids::uuid uuid = boost::uuids::random_generator()();
+Player *FetchPlayer(std::string uid) {
+  auto pokemon1 = FetchPokemon();
+  Pokemon *team[6] = {pokemon1};
 
-    auto player = new Player(boost::uuids::to_string(uuid), "player", MALE);
-    player->addPokemonInTeam(pokemon1);
+  auto player = new Player(uid, "player", MALE, team);
 
-    return player;
+  return player;
 }
