@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(Pokemon_TG VERSION 0.1.0)
 
+find_package(Threads REQUIRED)
+find_package(OpenSSL REQUIRED)
+find_package(Boost COMPONENTS system REQUIRED)
+find_package(CURL)
+
 if(WIN32)
     macro(get_WIN32_WINNT version)
         if(CMAKE_SYSTEM_VERSION)
@@ -31,16 +36,19 @@ endif()
 
 set(Boost_USE_MULTITHREADED ON)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
-
 include(CTest)
 enable_testing()
 
 file(GLOB_RECURSE SOURCES src/*.cpp)
 
+include_directories(include ${OPENSSL_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
+add_subdirectory(vendor/tgbot-cpp)
 add_executable(Pokemon_TG ${SOURCES})
-include_directories(include QSqlMigrator)
+
+if (CURL_FOUND)
+    include_directories(${CURL_INCLUDE_DIRS})
+    add_definitions(-DHAVE_CURL)
+endif()
 target_link_libraries(Pokemon_TG ${CONAN_LIBS})
 set_target_properties(Pokemon_TG PROPERTIES
             CXX_STANDARD 17
