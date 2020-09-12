@@ -1,1 +1,1 @@
-package Jizzberry_go
+package migrate

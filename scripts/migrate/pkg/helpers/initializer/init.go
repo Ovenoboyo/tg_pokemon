@@ -1,8 +1,8 @@
 package initializer
 
 import (
-	"github.com/Ovenoboyo/tg_pokemon/tree/pokemon/scripts/migrate/pkg/database"
-	"github.com/Ovenoboyo/tg_pokemon/tree/pokemon/scripts/migrate/pkg/helpers"
+	"github.com/Ovenoboyo/tg_pokemon/scripts/migrate/pkg/database"
+	"github.com/Ovenoboyo/tg_pokemon/scripts/migrate/pkg/helpers"
 )
 
 // Initialize the whole app

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Ovenoboyo/tg_pokemon/tree/pokemon/scripts/migrate/pkg/helpers/initializer"
+	"github.com/Ovenoboyo/tg_pokemon/scripts/migrate/pkg/helpers/initializer"
 )
 
 func main() {

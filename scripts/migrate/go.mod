@@ -1,6 +1,6 @@
-module github.com/Ovenoboyo/tg_pokemon/tree/pokemon/scripts/migrate
+module github.com/Ovenoboyo/tg_pokemon/scripts/migrate
 
-go 1.14
+go 1.15
 
 require (
 	github.com/lib/pq v1.8.0

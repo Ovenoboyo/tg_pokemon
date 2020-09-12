@@ -3,10 +3,11 @@ package database
 import (
 	"database/sql"
 	"fmt"
-	"github.com/Ovenoboyo/tg_pokemon/tree/pokemon/scripts/migrate/pkg/helpers"
+
+	"github.com/Ovenoboyo/tg_pokemon/scripts/migrate/pkg/helpers"
 	_ "github.com/lib/pq"
 	"github.com/markbates/pkger"
-	"github.com/rubenv/sql-migrate"
+	migrate "github.com/rubenv/sql-migrate"
 )
 
 func GetConn() *sql.DB {
@@ -37,7 +38,13 @@ func RunMigrations() error {
 func doMigrate(migrations *migrate.HttpFileSystemMigrationSource) error {
 	conn := GetConn()
 
-	n, err := migrate.Exec(conn, "postgres", migrations, migrate.Up)
+	_, err := migrate.Exec(conn, "postgres", migrations, migrate.Down)
+
+	if err != nil {
+		return err
+	}
+
+	k, err := migrate.Exec(conn, "postgres", migrations, migrate.Up)
 
 	if err != nil {
 		return err
@@ -48,6 +55,6 @@ func doMigrate(migrations *migrate.HttpFileSystemMigrationSource) error {
 		return err
 	}
 
-	fmt.Printf("Applied %d migrations", n)
+	fmt.Printf("Applied %d migrations", k)
 	return nil
 }
