@@ -3,8 +3,6 @@
 #include <string>
 #include <tgbot/tgbot.h>
 
-TgBot::Bot registerBot(std::string token) { return TgBot::Bot(token); }
-
 void pollBot(TgBot::Bot &bot) {
   try {
     printf("Bot username: %s\n", bot.getApi().getMe()->username.c_str());

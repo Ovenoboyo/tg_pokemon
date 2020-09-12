@@ -2,6 +2,7 @@
 #define GLOBAL_H
 
 enum ElementType {
+  NIL,
   NORMAL,
   FIGHT,
   FLYING,
@@ -16,7 +17,6 @@ enum ElementType {
   ELECTRIC,
   PSYCH,
   ICE,
-  DRAGON,
-  NIL
+  DRAGON
 };
 #endif

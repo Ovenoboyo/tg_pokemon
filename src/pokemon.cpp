@@ -9,6 +9,7 @@ Pokemon::Pokemon(std::string name, ElementType types[2], int level,
   this->IVStats = IVStats;
   this->Moveset = moveset;
   this->Level = level;
+  this->isFNT = false;
 
   // TODO: Work on health logic
   this->Health = baseStats.MaxHP;
@@ -35,4 +36,14 @@ Stats::Stats(Stat HP, Stat Attack, Stat Defence, Stat SPDefence, Stat SPAttack,
   this->Defence = Defence;
   this->SPAttack = SPAttack;
   this->SPDefence = SPDefence;
+}
+
+int getStat(int base, int iv, int ev, int level, bool isHP) {
+  if (!isHP) {
+    // Stats = ([(Base + IV)*2 + EV/4] * level)/100 + 5
+    return int(((((base + iv) * 2) + (ev / 4)) * level) / 100) + 5;
+  } else {
+    // TODO: HP Stats logic
+    return 0;
+  }
 }

@@ -41,15 +41,19 @@ enable_testing()
 
 file(GLOB_RECURSE SOURCES src/*.cpp)
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 include_directories(include ${OPENSSL_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
-add_subdirectory(vendor/tgbot-cpp)
+add_subdirectory(vendor/tgbot)
 add_executable(Pokemon_TG ${SOURCES})
 
 if (CURL_FOUND)
     include_directories(${CURL_INCLUDE_DIRS})
     add_definitions(-DHAVE_CURL)
 endif()
-target_link_libraries(Pokemon_TG ${CONAN_LIBS})
+target_link_libraries(Pokemon_TG TgBot ${CMAKE_THREAD_LIBS_INIT} ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${CURL_LIBRARIES})
 set_target_properties(Pokemon_TG PROPERTIES
             CXX_STANDARD 17
             )

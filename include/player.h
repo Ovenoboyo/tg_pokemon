@@ -2,10 +2,12 @@
 #define Player_H
 
 #include <string>
+#include <vector>
+#include "pokemon.h"
 
 class Pokemon;
 
-typedef std::string UID;
+typedef int32_t UID;
 
 enum Genders { MALE, FEMALE };
 
@@ -26,15 +28,18 @@ public:
   Genders Gender;
 
   // Team of pokemons
-  Pokemon *Team[6];
+  std::vector<Pokemon *> Team;
 
   // Bag of items
   Bag bag;
 
-  // Count of pokemons in team
-  int teamCount;
+  // Use when pokemon swap is to be forcibly carried out
+  bool isSwapping;
 
-  Player(UID uid, std::string name, enum Genders gender, Pokemon **team);
+  int FntCount;
+
+  Player(UID uid, std::string name, enum Genders gender,
+         std::vector<Pokemon *> team);
   Player() = default;
 };
 

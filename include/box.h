@@ -10,7 +10,6 @@ private:
 
 public:
   Pokemon getPokemonInBox(int);
-  bool addPokemonInBox(Pokemon);
 };
 
 #endif

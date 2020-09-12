@@ -3,8 +3,8 @@
 #ifndef EVENTS_H
 #define EVENTS_H
 
-void registerStartCommand(TgBot::Bot &bot);
-void registerBattleCommand(TgBot::Bot &bot);
-void registerTextCommands(TgBot::Bot &bot);
+void sendMessages(TgBot::Bot &bot, int32_t chatID, std::string message);
+void registerCommands(TgBot::Bot &bot);
+void handleCommands(TgBot::Bot &bot);
 
 #endif

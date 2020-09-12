@@ -6,13 +6,10 @@
 #include <tgbot/tgbot.h>
 
 int main(int argc, char const *argv[], char *envp[]) {
-  char *token;
-  token = getenv("TG_BOT_TOKEN");
-
-  TgBot::Bot bot = registerBot(token);
-
-  registerStartCommand(bot);
-  registerBattleCommand(bot);
-  registerTextCommands(bot);
+  // registerStartCommand(bot);
+  // registerBattleCommand(bot);
+  // registerTextCommands(bot);
+  registerCommands(bot);
+  handleCommands(bot);
   pollBot(bot);
 }

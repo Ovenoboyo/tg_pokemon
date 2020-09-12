@@ -1,15 +1,19 @@
-#include "player.h"
 #include "database/dbplayer.h"
 #include "database/dbpokemon.h"
+#include "player.h"
 #include <string>
 
 class Pokemon;
 
-Player *FetchPlayer(std::string uid) {
+Player *FetchPlayer(UID uid) {
   auto pokemon1 = FetchPokemon();
-  Pokemon *team[6] = {pokemon1};
+  std::vector<Pokemon *> team = {pokemon1};
 
   auto player = new Player(uid, "player", MALE, team);
 
   return player;
+}
+
+UID isPlayerRegistered(std::string username) {
+  return 609604248;
 }

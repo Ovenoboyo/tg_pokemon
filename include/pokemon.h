@@ -41,6 +41,7 @@ public:
   Stat Health;
 
   int Level;
+  bool isFNT;
 
   bool isEmpty;
 
@@ -48,5 +49,7 @@ public:
           Stats baseStats, Stats IVStats, Stats EVStats);
   Pokemon();
 };
+
+int getStat(int base, int iv, int ev, int level, bool isHP);
 
 #endif

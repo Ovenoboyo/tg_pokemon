@@ -3,6 +3,7 @@
 
 #include "player.h"
 
-Player *FetchPlayer(std::string uid);
+Player *FetchPlayer(UID uid);
+UID isPlayerRegistered(std::string username);
 
 #endif
