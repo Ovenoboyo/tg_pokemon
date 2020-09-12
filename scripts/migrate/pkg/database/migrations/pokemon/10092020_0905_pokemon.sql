@@ -1,5 +1,13 @@
 -- +migrate Up
 
+CREATE TABLE "public"."element_types"
+(
+ "element_type_id" uuid NOT NULL,
+ "element_0"       integer NOT NULL,
+ "element_1"       integer NULL,
+ CONSTRAINT "PK_element_types" PRIMARY KEY ( "element_type_id" )
+);
+
 CREATE TABLE "public"."pokemon"
 (
     "pokedex_no"      integer NOT NULL,
@@ -34,8 +42,9 @@ CREATE INDEX "fkIdx_168" ON "public"."pokemon"
 
 -- +migrate Down
 
-DROP TABLE "public"."pokemon";
-DROP INDEX "fkIdx_115";
-DROP INDEX "fkIdx_143";
-DROP INDEX "fkIdx_168";
+DROP TABLE IF EXISTS "public"."pokemon";
+DROP INDEX IF EXISTS "fkIdx_115";
+DROP INDEX IF EXISTS "fkIdx_143";
+DROP INDEX IF EXISTS "fkIdx_168";
+DROP TABLE IF EXISTS "public"."element_types";
 

@@ -12,4 +12,4 @@ CREATE TABLE "player"."move"
 );
 
 -- +migrate Down
-DROP TABLE "player"."move";
+DROP TABLE IF EXISTS "player"."move";

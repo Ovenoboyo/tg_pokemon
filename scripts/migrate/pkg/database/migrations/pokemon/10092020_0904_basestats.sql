@@ -12,4 +12,4 @@ CREATE TABLE "public"."base_stats"
 );
 
 -- +migrate Down
-DROP TABLE "public"."base_stats";
+DROP TABLE IF EXISTS "public"."base_stats";

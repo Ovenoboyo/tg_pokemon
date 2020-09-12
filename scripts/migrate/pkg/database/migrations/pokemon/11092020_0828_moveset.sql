@@ -15,5 +15,5 @@ CREATE INDEX "fkIdx_216" ON "moveset"
         );
 
 -- +migrate Down
-DROP TABLE "moveset";
-DROP INDEX "fkIdx_216";
+DROP TABLE IF EXISTS "moveset";
+DROP INDEX IF EXISTS "fkIdx_216";

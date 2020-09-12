@@ -22,6 +22,6 @@ CREATE INDEX "fkIdx_146" ON "player"."box_pokemon_bridge"
         );
 
 -- +migrate Down
-DROP TABLE "player"."box_pokemon_bridge";
-DROP INDEX "fkIdx_137";
-DROP INDEX "fkIdx_146";
+DROP TABLE IF EXISTS "player"."box_pokemon_bridge";
+DROP INDEX IF EXISTS "fkIdx_137";
+DROP INDEX IF EXISTS "fkIdx_146";

@@ -16,5 +16,5 @@ CREATE INDEX "fkIdx_110" ON "player"."player"
         );
 
 -- +migrate Down
-DROP TABLE "player"."player";
-DROP INDEX "fkIdx_110";
+DROP TABLE IF EXISTS "player"."player";
+DROP INDEX IF EXISTS "fkIdx_110";

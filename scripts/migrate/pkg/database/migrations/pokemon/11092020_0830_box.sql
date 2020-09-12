@@ -8,4 +8,4 @@ CREATE TABLE "player"."box"
 );
 
 -- +migrate Down
-DROP TABLE "player"."box";
+DROP TABLE IF EXISTS "player"."box";

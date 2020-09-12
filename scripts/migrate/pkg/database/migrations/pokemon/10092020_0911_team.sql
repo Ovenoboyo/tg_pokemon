@@ -49,10 +49,10 @@ CREATE INDEX "fkIdx_98" ON "player"."team"
 
 
 -- +migrate Down
-DROP TABLE "player"."team";
-DROP INDEX "fkIdx_101";
-DROP INDEX "fkIdx_104";
-DROP INDEX "fkIdx_107";
-DROP INDEX "fkIdx_92";
-DROP INDEX "fkIdx_95";
-DROP INDEX "fkIdx_98";
+DROP TABLE IF EXISTS "player"."team";
+DROP INDEX IF EXISTS "fkIdx_101";
+DROP INDEX IF EXISTS "fkIdx_104";
+DROP INDEX IF EXISTS "fkIdx_107";
+DROP INDEX IF EXISTS "fkIdx_92";
+DROP INDEX IF EXISTS "fkIdx_95";
+DROP INDEX IF EXISTS "fkIdx_98";

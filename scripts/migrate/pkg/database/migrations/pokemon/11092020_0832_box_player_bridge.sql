@@ -21,6 +21,6 @@ CREATE INDEX "fkIdx_158" ON "player"."box_player_bridge"
         );
 
 -- +migrate Down
-DROP TABLE "player"."box_player_bridge";
-DROP INDEX "fkIdx_155";
-DROP INDEX "fkIdx_158";
+DROP TABLE IF EXISTS "player"."box_player_bridge";
+DROP INDEX IF EXISTS "fkIdx_155";
+DROP INDEX IF EXISTS "fkIdx_158";
