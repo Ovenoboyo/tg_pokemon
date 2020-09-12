@@ -1,4 +1,4 @@
-#include "moves.h"
+#include "pokemon/moves.h"
 
 Move::Move(const std::string name, ElementType type, int damage, int accuracy,
            int pp) {

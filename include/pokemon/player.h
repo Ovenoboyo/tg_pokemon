@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include "pokemon.h"
+#include "pokemon/pokemon.h"
 
 class Pokemon;
 

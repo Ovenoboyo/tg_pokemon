@@ -1,5 +1,5 @@
-#include "database/dbpokemon.h"
-#include "pokemon.h"
+#include "pokemon/database/dbpokemon.h"
+#include "pokemon/pokemon.h"
 
 Pokemon *FetchPokemon() {
   Stats basestats(130, 85, 80, 85, 95, 60), IV(3, 26, 7, 7, 11, 18),

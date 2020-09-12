@@ -1,6 +1,6 @@
-#include "database/dbplayer.h"
-#include "database/dbpokemon.h"
-#include "player.h"
+#include "pokemon/database/dbplayer.h"
+#include "pokemon/database/dbpokemon.h"
+#include "pokemon/player.h"
 #include <string>
 
 class Pokemon;

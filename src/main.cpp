@@ -1,5 +1,5 @@
-#include "bot/bot.h"
-#include "bot/events/events.h"
+#include "pokemon/bot/bot.h"
+#include "pokemon/bot/events/events.h"
 #include <boost/asio.hpp>
 #include <cstdlib>
 #include <iostream>

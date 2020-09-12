@@ -1,7 +1,7 @@
 #ifndef DBPOKEMON_H
 #define DBPOKEMON_H
 
-#include <pokemon.h>
+#include "pokemon/pokemon.h"
 
 Pokemon *FetchPokemon();
 

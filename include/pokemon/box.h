@@ -1,7 +1,7 @@
 #ifndef Box_H
 #define Box_H
 
-#include "pokemon.h"
+#include "pokemon/pokemon.h"
 
 class Box {
 private:

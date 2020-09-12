@@ -1,8 +1,8 @@
 #ifndef Pokemon_H
 #define Pokemon_H
 
-#include "global.h"
-#include "moves.h"
+#include "pokemon/global.h"
+#include "pokemon/moves.h"
 #include <string>
 
 typedef int Stat;

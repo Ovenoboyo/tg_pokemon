@@ -1,18 +1,18 @@
-#include "bot/events/events.h"
+#include "pokemon/bot/events/events.h"
 #include <boost/algorithm/string.hpp>
 #include <iostream>
 #include <stdio.h>
 #include <string>
 #include <tgbot/tgbot.h>
 
-#include "battleHolder.h"
-#include "bot/bot.h"
-#include "database/dbplayer.h"
-#include "global.h"
-#include "moves.h"
-#include "player.h"
-#include "pokemon.h"
-#include "bot/events/battleRequest.h"
+#include "pokemon/battleHolder.h"
+#include "pokemon/bot/bot.h"
+#include "pokemon/database/dbplayer.h"
+#include "pokemon/global.h"
+#include "pokemon/moves.h"
+#include "pokemon/player.h"
+#include "pokemon/pokemon.h"
+#include "pokemon/bot/events/battleRequest.h"
 
 const int32_t INVALID_ID = -1;
 

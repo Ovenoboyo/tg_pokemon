@@ -1,6 +1,6 @@
-#include "battleHolder.h"
-#include "bot/bot.h"
-#include "bot/events/events.h"
+#include "pokemon/battleHolder.h"
+#include "pokemon/bot/bot.h"
+#include "pokemon/bot/events/events.h"
 #include <boost/asio.hpp>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>

@@ -1,15 +1,14 @@
 #ifndef BATTLEHOLDER_H
 #define BATTLEHOLDER_H
 
-#include "player.h"
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <list>
 #include <unordered_map>
 #include <string>
 
-#include "player.h"
-#include "pokemon.h"
-#include "wild.h"
+#include "pokemon/player.h"
+#include "pokemon/pokemon.h"
+#include "pokemon/wild.h"
 
 class BattleHolder {
 private:

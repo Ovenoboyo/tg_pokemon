@@ -1,4 +1,4 @@
-#include "pokemon.h"
+#include "pokemon/pokemon.h"
 
 Pokemon::Pokemon(std::string name, ElementType types[2], int level,
                  MoveSet moveset, Stats baseStats, Stats IVStats,

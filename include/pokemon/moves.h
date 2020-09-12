@@ -1,7 +1,7 @@
 #ifndef MOVES_H
 #define MOVES_H
 
-#include "global.h"
+#include "pokemon/global.h"
 #include <string>
 
 class Move {
