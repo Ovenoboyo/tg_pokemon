@@ -1,7 +1,13 @@
 #include "pokemon/bot/bot.h"
-#include <cstdio>
-#include <string>
-#include <tgbot/tgbot.h>
+
+#include <cstdio> // for printf
+#include <memory> // for __shared_ptr_access
+#include <string> // for string
+
+#include "tgbot/Api.h"            // for Api
+#include "tgbot/TgException.h"    // for TgException
+#include "tgbot/net/TgLongPoll.h" // for TgLongPoll
+#include "tgbot/types/User.h"     // for User, User::Ptr
 
 void pollBot(TgBot::Bot &bot) {
   try {

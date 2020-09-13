@@ -1,21 +1,29 @@
 #include "pokemon/bot/events/events.h"
-#include <boost/algorithm/string.hpp>
-#include <iostream>
-#include <stdio.h>
-#include <string>
-#include <tgbot/tgbot.h>
 
-#include "pokemon/battleHolder.h"
-#include "pokemon/bot/bot.h"
-#include "pokemon/database/dbplayer.h"
-#include "pokemon/global.h"
-#include "pokemon/moves.h"
-#include "pokemon/player.h"
-#include "pokemon/pokemon.h"
-#include "pokemon/bot/events/battleRequest.h"
+#include <algorithm>                            // for max
+#include <boost/algorithm/string/case_conv.hpp> // for to_lower
+#include <boost/algorithm/string/trim.hpp>      // for trim
+#include <cstdint>                              // for int32_t
+#include <memory>                               // for __shared_ptr_access
+#include <string>                               // for allocator, string
+#include <unordered_map>                        // for unordered_map, opera...
+#include <utility>                              // for pair
+#include <vector>                               // for vector
 
-const int32_t INVALID_ID = -1;
-
+#include "pokemon/battle/baseBattle.h"        // for BaseBattle, INVALID_ID
+#include "pokemon/battle/battle.h"            // for isBattleActive, regi...
+#include "pokemon/battle/dualBattle.h"        // for DualBattle
+#include "pokemon/bot/events/battleRequest.h" // for allRequests
+#include "pokemon/database/dbplayer.h"        // for FetchPlayer, isPlaye...
+#include "pokemon/player.h"                   // for Player, UID
+#include "tgbot/Api.h"                        // for Api
+#include "tgbot/Bot.h"                        // for Bot
+#include "tgbot/EventBroadcaster.h"           // for EventBroadcaster
+#include "tgbot/tools/StringTools.h"          // for startsWith
+#include "tgbot/types/BotCommand.h"           // for BotCommand::Ptr, Bot...
+#include "tgbot/types/Chat.h"                 // for Chat, Chat::Ptr, Cha...
+#include "tgbot/types/Message.h"              // for Message, Message::Ptr
+#include "tgbot/types/User.h"                 // for User, User::Ptr
 
 void StartCommand(TgBot::Bot &bot, TgBot::Message::Ptr message) {
   bot.getApi().sendMessage(message->chat->id, "Hi!");
@@ -27,12 +35,13 @@ void validateAndStartBattle(TgBot::Bot &bot, TgBot::Message::Ptr message) {
     auto player1 = FetchPlayer(allRequests[message->from->id]);
     auto player2 = FetchPlayer(message->from->id);
 
-    BattleHolder *battle;
+    BaseBattle *battle;
 
     if (message->chat->type == TgBot::Chat::Type::Group) {
-      battle = generateBattle(player1, player2, message->chat->id);
+      // battle = generateBattle(player1, player2, message->chat->id);
+      battle = new DualBattle(player1, player2, message->chat->id);
     } else {
-      battle = generateBattle(player1, player2, -1);
+      battle = new DualBattle(player1, player2, INVALID_ID);
     }
 
     if (!isBattleActive(player1->Uid) && !isBattleActive(player2->Uid)) {
@@ -42,7 +51,6 @@ void validateAndStartBattle(TgBot::Bot &bot, TgBot::Message::Ptr message) {
     } else {
       bot.getApi().sendMessage(message->chat->id, "Player already in battle");
     }
-
   }
 }
 
@@ -60,7 +68,8 @@ void AskBattleCommand(TgBot::Bot &bot, TgBot::Message::Ptr message) {
 
   if (requestedID != INVALID_ID) {
     allRequests.insert(std::pair<int32_t, int32_t>(requestedID, requesterID));
-    bot.getApi().sendMessage(message->chat->id, "@" + requestedUsername + " Type yes to accept");
+    bot.getApi().sendMessage(message->chat->id,
+                             "@" + requestedUsername + " Type yes to accept");
   } else {
     bot.getApi().sendMessage(message->chat->id, "No such user");
   }
@@ -75,7 +84,7 @@ void registerTextCommands(TgBot::Bot &bot) {
     boost::algorithm::to_lower(message->text);
     if (message->text.compare("attack") == 0) {
       UID uid = message->from->id;
-      std::unordered_map<UID, BattleHolder *>::iterator it = allBattles.find(uid);
+      std::unordered_map<UID, BaseBattle *>::iterator it = allBattles.find(uid);
       if (it != allBattles.end()) {
         auto battle = it->second;
 

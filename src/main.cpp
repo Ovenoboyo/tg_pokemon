@@ -1,9 +1,5 @@
-#include "pokemon/bot/bot.h"
-#include "pokemon/bot/events/events.h"
-#include <boost/asio.hpp>
-#include <cstdlib>
-#include <iostream>
-#include <tgbot/tgbot.h>
+#include "pokemon/bot/bot.h"           // for bot, pollBot
+#include "pokemon/bot/events/events.h" // for handleCommands, registerCommands
 
 int main(int argc, char const *argv[], char *envp[]) {
   // registerStartCommand(bot);

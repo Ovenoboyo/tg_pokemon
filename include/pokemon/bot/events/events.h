@@ -1,4 +1,9 @@
-#include <tgbot/tgbot.h>
+#include <stdint.h> // for int32_t
+#include <string>   // for string
+
+namespace TgBot {
+class Bot;
+} // namespace TgBot
 
 #ifndef EVENTS_H
 #define EVENTS_H

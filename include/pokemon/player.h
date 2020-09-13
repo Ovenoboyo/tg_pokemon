@@ -1,9 +1,9 @@
 #ifndef Player_H
 #define Player_H
 
-#include <string>
-#include <vector>
-#include "pokemon/pokemon.h"
+#include <stdint.h> // for int32_t
+#include <string>   // for string
+#include <vector>   // for vector
 
 class Pokemon;
 
@@ -11,35 +11,59 @@ typedef int32_t UID;
 
 enum Genders { MALE, FEMALE };
 
-class Bag {
-private:
-  // TODO: Bag class
-};
-
 class Player {
 public:
-  // Unique ID
+  /**
+   * @brief Unique ID for player. Usually User-ID provided by telegram
+   *
+   */
   UID Uid;
 
-  // Name of player
+  /**
+   * @brief Name of player
+   *
+   */
   std::string Name;
 
-  // Gender of player
+  /**
+   * @brief Gender of Player
+   *
+   */
   Genders Gender;
 
-  // Team of pokemons
+  /**
+   * @brief Team of 6 (MAX) Pokemons
+   *
+   */
   std::vector<Pokemon *> Team;
 
-  // Bag of items
-  Bag bag;
-
-  // Use when pokemon swap is to be forcibly carried out
+  /**
+   * @brief Bool to check if next move corresponds to swapping
+   *
+   */
   bool isSwapping;
 
+  /**
+   * @brief Counter to keep track of fainted pokemons
+   *
+   */
   int FntCount;
 
+  /**
+   * @brief Construct a new Player object
+   *
+   * @param uid UID of player
+   * @param name Name of player
+   * @param gender Gender of player
+   * @param team Vector with Pokemon objects
+   */
   Player(UID uid, std::string name, enum Genders gender,
          std::vector<Pokemon *> team);
+
+  /**
+   * @brief Construct a new Player object
+   *
+   */
   Player() = default;
 };
 

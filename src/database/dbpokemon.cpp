@@ -1,5 +1,8 @@
 #include "pokemon/database/dbpokemon.h"
-#include "pokemon/pokemon.h"
+#include "pokemon/global.h"  // for ElementType, ICE, NORMAL, WATER
+#include "pokemon/moves.h"   // for Move
+#include "pokemon/pokemon.h" // for Stats, MoveSet, Pokemon
+#include <string>            // for allocator, string
 
 Pokemon *FetchPokemon() {
   Stats basestats(130, 85, 80, 85, 95, 60), IV(3, 26, 7, 7, 11, 18),

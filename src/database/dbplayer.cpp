@@ -1,7 +1,8 @@
 #include "pokemon/database/dbplayer.h"
-#include "pokemon/database/dbpokemon.h"
-#include "pokemon/player.h"
-#include <string>
+#include "pokemon/database/dbpokemon.h" // for FetchPokemon
+#include "pokemon/player.h"             // for UID, MALE, Player
+#include <string>                       // for allocator, string
+#include <vector>                       // for vector
 
 class Pokemon;
 
@@ -14,6 +15,4 @@ Player *FetchPlayer(UID uid) {
   return player;
 }
 
-UID isPlayerRegistered(std::string username) {
-  return 609604248;
-}
+UID isPlayerRegistered(std::string username) { return 609604248; }

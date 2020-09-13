@@ -1,5 +1,7 @@
-#include "string"
-#include <tgbot/tgbot.h>
+#include <stdlib.h> // for getenv
+#include <string>   // for allocator, string
+
+#include "tgbot/Bot.h" // for Bot
 
 #ifndef BOT_H
 #define BOT_H
