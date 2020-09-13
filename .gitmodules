@@ -1,0 +1,3 @@
+[submodule "vendor/tgbot"]
+	path = vendor/tgbot
+	url = https://github.com/Ovenoboyo/tgbot-cpp
