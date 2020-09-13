@@ -4,33 +4,15 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
+
     {
-      "name":"Flask DB Migrate",
-      "type":"python",
-      "request":"launch",
-      "module":"flask",
-      "env":{
-        "FLASK_APP":"scripts/migrator/app.py",
-        "FLASK_ENV":"development",
-        "FLASK_DEBUG":"0"
-      },
+      "name": "go Launch Package",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/scripts/migrate/cmd",
       "envFile": "${workspaceFolder}/environment.env",
-      "args":["db","migrate"],
-      "jinja":true
-    },
-    {
-      "name":"Flask DB Upgrade",
-      "type":"python",
-      "request":"launch",
-      "module":"flask",
-      "env":{
-        "FLASK_APP":"scripts/migrator/app.py",
-        "FLASK_ENV":"development",
-        "FLASK_DEBUG":"0"
-      },
-      "envFile": "${workspaceFolder}/environment.env",
-      "args":["db", "upgrade"],
-      "jinja":true
+      "cwd": "."
     },
     {
       "name": "(gdb) Launch",
