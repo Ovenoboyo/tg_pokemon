@@ -1,8 +1,8 @@
 -- +migrate Up
 CREATE TABLE "player"."box_pokemon_bridge" (
     "generated_id" integer NOT NULL,
-    "box_id" uuid NOT NULL,
-    "pokemon_id" uuid NOT NULL,
+    "box_id" varchar(20) NOT NULL,
+    "pokemon_id" varchar(20) NOT NULL,
     "position" integer NOT NULL,
     CONSTRAINT "PK_box_pokemon_bridge" PRIMARY KEY ("generated_id"),
     CONSTRAINT "FK_137" FOREIGN KEY ("box_id") REFERENCES "player"."box" ("box_id"),

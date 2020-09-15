@@ -3,22 +3,22 @@
 #include "pokemon/player.h"
 
 bool isBattleActive(UID uid) {
-  std::unordered_map<UID, BaseBattle *>::iterator it = allBattles.find(uid);
-  return it != allBattles.end();
+    std::unordered_map<UID, BaseBattle *>::iterator it = allBattles.find(uid);
+    return it != allBattles.end();
 }
 
 void registerBattle(UID p1, BaseBattle *battle) {
-  if (!isBattleActive(p1)) {
-    allBattles.insert({p1, battle});
-  }
+    if (!isBattleActive(p1)) {
+        allBattles.insert({p1, battle});
+    }
 }
 
 void deregisterBattle(BaseBattle *battle, std::vector<UID> uidList) {
-  for (auto u : uidList) {
-    std::unordered_map<UID, BaseBattle *>::iterator it = allBattles.find(u);
-    if (it != allBattles.end()) {
-      allBattles.erase(it);
+    for (auto u : uidList) {
+        std::unordered_map<UID, BaseBattle *>::iterator it = allBattles.find(u);
+        if (it != allBattles.end()) {
+            allBattles.erase(it);
+        }
     }
-  }
-  delete battle;
+    delete battle;
 }

@@ -1,6 +1,6 @@
 -- +migrate Up
 CREATE TABLE "public"."element_types" (
-    "element_type_id" uuid NOT NULL,
+    "element_type_id" varchar(20) NOT NULL,
     "element_0" integer NOT NULL,
     "element_1" integer NULL,
     CONSTRAINT "PK_element_types" PRIMARY KEY ("element_type_id")
@@ -11,10 +11,10 @@ CREATE TABLE "public"."pokemon" (
     "nature" integer NOT NULL,
     "icon_path" varchar(128) NOT NULL,
     "name" varchar(128) NOT NULL,
-    "base_stats_id" uuid NOT NULL,
+    "base_stats_id" varchar(20) NOT NULL,
     "evolve_level" integer NULL,
     "evolve_pokemon" integer NULL,
-    "element_type_id" uuid NOT NULL,
+    "element_type_id" varchar(20) NOT NULL,
     CONSTRAINT "PK_pokemon" PRIMARY KEY ("pokedex_no"),
     CONSTRAINT "FK_115" FOREIGN KEY ("base_stats_id") REFERENCES "public"."base_stats" ("base_stats_id"),
     CONSTRAINT "FK_143" FOREIGN KEY ("evolve_pokemon") REFERENCES "public"."pokemon" ("pokedex_no"),

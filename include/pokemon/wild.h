@@ -4,12 +4,12 @@
 #include "pokemon.h"
 
 class Wild {
-private:
-  Pokemon pokemon;
+  private:
+    Pokemon pokemon;
 
-public:
-  Wild(Pokemon p);
-  Wild() = default;
+  public:
+    Wild(Pokemon p);
+    Wild() = default;
 };
 
 #endif

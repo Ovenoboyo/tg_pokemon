@@ -1,6 +1,6 @@
 -- +migrate Up
 CREATE TABLE "public"."base_stats" (
-    "base_stats_id" uuid NOT NULL,
+    "base_stats_id" varchar(20) NOT NULL,
     "hp" integer NOT NULL,
     "attack" integer NOT NULL,
     "defence" integer NOT NULL,
