@@ -15,7 +15,61 @@ class Move;
 DualBattle::DualBattle(Player *p1, Player *p2, int32_t groupID)
     : BaseBattle(p1, groupID) {
     this->player2 = p2;
-    this->HandleRoundStart();
+}
+
+DamageCalcHolder DualBattle::getStats(Pokemon attacker, Pokemon defender, Move move) {
+    return DamageCalcHolder{
+        attacker.Level,
+        getStat(attacker.baseStats.Attack,
+                attacker.IVStats.Attack,
+                attacker.EVStats.Attack, attacker.Level, false),
+        move.GetDamage(),
+
+        defender.Level,
+        
+        getStat(defender.baseStats.Attack,
+                defender.IVStats.Attack,
+                defender.EVStats.Attack, attacker.Level, false),
+
+        getAttackModifier(defender.type, move.GetType()),
+        1,
+    };
+}
+
+void DualBattle::ApplyMoves() {
+    for (auto m : this->playedMove) {
+        UID uid = m.first;
+
+        // Set attacker and defender
+        auto attacker = this->GetPlayer(uid);
+        if (!attacker->Team.at(0)->isFNT) {
+            auto defender = this->GetOtherPlayer(uid);
+
+            // Get damage dealt
+            int damage = calculateDamage(this->getStats(*attacker->Team.at(0), *defender->Team.at(0), *(m.second)));
+
+            // Apply damage onto defender pokemon
+            defender->Team.at(0)->Health -= damage;
+
+            // Check if pokemon fainted
+            if (defender->Team.at(0)->Health <= 0) {
+                defender->Team.at(0)->isFNT = true;
+                defender->FntCount += 1;
+
+                // Ask user to swap pokemon if fainted and not defeated
+                if (!isDefeated(defender)) {
+                    this->sendSwapReport(defender->Uid);
+                    defender->isSwapping = true;
+                }
+            }
+        } else {
+            if (!isDefeated(attacker)) {
+                this->sendSwapReport(attacker->Uid);
+                attacker->isSwapping = true;
+            }
+        }
+    }
+    this->playedMove.clear();
 }
 
 Player *DualBattle::GetOtherPlayer(UID uid) {
@@ -32,42 +86,6 @@ Move *DualBattle::getMoveFromIndex(Player player, int moveNo) {
     } else {
         return player.Team.at(0)->Moveset.at(moveNo);
     }
-}
-
-void DualBattle::ApplyMoves() {
-    for (auto m : this->playedMove) {
-        UID uid = m.first;
-
-        // Set attacker and defender
-        auto attacker = this->GetPlayer(uid);
-        if (!attacker->Team.at(0)->isFNT) {
-            auto defender = this->GetOtherPlayer(uid);
-
-            // Get damage dealt
-            int damage = calculateDamage(*attacker, *defender);
-
-            // Apply damage onto defender pokemon
-            defender->Team.at(0)->Health -= damage;
-
-            // Check if pokemon fainted
-            if (defender->Team.at(0)->Health <= 0) {
-                defender->Team.at(0)->isFNT = true;
-                defender->FntCount += 1;
-
-                // Ask user to swap pokemon if fainted and not defeated
-                if (!this->isDefeated(defender)) {
-                    this->sendSwapReport(defender->Uid);
-                    defender->isSwapping = true;
-                }
-            }
-        } else {
-            if (!this->isDefeated(attacker)) {
-                this->sendSwapReport(attacker->Uid);
-                attacker->isSwapping = true;
-            }
-        }
-    }
-    this->playedMove.clear();
 }
 
 void DualBattle::sendSwapReport(UID uid) {

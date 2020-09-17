@@ -1,6 +1,7 @@
 #include <bits/exception.h> // for exception
 #include <iostream>         // for operator<<, cout, ostream
 #include <memory>           // for allocator
+#include <iostream>
 
 #include "pokemon/bot/bot.h"           // for bot, pollBot
 #include "pokemon/bot/events/events.h" // for handleCommands, registerCommands
@@ -18,8 +19,6 @@ int main(int argc, char const *argv[], char *envp[]) {
         std::cout << e.what();
         return -1;
     }
-
-    auto player = FetchPlayer(0);
 
     registerCommands(*bot);
     handleCommands(*bot);

@@ -6,9 +6,23 @@
 #include <unordered_map> // for unordered_map
 
 #include "pokemon/moves.h"  // for Move
-#include "pokemon/player.h" // for Player (ptr only), UID
+#include "pokemon/user/player.h" // for Player (ptr only), UID
 
-const int32_t INVALID_ID = -1;
+struct DamageCalcHolder
+{
+    // Attacker
+    int AttackerLevel;
+    int AttackStat;
+    int power;
+
+    // Defender
+    int DefenderLevel;
+    int DefenceStat;
+
+    // Modifiers
+    float attackModifier;
+    float typeModifier;
+};
 
 class ChatInfo {
   public:
@@ -29,13 +43,13 @@ class ChatInfo {
 
 class BaseBattle {
   public:
+    ChatInfo *chat;
+
     /**
      * @brief The most recently played moves for each player
      *
      */
     std::unordered_map<UID, Move *> playedMove;
-
-    ChatInfo *chat;
 
     /**
      * @brief Calculates damage by attacker on defender
@@ -44,20 +58,13 @@ class BaseBattle {
      * @param defender player against whom the damage is to be calculated
      * @return int value of damage to be dealt
      */
-    int calculateDamage(Player attacker, Player defender);
+    int calculateDamage(struct DamageCalcHolder holder);
 
     /**
      * @brief First Player
      *
      */
     Player *player1;
-
-    /**
-     * @brief Counter which determines when all players have played their move.
-     * Usually max at 2 and round ends at 0.
-     *
-     */
-    int roundEndCounter;
 
     /**
      * @brief Construct a new Battle Holder object
@@ -75,37 +82,6 @@ class BaseBattle {
     ~BaseBattle() = default;
 
     /**
-     * @brief Calculate damage and apply it to respective pokemons
-     *
-     */
-    void ApplyMoves();
-
-    /**
-     * @brief Generates a summary of current battle progress
-     *
-     * @return std::string summary
-     */
-    std::string generateBattleSummary();
-
-    /**
-     * @brief Get move summary for specified player
-     *
-     * @param player Player object
-     * @return std::string summary
-     */
-    std::string generateMoveSummary(Player player);
-
-    /**
-     * @brief Generates a summary of valid swappable pokemons
-     *
-     * @param player Player object
-     * @return std::string summary
-     */
-    std::string generateSwapSummary(Player player);
-
-    void sendSwapReport(UID uid);
-
-    /**
      * @brief Handles player moves, swap and roundEndCounter
      *
      * @param uid UID of player
@@ -113,44 +89,26 @@ class BaseBattle {
      * from 1-6
      * @param swap bool to check if move is swap or attack
      */
-    void HandlePlayerChoice(UID uid, int moveNo, bool swap);
+    virtual void HandlePlayerChoice(UID uid, int moveNo, bool swap);
 
     /**
      * @brief Handle events at start of new round
      *
      */
-    void HandleRoundStart();
+    virtual void HandleRoundStart();
 
     /**
      * @brief Handle events at end of round. Includes checking if player is
      * defeated.
      *
      */
-    void HandleRoundEnd();
+    virtual void HandleRoundEnd();
 
-    /**
-     * @brief Swap 2 pokemon in team
-     *
-     * @param uid UID of player
-     * @param index Index of pokemon to be swapped with Index 0
-     */
-    void SwapPokemon(UID uid, int index);
-
-    /**
-     * @brief Checks if player is defeater
-     *
-     * @param player Reference to object of player
-     * @return true If all pokemons of player are fainted
-     * @return false If either of pokemons of player is alive
-     */
-    bool isDefeated(Player *player);
-
-    /**
-     * @brief Get the Move corresponding to index
-     *
-     * @return Move
-     */
-    Move getMoveFromIndex(Player, int);
+    void HandleBattle(UID uid, int moveNo, bool swap);
+    void HandleBattle();
 };
+
+float getAttackModifier(std::vector<ElementType> pkType, ElementType akType);
+bool isDefeated(Player *player);
 
 #endif

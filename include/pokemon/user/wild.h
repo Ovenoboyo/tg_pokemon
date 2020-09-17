@@ -1,14 +1,13 @@
 #ifndef WILD_H
 #define WILD_H
 
-#include "pokemon.h"
+#include "pokemon/pokemon.h"
 
 class Wild {
-  private:
-    Pokemon pokemon;
-
   public:
-    Wild(Pokemon p);
+    Pokemon *pokemon;
+
+    Wild(Pokemon *p);
     Wild() = default;
 };
 

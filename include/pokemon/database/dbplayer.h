@@ -1,7 +1,7 @@
 #ifndef DBPLAYER_H
 #define DBPLAYER_H
 
-#include "pokemon/player.h"
+#include "pokemon/user/player.h"
 #include <string> // for string
 
 Player *FetchPlayer(UID uid);

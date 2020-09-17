@@ -4,7 +4,7 @@
 #include <unordered_map> // for unordered_map
 #include <vector>        // for vector
 
-#include "pokemon/player.h" // for UID
+#include "pokemon/user/player.h" // for UID
 
 class BaseBattle;
 

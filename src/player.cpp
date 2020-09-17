@@ -1,4 +1,4 @@
-#include "pokemon/player.h"
+#include "pokemon/user/player.h"
 
 #include <algorithm> // for max
 #include <iterator>  // for move_iterator, make_move_iterator

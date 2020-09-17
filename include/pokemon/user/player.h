@@ -7,9 +7,11 @@
 
 class Pokemon;
 
-typedef int32_t UID;
+const int32_t INVALID_ID = -1;
+const int32_t BOT_ID = -2;
 
-enum Genders { MALE, FEMALE };
+typedef int32_t UID;
+enum Genders {MALE, FEMALE};
 
 class Player {
   public:

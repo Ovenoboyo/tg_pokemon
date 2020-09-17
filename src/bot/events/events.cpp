@@ -17,7 +17,7 @@
 #include "pokemon/battle/dualBattle.h"        // for DualBattle
 #include "pokemon/bot/events/battleRequest.h" // for allRequests
 #include "pokemon/database/dbplayer.h"        // for FetchPlayer, isPlaye...
-#include "pokemon/player.h"                   // for Player, UID
+#include "pokemon/user/player.h"              // for Player, UID
 #include "tgbot/Api.h"                        // for Api
 #include "tgbot/Bot.h"                        // for Bot
 #include "tgbot/EventBroadcaster.h"           // for EventBroadcaster
@@ -34,29 +34,29 @@ void StartCommand(TgBot::Bot &bot, TgBot::Message::Ptr message) {
 void validateAndStartBattle(TgBot::Bot &bot, TgBot::Message::Ptr message) {
     auto it = allRequests.find(message->from->id);
     if (it != allRequests.end()) {
-        Player *player1, *player2;
-        try {
-            player1 = FetchPlayer(allRequests[message->from->id]);
-            player2 = FetchPlayer(message->from->id);
-        } catch (const std::exception &e) {
-            std::cout << e.what();
-            bot.getApi().sendMessage(message->chat->id, e.what());
-            return;
-        }
+        if (!isBattleActive(message->from->id) &&
+            !isBattleActive(allRequests[message->from->id])) {
+            Player *player1, *player2;
+            try {
+                player1 = FetchPlayer(allRequests[message->from->id]);
+                player2 = FetchPlayer(message->from->id);
+            } catch (const std::exception &e) {
+                std::cout << e.what();
+                bot.getApi().sendMessage(message->chat->id, e.what());
+                return;
+            }
 
-        BaseBattle *battle;
+            BaseBattle *battle;
 
-        if (message->chat->type == TgBot::Chat::Type::Group) {
-            // battle = generateBattle(player1, player2, message->chat->id);
-            battle = new DualBattle(player1, player2, message->chat->id);
-        } else {
-            battle = new DualBattle(player1, player2, INVALID_ID);
-        }
+            if (message->chat->type == TgBot::Chat::Type::Group) {
+                battle = new DualBattle(player1, player2, message->chat->id);
+            } else {
+                battle = new DualBattle(player1, player2, INVALID_ID);
+            }
 
-        if (!isBattleActive(player1->Uid) && !isBattleActive(player2->Uid)) {
             registerBattle(player1->Uid, battle);
             registerBattle(player2->Uid, battle);
-
+            battle->HandleBattle();
         } else {
             bot.getApi().sendMessage(message->chat->id,
                                      "Player already in battle");
@@ -90,28 +90,11 @@ void sendMessages(TgBot::Bot &bot, int32_t chatIDs, std::string message) {
     bot.getApi().sendMessage(chatIDs, message);
 }
 
-void registerTextCommands(TgBot::Bot &bot) {
-    bot.getEvents().onAnyMessage([&bot](TgBot::Message::Ptr message) {
-        boost::algorithm::to_lower(message->text);
-        if (message->text.compare("attack") == 0) {
-            UID uid = message->from->id;
-            std::unordered_map<UID, BaseBattle *>::iterator it =
-                allBattles.find(uid);
-            if (it != allBattles.end()) {
-                auto battle = it->second;
-
-                battle->HandlePlayerChoice(uid, 1, false);
-                battle->HandlePlayerChoice(2, 1, false);
-            }
-        }
-    });
-}
-
 void handlePlayerAttack(TgBot::Message::Ptr message) {
     if (allBattles.find(message->from->id) != allBattles.end()) {
         auto battle = allBattles[message->from->id];
 
-        battle->HandlePlayerChoice(message->from->id, 1, false);
+        battle->HandleBattle(message->from->id, 1, false);
     }
 }
 

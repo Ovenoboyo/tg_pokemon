@@ -7,57 +7,55 @@
 
 #include "pokemon/battle/baseBattle.h" // for ChatInfo
 #include "pokemon/battle/battle.h"     // for deregisterBattle
-#include "pokemon/battle/dualBattle.h" // for DualBattle
+#include "pokemon/battle/wildBattle.h" // for DualBattle
 #include "pokemon/bot/bot.h"           // for bot
 #include "pokemon/bot/events/events.h" // for sendMessages
 #include "pokemon/user/player.h"            // for UID, Player
 
 class Move;
 
-void DualBattle::HandleRoundStart() {
+void WildBattle::HandleRoundStart() {
     if (this->chat->isGroup) {
         sendMessages(*bot, this->chat->botReportID,
                      this->generateBattleSummary());
-    }
-
-    auto players = {this->player1, this->player2};
-    for (auto p : players) {
-        if (this->chat->isGroup) {
-            sendMessages(*bot, this->chat->botReportID,
-                         this->generateMoveSummary(*p));
-        } else {
-            sendMessages(*bot, p->Uid, this->generateBattleSummary());
-            sendMessages(*bot, p->Uid, this->generateMoveSummary(*p));
-        }
+        sendMessages(*bot, this->chat->botReportID,
+                        this->generateMoveSummary(*(this->player1)));
+    } else {
+        sendMessages(*bot, this->player1->Uid, this->generateBattleSummary());
+        sendMessages(*bot, this->player1->Uid, this->generateMoveSummary(*(this->player1)));
     }
 }
 
-void DualBattle::HandleRoundEnd() {
+void WildBattle::HandleRoundEnd() {
     bool isEnd = false;
     // TODO: Generate who played what and damage dealt summary
 
-    auto players = {this->player1, this->player2};
-    for (auto p : players) {
-        if (isDefeated(p)) {
-            isEnd = true;
-            if (this->chat->isGroup) {
-                sendMessages(*bot, this->chat->botReportID,
-                             p->Name + " Lost :''(");
-                break;
-            }
-            sendMessages(*bot, p->Uid, p->Name + " Lost :''(");
+    if (isDefeated(this->player1)) {
+        isEnd = true;
+        if (this->chat->isGroup) {
+            sendMessages(*bot, this->chat->botReportID,
+                            this->player1->Name + " Lost :''(");
         }
+        sendMessages(*bot, this->player1->Uid, this->player1->Name + " Lost :''(");
+    } else if (isDefeated(this->com)) {
+        isEnd = true;
+        if (this->chat->isGroup) {
+            sendMessages(*bot, this->chat->botReportID,
+                        "Wild "+ this->com->pokemon->Nickname +"Lost :''(");
+        }
+        sendMessages(*bot, this->player1->Uid, this->player1->Name + " Lost :''(");
     }
+
     if (isEnd) {
-        std::vector<UID> uidList = {this->player1->Uid, this->player2->Uid};
+        std::vector<UID> uidList = {this->player1->Uid};
         deregisterBattle(this, uidList);
         return;
     }
 }
 
-void DualBattle::HandlePlayerChoice(UID uid, int index, bool swap) {
+void WildBattle::HandlePlayerChoice(UID uid, int index, bool swap) {
     if (this->playedMove.find(uid) != this->playedMove.end()) {
-        auto player = this->GetPlayer(uid);
+        auto player = this->player1;
 
         // Check if user is swapping or playing a move
         if (swap || player->isSwapping) {
@@ -77,23 +75,25 @@ void DualBattle::HandlePlayerChoice(UID uid, int index, bool swap) {
             }
         }
 
-        this->roundEndCounter--;
-
-        // Check if round ended
-        if (this->roundEndCounter == 0) {
-            this->roundEndCounter = 2;
-            this->ApplyMoves();
-        } else {
-            sendMessages(*bot,
-                         (this->chat->isGroup) ? this->chat->botReportID : uid,
-                         "Waiting for other player...");
-        }
+        //TODO: bot plays move here
+        this->ApplyMoves();
     } else {
         // Player already moved
     }
 }
 
-void DualBattle::SwapPokemon(UID uid, int index) {
-    auto player = this->GetPlayer(uid);
+void WildBattle::SwapPokemon(UID uid, int index) {
+    auto player = this->player1;
     std::swap(player->Team.at(0), player->Team[index]);
 }
+
+bool WildBattle::isDefeated(Wild *com) {
+    if (com->pokemon->Health <= 0) {
+        return true;
+    }
+    return false;
+}
+
+bool WildBattle::isDefeated(Player *player) {
+    return isDefeated(player);
+}    

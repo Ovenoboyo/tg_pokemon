@@ -28,10 +28,6 @@ BaseBattle::BaseBattle(Player *p1, int32_t groupID) {
     ChatInfo chatInfo(groupID);
 }
 
-Move BaseBattle::getMoveFromIndex(Player player, int moveNo) {
-    throw std::runtime_error("Not Implemented");
-}
-
 float getAttackModifier(std::vector<ElementType> pkType, ElementType akType) {
     for (int i = 0; i < 2; i++) {
         if (pkType.at(i) == akType) {
@@ -41,11 +37,7 @@ float getAttackModifier(std::vector<ElementType> pkType, ElementType akType) {
     return 1;
 }
 
-void BaseBattle::sendSwapReport(UID uid) {
-    throw std::runtime_error("Not Implemented");
-}
-
-bool BaseBattle::isDefeated(Player *player) {
+bool isDefeated(Player *player) {
     int maxFnt = player->Team.size();
     if (player->FntCount == maxFnt) {
         return true;
@@ -53,32 +45,7 @@ bool BaseBattle::isDefeated(Player *player) {
     return false;
 }
 
-int BaseBattle::calculateDamage(Player attacker, Player defender) {
-    auto move = this->playedMove.at(attacker.Uid);
-
-    if (move != NULL) {
-
-        int Attackerlevel = attacker.Team.at(0)->Level;
-        int DefenderLevel = defender.Team.at(0)->Level;
-
-        int attackStat =
-            getStat(attacker.Team.at(0)->baseStats.Attack,
-                    attacker.Team.at(0)->IVStats.Attack,
-                    attacker.Team.at(0)->EVStats.Attack, Attackerlevel, false);
-        int power = move->GetDamage();
-
-        int defenceStat =
-            getStat(defender.Team.at(0)->baseStats.Attack,
-                    defender.Team.at(0)->IVStats.Attack,
-                    defender.Team.at(0)->EVStats.Attack, Attackerlevel, false);
-
-        float attackModifier =
-            getAttackModifier(defender.Team.at(0)->type, move->GetType());
-
-        // TODO: Make effectiveness chart
-
-        float typeModifier = 1;
-
+int BaseBattle::calculateDamage(struct DamageCalcHolder holder) {
         std::random_device rd;
         std::mt19937 gen(rd());
         std::uniform_int_distribution<> distr(217, 255);
@@ -86,14 +53,12 @@ int BaseBattle::calculateDamage(Player attacker, Player defender) {
         int random = distr(gen);
 
         // https://www.math.miami.edu/~jam/azure/compendium/battdam.htm
-        return int((((((((((2 * Attackerlevel) / 5 + 2) * attackStat * power) /
-                         defenceStat) /
+        return int((((((((((2 * holder.AttackerLevel) / 5 + 2) * holder.AttackStat * holder.power) /
+                         holder.DefenceStat) /
                         50) +
                        2) *
-                      attackModifier) *
-                     typeModifier) *
+                    holder.attackModifier) *
+                     holder.typeModifier) *
                     random) /
                    255);
-    }
-    return 0;
 }

@@ -83,3 +83,10 @@ Pokemon *FetchPokemon(std::string pokemonID, pqxx::nontransaction &N) {
     N.~nontransaction();
     throw std::runtime_error("Couldn't find pokemon");
 }
+
+Pokemon *GetWildPokemon(int route_no) {
+    std::vector<ElementType> types = {NORMAL, FLYING};
+    std::vector<Move*> moveset = {new Move("Tackle", NORMAL, 69, 100, 32)};
+    Stats stats = Stats{1, 1, 1, 1, 1, 1};
+  return new Pokemon("Wild pokemon", types, 69, moveset, stats, stats, stats);
+}

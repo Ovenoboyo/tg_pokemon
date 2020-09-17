@@ -10,5 +10,6 @@ class nontransaction;
 class Pokemon;
 
 Pokemon *FetchPokemon(std::string playerID, pqxx::nontransaction &N);
+Pokemon *GetWildPokemon(int route_no);
 
 #endif

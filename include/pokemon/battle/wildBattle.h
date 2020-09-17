@@ -6,27 +6,22 @@
 
 #include "pokemon/battle/baseBattle.h" // for BaseBattle
 #include "pokemon/user/player.h"            // for Player (ptr only), UID
+#include "pokemon/user/wild.h"
 
 class Move;
 
-class DualBattle : public BaseBattle {
+class WildBattle : public BaseBattle {
   public:
-    /**
-     * @brief Counter which determines when all players have played their move.
-     * Usually max at 2 and round ends at 0.
-     *
-     */
-    int roundEndCounter;
+    Wild *com;
 
-    Player *player2;
+    WildBattle(Player *p1, int32_t groupID);
 
-    DualBattle(Player *p1, Player *p2, int32_t groupID);
-
-    Player *GetOtherPlayer(UID uid);
-
-    Player *GetPlayer(UID uid);
+    bool isDefeated(Player *player);
+    bool isDefeated(Wild *com);
 
     DamageCalcHolder getStats(Pokemon attacker, Pokemon defender, Move Move);
+
+    Pokemon *getActivePokemon(bool isPlayer);
 
     /**
      * @brief Generates a summary of current battle progress
