@@ -1,34 +1,35 @@
 #include "pokemon/battle/dualBattle.h"
 
+#include <iostream>      // for basic_ostream::operator<<, endl
 #include <stddef.h>      // for NULL
 #include <unordered_map> // for unordered_map
 #include <utility>       // for pair
 #include <vector>        // for vector
 
-#include "pokemon/battle/baseBattle.h" // for BaseBattle
+#include "pokemon/battle/baseBattle.h" // for isDefeated, getAttackModifier
 #include "pokemon/bot/bot.h"           // for bot
 #include "pokemon/bot/events/events.h" // for sendMessages
-#include "pokemon/pokemon.h"           // for Pokemon
+#include "pokemon/global.h"            // for ElementType
+#include "pokemon/moves.h"             // for Move
+#include "pokemon/pokemon.h"           // for Pokemon, Stats, getStat
 
-class Move;
-
-DualBattle::DualBattle(Player *p1, Player *p2, int32_t groupID)
+DualBattle::DualBattle(std::shared_ptr<Player> p1, std::shared_ptr<Player> p2, int32_t groupID)
     : BaseBattle(p1, groupID) {
     this->player2 = p2;
+    this->roundEndCounter = 0;
 }
 
-DamageCalcHolder DualBattle::getStats(Pokemon attacker, Pokemon defender, Move move) {
-    return DamageCalcHolder{
+DamageCalcHolder *DualBattle::getStats(Pokemon attacker, Pokemon defender,
+                                       Move move) {
+    return new DamageCalcHolder{
         attacker.Level,
-        getStat(attacker.baseStats.Attack,
-                attacker.IVStats.Attack,
+        getStat(attacker.baseStats.Attack, attacker.IVStats.Attack,
                 attacker.EVStats.Attack, attacker.Level, false),
         move.GetDamage(),
 
         defender.Level,
-        
-        getStat(defender.baseStats.Attack,
-                defender.IVStats.Attack,
+
+        getStat(defender.baseStats.Attack, defender.IVStats.Attack,
                 defender.EVStats.Attack, attacker.Level, false),
 
         getAttackModifier(defender.type, move.GetType()),
@@ -46,7 +47,9 @@ void DualBattle::ApplyMoves() {
             auto defender = this->GetOtherPlayer(uid);
 
             // Get damage dealt
-            int damage = calculateDamage(this->getStats(*attacker->Team.at(0), *defender->Team.at(0), *(m.second)));
+            auto dmg = this->getStats(*attacker->Team.at(0),
+                                      *defender->Team.at(0), *(m.second));
+            int damage = calculateDamage(*dmg);
 
             // Apply damage onto defender pokemon
             defender->Team.at(0)->Health -= damage;
@@ -72,11 +75,11 @@ void DualBattle::ApplyMoves() {
     this->playedMove.clear();
 }
 
-Player *DualBattle::GetOtherPlayer(UID uid) {
+std::shared_ptr<Player> DualBattle::GetOtherPlayer(UID uid) {
     return (uid == this->player1->Uid) ? this->player1 : this->player2;
 }
 
-Player *DualBattle::GetPlayer(UID uid) {
+std::shared_ptr<Player> DualBattle::GetPlayer(UID uid) {
     return (uid == this->player1->Uid) ? this->player2 : this->player1;
 }
 

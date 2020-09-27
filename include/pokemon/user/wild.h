@@ -1,13 +1,15 @@
 #ifndef WILD_H
 #define WILD_H
 
-#include "pokemon/pokemon.h"
+#include <memory>
+
+class Pokemon;
 
 class Wild {
   public:
-    Pokemon *pokemon;
+    std::shared_ptr<Pokemon> pokemon;
 
-    Wild(Pokemon *p);
+    Wild(std::shared_ptr<Pokemon> p);
     Wild() = default;
 };
 

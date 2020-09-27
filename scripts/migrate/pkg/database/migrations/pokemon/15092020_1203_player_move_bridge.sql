@@ -2,12 +2,12 @@
 
 CREATE TABLE "player"."player_move_bridge"
 (
- "generated_id" integer NOT NULL,
- "move_id"      VARCHAR(20) NOT NULL,
- "pokemon_id"   VARCHAR(20) NOT NULL,
+ "generated_id" SERIAL NOT NULL,
+ "move_id"      SERIAL NOT NULL,
+ "pokemon_id"   varchar(36) NOT NULL,
  "position"     integer NOT NULL,
  CONSTRAINT "PK_player_move_bridge" PRIMARY KEY ( "generated_id" ),
- CONSTRAINT "FK_187" FOREIGN KEY ( "move_id" ) REFERENCES "player"."move" ( "move_id" ),
+ CONSTRAINT "FK_187" FOREIGN KEY ( "move_id" ) REFERENCES "public"."move" ( "move_id" ),
  CONSTRAINT "FK_191" FOREIGN KEY ( "pokemon_id" ) REFERENCES "player"."user_pokemon" ( "pokemon_id" )
 );
 

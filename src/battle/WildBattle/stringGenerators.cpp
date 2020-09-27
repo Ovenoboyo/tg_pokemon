@@ -1,18 +1,23 @@
 #include <sstream> // for operator<<, basic_ostream
-#include <string>  // for allocator, operator+, char_tr...
+#include <string>  // for string, operator<<, char_traits
 #include <vector>  // for vector
 
-#include "fmt/core.h"
+#include "fmt/core.h"                  // for format
 #include "pokemon/battle/wildBattle.h" // for WildBattle
 #include "pokemon/moves.h"             // for Move
-#include "pokemon/user/player.h"            // for Player
-#include "pokemon/pokemon.h"           // for Pokemon, MoveSet
+#include "pokemon/pokemon.h"           // for Pokemon
+#include "pokemon/user/player.h"       // for Player
+#include "pokemon/user/wild.h"         // for Wild
 
 std::string WildBattle::generateMoveSummary(Player player) {
     auto moveset = player.Team.at(0)->Moveset;
-    std::string ret = "Move 1: {} \nMove 2: {}\nMove 3: {}\nMove 4: {}";
-    return fmt::format(ret, moveset.at(0)->GetName(), moveset.at(1)->GetName(),
-                       moveset.at(2)->GetName(), moveset.at(3)->GetName());
+    std::string ret = "";
+    int i = 0;
+    for (auto m : moveset) {
+        ret += fmt::format("Move {0}: {1}\n", i, m->GetName());
+        i++;
+    }
+    return ret;
 }
 
 std::string WildBattle::generateSwapSummary(Player player) {

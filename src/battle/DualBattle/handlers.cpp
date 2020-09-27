@@ -1,34 +1,44 @@
 #include <initializer_list> // for initializer_list
-#include <stddef.h>         // for NULL
-#include <string>           // for allocator, operator+, char_tr...
-#include <unordered_map>    // for unordered_map, operator!=
-#include <utility>          // for swap, pair
-#include <vector>           // for vector
+#include <iostream>
+#include <stddef.h>      // for NULL
+#include <string>        // for allocator, operator+, char_tr...
+#include <unordered_map> // for unordered_map, operator!=
+#include <utility>       // for swap, pair
+#include <vector>        // for vector
 
 #include "pokemon/battle/baseBattle.h" // for ChatInfo
 #include "pokemon/battle/battle.h"     // for deregisterBattle
 #include "pokemon/battle/dualBattle.h" // for DualBattle
 #include "pokemon/bot/bot.h"           // for bot
 #include "pokemon/bot/events/events.h" // for sendMessages
-#include "pokemon/user/player.h"            // for UID, Player
+#include "pokemon/user/player.h"       // for UID, Player
 
 class Move;
 
 void DualBattle::HandleRoundStart() {
-    if (this->chat->isGroup) {
-        sendMessages(*bot, this->chat->botReportID,
-                     this->generateBattleSummary());
-    }
+    if (!this->isEnd) {
+        if (this->roundEndCounter == 0) {
+            if (this->chat->isGroup) {
+                sendMessages(*bot, this->chat->botReportID,
+                            this->generateBattleSummary());
+            }
 
-    auto players = {this->player1, this->player2};
-    for (auto p : players) {
-        if (this->chat->isGroup) {
-            sendMessages(*bot, this->chat->botReportID,
-                         this->generateMoveSummary(*p));
-        } else {
-            sendMessages(*bot, p->Uid, this->generateBattleSummary());
-            sendMessages(*bot, p->Uid, this->generateMoveSummary(*p));
+            auto players = {this->player1, this->player2};
+            for (auto p : players) {
+                if (this->chat->isGroup) {
+                    sendMessages(*bot, this->chat->botReportID,
+                                this->generateMoveSummary(*p));
+                } else {
+                    sendMessages(*bot, p->Uid, this->generateBattleSummary());
+                    sendMessages(*bot, p->Uid, this->generateMoveSummary(*p));
+                }
+            }
+            this->roundEndCounter = 2;
         }
+    } else {
+        std::vector<UID> uidList = {this->player1->Uid, this->player2->Uid};
+        deregisterBattle(this, uidList);
+        return;
     }
 }
 
@@ -49,14 +59,13 @@ void DualBattle::HandleRoundEnd() {
         }
     }
     if (isEnd) {
-        std::vector<UID> uidList = {this->player1->Uid, this->player2->Uid};
-        deregisterBattle(this, uidList);
+        this->isEnd = true;
         return;
     }
 }
 
 void DualBattle::HandlePlayerChoice(UID uid, int index, bool swap) {
-    if (this->playedMove.find(uid) != this->playedMove.end()) {
+    if (this->playedMove.find(uid) == this->playedMove.end()) {
         auto player = this->GetPlayer(uid);
 
         // Check if user is swapping or playing a move
@@ -81,7 +90,6 @@ void DualBattle::HandlePlayerChoice(UID uid, int index, bool swap) {
 
         // Check if round ended
         if (this->roundEndCounter == 0) {
-            this->roundEndCounter = 2;
             this->ApplyMoves();
         } else {
             sendMessages(*bot,

@@ -2,14 +2,16 @@
 #define BASEBATTLE_H
 
 #include <stdint.h>      // for int32_t
-#include <string>        // for string
 #include <unordered_map> // for unordered_map
+#include <vector>        // for vector
 
-#include "pokemon/moves.h"  // for Move
+#include "pokemon/global.h"      // for ElementType
 #include "pokemon/user/player.h" // for Player (ptr only), UID
+#include "pokemon/pokemon.h"
 
-struct DamageCalcHolder
-{
+class Move;
+
+struct DamageCalcHolder {
     // Attacker
     int AttackerLevel;
     int AttackStat;
@@ -45,6 +47,8 @@ class BaseBattle {
   public:
     ChatInfo *chat;
 
+    bool isEnd;
+
     /**
      * @brief The most recently played moves for each player
      *
@@ -64,7 +68,7 @@ class BaseBattle {
      * @brief First Player
      *
      */
-    Player *player1;
+    std::shared_ptr<Player> player1;
 
     /**
      * @brief Construct a new Battle Holder object
@@ -73,7 +77,7 @@ class BaseBattle {
      * @param com Pokemon in Wild
      * @param groupID -1 if valid
      */
-    BaseBattle(Player *p1, int32_t groupID);
+    BaseBattle(std::shared_ptr<Player> p1, int32_t groupID);
 
     /**
      * @brief Destroy the Battle Holder object
@@ -105,10 +109,9 @@ class BaseBattle {
     virtual void HandleRoundEnd();
 
     void HandleBattle(UID uid, int moveNo, bool swap);
-    void HandleBattle();
 };
 
 float getAttackModifier(std::vector<ElementType> pkType, ElementType akType);
-bool isDefeated(Player *player);
+bool isDefeated(std::shared_ptr<Player> player);
 
 #endif

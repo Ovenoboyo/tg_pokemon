@@ -1,6 +1,6 @@
 -- +migrate Up
 CREATE TABLE "player"."ev_stats" (
-    "ev_id" varchar(20) NOT NULL,
+    "ev_id" varchar(36) NOT NULL,
     "hp" integer NOT NULL,
     "attack" integer NOT NULL,
     "defence" integer NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE "player"."ev_stats" (
     CONSTRAINT "EV_stats" PRIMARY KEY ("ev_id")
 );
 CREATE TABLE "player"."iv_stats" (
-    "iv_id" varchar(20) NOT NULL,
+    "iv_id" varchar(36) NOT NULL,
     "hp" integer NOT NULL,
     "attack" integer NOT NULL,
     "defence" integer NOT NULL,
@@ -20,10 +20,10 @@ CREATE TABLE "player"."iv_stats" (
     CONSTRAINT "IV_stats" PRIMARY KEY ("iv_id")
 );
 CREATE TABLE "player"."user_pokemon" (
-    "pokemon_id" varchar(20) NOT NULL,
+    "pokemon_id" varchar(36) NOT NULL,
     "pokedex_no" integer NOT NULL,
-    "ev_id" varchar(20) NOT NULL,
-    "iv_id" varchar(20) NOT NULL,
+    "ev_id" varchar(36) NOT NULL,
+    "iv_id" varchar(36) NOT NULL,
     "nickname" varchar(50) NOT NULL,
     "level" INTEGER NOT NULL,
     CONSTRAINT "PK_user_pokemon" PRIMARY KEY ("pokemon_id"),

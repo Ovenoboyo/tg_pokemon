@@ -4,10 +4,11 @@
 #include <stdint.h> // for int32_t
 #include <string>   // for string
 
-#include "pokemon/battle/baseBattle.h" // for BaseBattle
-#include "pokemon/user/player.h"            // for Player (ptr only), UID
+#include "pokemon/battle/baseBattle.h" // for BaseBattle, DamageCalcHolder ...
+#include "pokemon/user/player.h"       // for Player (ptr only), UID
 
 class Move;
+class Pokemon;
 
 class DualBattle : public BaseBattle {
   public:
@@ -18,15 +19,15 @@ class DualBattle : public BaseBattle {
      */
     int roundEndCounter;
 
-    Player *player2;
+    std::shared_ptr<Player> player2;
 
-    DualBattle(Player *p1, Player *p2, int32_t groupID);
+    DualBattle(std::shared_ptr<Player> p1, std::shared_ptr<Player> p2, int32_t groupID);
 
-    Player *GetOtherPlayer(UID uid);
+    std::shared_ptr<Player> GetOtherPlayer(UID uid);
 
-    Player *GetPlayer(UID uid);
+    std::shared_ptr<Player> GetPlayer(UID uid);
 
-    DamageCalcHolder getStats(Pokemon attacker, Pokemon defender, Move Move);
+    DamageCalcHolder *getStats(Pokemon attacker, Pokemon defender, Move Move);
 
     /**
      * @brief Generates a summary of current battle progress

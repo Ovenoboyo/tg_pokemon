@@ -1,28 +1,37 @@
-#include <initializer_list> // for initializer_list
-#include <stddef.h>         // for NULL
-#include <string>           // for allocator, operator+, char_tr...
-#include <unordered_map>    // for unordered_map, operator!=
-#include <utility>          // for swap, pair
-#include <vector>           // for vector
+#include <stddef.h>      // for NULL
+#include <string>        // for allocator, operator+, char_tr...
+#include <unordered_map> // for unordered_map, operator!=
+#include <utility>       // for swap, pair
+#include <vector>        // for vector
+#include <iostream>
 
 #include "pokemon/battle/baseBattle.h" // for ChatInfo
 #include "pokemon/battle/battle.h"     // for deregisterBattle
-#include "pokemon/battle/wildBattle.h" // for DualBattle
+#include "pokemon/battle/wildBattle.h" // for WildBattle
 #include "pokemon/bot/bot.h"           // for bot
 #include "pokemon/bot/events/events.h" // for sendMessages
-#include "pokemon/user/player.h"            // for UID, Player
+#include "pokemon/pokemon.h"           // for Pokemon
+#include "pokemon/user/player.h"       // for UID, Player
+#include "pokemon/user/wild.h"         // for Wild
 
 class Move;
 
 void WildBattle::HandleRoundStart() {
-    if (this->chat->isGroup) {
-        sendMessages(*bot, this->chat->botReportID,
-                     this->generateBattleSummary());
-        sendMessages(*bot, this->chat->botReportID,
+    if (!this->isEnd) {
+        if (this->chat->isGroup) {
+            sendMessages(*bot, this->chat->botReportID,
+                        this->generateBattleSummary());
+            sendMessages(*bot, this->chat->botReportID,
                         this->generateMoveSummary(*(this->player1)));
+        } else {
+            sendMessages(*bot, this->player1->Uid, this->generateBattleSummary());
+            sendMessages(*bot, this->player1->Uid,
+                        this->generateMoveSummary(*(this->player1)));
+        }
     } else {
-        sendMessages(*bot, this->player1->Uid, this->generateBattleSummary());
-        sendMessages(*bot, this->player1->Uid, this->generateMoveSummary(*(this->player1)));
+        std::vector<UID> uidList = {this->player1->Uid};
+        deregisterBattle(this, uidList);
+        return;
     }
 }
 
@@ -34,27 +43,28 @@ void WildBattle::HandleRoundEnd() {
         isEnd = true;
         if (this->chat->isGroup) {
             sendMessages(*bot, this->chat->botReportID,
-                            this->player1->Name + " Lost :''(");
+                         this->player1->Name + " Lost :''(");
         }
-        sendMessages(*bot, this->player1->Uid, this->player1->Name + " Lost :''(");
+        sendMessages(*bot, this->player1->Uid,
+                     this->player1->Name + " Lost :''(");
     } else if (isDefeated(this->com)) {
         isEnd = true;
         if (this->chat->isGroup) {
             sendMessages(*bot, this->chat->botReportID,
-                        "Wild "+ this->com->pokemon->Nickname +"Lost :''(");
+                         "Wild " + this->com->pokemon->Nickname + "Lost :''(");
         }
-        sendMessages(*bot, this->player1->Uid, this->player1->Name + " Lost :''(");
+        sendMessages(*bot, this->player1->Uid,
+                     this->player1->Name + " Lost :''(");
     }
 
     if (isEnd) {
-        std::vector<UID> uidList = {this->player1->Uid};
-        deregisterBattle(this, uidList);
+        this->isEnd = true;
         return;
     }
 }
 
 void WildBattle::HandlePlayerChoice(UID uid, int index, bool swap) {
-    if (this->playedMove.find(uid) != this->playedMove.end()) {
+    if (this->playedMove.find(uid) == this->playedMove.end()) {
         auto player = this->player1;
 
         // Check if user is swapping or playing a move
@@ -75,7 +85,7 @@ void WildBattle::HandlePlayerChoice(UID uid, int index, bool swap) {
             }
         }
 
-        //TODO: bot plays move here
+        // TODO: bot plays move here
         this->ApplyMoves();
     } else {
         // Player already moved
@@ -87,13 +97,14 @@ void WildBattle::SwapPokemon(UID uid, int index) {
     std::swap(player->Team.at(0), player->Team[index]);
 }
 
-bool WildBattle::isDefeated(Wild *com) {
+bool WildBattle::isDefeated(std::shared_ptr<Wild> com) {
     if (com->pokemon->Health <= 0) {
         return true;
     }
     return false;
 }
 
-bool WildBattle::isDefeated(Player *player) {
+bool WildBattle::isDefeated(std::shared_ptr<Player> player) {
+    using ::isDefeated;
     return isDefeated(player);
-}    
+}

@@ -1,6 +1,6 @@
 -- +migrate Up
-CREATE TABLE "player"."move" (
-    "move_id" varchar(20) NOT NULL,
+CREATE TABLE "public"."move" (
+    "move_id" SERIAL NOT NULL,
     "name" varchar(50) NOT NULL,
     "element_type" integer NOT NULL,
     "damage" integer NOT NULL,
@@ -9,4 +9,4 @@ CREATE TABLE "player"."move" (
     CONSTRAINT "PK_moves" PRIMARY KEY ("move_id")
 );
 -- +migrate Down
-DROP TABLE IF EXISTS "player"."move" CASCADE;
+DROP TABLE IF EXISTS "public"."move" CASCADE;

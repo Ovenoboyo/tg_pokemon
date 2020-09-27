@@ -9,12 +9,18 @@ find_package(OpenSSL REQUIRED)
 find_package(Boost COMPONENTS system REQUIRED)
 find_package(CURL)
 
+find_program(iwyu_path NAMES include-what-you-use iwyu)
+if(NOT iwyu_path)
+  message(FATAL_ERROR "Could not find the program include-what-you-use")
+endif()
+
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpqxx -lpq")
 set(PQXX /usr/local/include/pqxx)
 
 find_library(PQXX_LIB pqxx)
 find_library(PQ_LIB pq)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(SKIP_BUILD_TEST on)
 # set(BUILD_SHARED_LIBS OFF)
 
@@ -39,11 +45,6 @@ if(WIN32)
 
     get_WIN32_WINNT(ver)
     add_definitions(-D_WIN32_WINNT=${ver})
-endif()
-
-find_program(iwyu_path NAMES include-what-you-use iwyu)
-if(NOT iwyu_path)
-  message(FATAL_ERROR "Could not find the program include-what-you-use")
 endif()
 
 set(Boost_USE_MULTITHREADED ON)
@@ -71,6 +72,7 @@ include_directories(include ${OPENSSL_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
 add_subdirectory(vendor/tgbot)
 
 add_executable(Pokemon_TG ${SOURCES})
+set_property(TARGET Pokemon_TG PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
 
 if (CURL_FOUND)
     include_directories(${CURL_INCLUDE_DIRS})
@@ -80,9 +82,7 @@ endif()
 target_link_libraries(Pokemon_TG TgBot ${CMAKE_THREAD_LIBS_INIT} ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${CURL_LIBRARIES} ${PQXX_LIB} ${PQ_LIB} fmt::fmt)
 set_target_properties(Pokemon_TG PROPERTIES
             CXX_STANDARD 17
-            )
-
-set_property(TARGET Pokemon_TG PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
+)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

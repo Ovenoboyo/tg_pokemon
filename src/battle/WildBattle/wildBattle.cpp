@@ -1,22 +1,22 @@
 #include "pokemon/battle/wildBattle.h"
 
+#include <iostream>
 #include <stddef.h>      // for NULL
 #include <unordered_map> // for unordered_map
 #include <utility>       // for pair
 #include <vector>        // for vector
 
-#include "pokemon/battle/baseBattle.h" // for BaseBattle
+#include "pokemon/battle/baseBattle.h" // for getAttackModifier, DamageCalc...
 #include "pokemon/bot/bot.h"           // for bot
 #include "pokemon/bot/events/events.h" // for sendMessages
-#include "pokemon/pokemon.h"           // for Pokemon
-#include "pokemon/database/dbpokemon.h"
+#include "pokemon/database/conn.h"     // for PGConn, dbConn
+#include "pokemon/global.h"            // for ElementType
+#include "pokemon/moves.h"             // for Move
+#include "pokemon/pokemon.h"           // for Pokemon, Stats, getStat
+#include "pokemon/user/wild.h"         // for Wild
 
-class Move;
-
-WildBattle::WildBattle(Player *p1, int32_t groupID)
-    : BaseBattle(p1, groupID) {
-    
-    this->com = new Wild(GetWildPokemon(69));
+WildBattle::WildBattle(std::shared_ptr<Player> p1, int32_t groupID) : BaseBattle(p1, groupID) {
+    this->com = std::shared_ptr<Wild>(new Wild(dbConn->GetWildPokemon(69)));
 }
 
 Move *WildBattle::getMoveFromIndex(Player player, int moveNo) {
@@ -27,18 +27,17 @@ Move *WildBattle::getMoveFromIndex(Player player, int moveNo) {
     }
 }
 
-DamageCalcHolder WildBattle::getStats(Pokemon attacker, Pokemon defender, Move move) {
+DamageCalcHolder WildBattle::getStats(Pokemon attacker, Pokemon defender,
+                                      Move move) {
     return DamageCalcHolder{
         attacker.Level,
-        getStat(attacker.baseStats.Attack,
-                attacker.IVStats.Attack,
+        getStat(attacker.baseStats.Attack, attacker.IVStats.Attack,
                 attacker.EVStats.Attack, attacker.Level, false),
         move.GetDamage(),
 
         defender.Level,
-        
-        getStat(defender.baseStats.Attack,
-                defender.IVStats.Attack,
+
+        getStat(defender.baseStats.Attack, defender.IVStats.Attack,
                 defender.EVStats.Attack, attacker.Level, false),
 
         getAttackModifier(defender.type, move.GetType()),
@@ -46,21 +45,26 @@ DamageCalcHolder WildBattle::getStats(Pokemon attacker, Pokemon defender, Move m
     };
 }
 
-Pokemon *WildBattle::getActivePokemon(bool isPlayer) {
+std::shared_ptr<Pokemon> WildBattle::getActivePokemon(bool isPlayer) {
     return (isPlayer) ? this->player1->Team.at(0) : this->com->pokemon;
 }
 
 void WildBattle::ApplyMoves() {
     for (auto m : this->playedMove) {
+        std::cout << this->player1->Team.at(0)->Nickname;
+
+
         UID uid = m.first;
 
-        // Set attacker and defender
-        auto attacker = getActivePokemon((uid == BOT_ID));
-        auto defender = getActivePokemon((uid != BOT_ID));
+        //Set attacker and defender
+        auto attacker = getActivePokemon((uid != BOT_ID));
+        auto defender = getActivePokemon((uid == BOT_ID));
+
         if (!attacker->isFNT) {
 
             // Get damage dealt
-            int damage = calculateDamage(getStats(*attacker, *defender, *m.second));
+            int damage =
+                calculateDamage(getStats(*attacker, *defender, *m.second));
 
             // Apply damage onto defender pokemon
             defender->Health -= damage;
@@ -83,7 +87,7 @@ void WildBattle::ApplyMoves() {
         } else {
             if (uid == BOT_ID) {
                 this->playedMove.clear();
-                return; 
+                return;
             } else {
                 if (!this->isDefeated(this->player1)) {
                     this->sendSwapReport(this->player1->Uid);

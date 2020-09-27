@@ -5,14 +5,18 @@
 #include "fmt/core.h"
 #include "pokemon/battle/dualBattle.h" // for DualBattle
 #include "pokemon/moves.h"             // for Move
-#include "pokemon/user/player.h"            // for Player
 #include "pokemon/pokemon.h"           // for Pokemon, MoveSet
+#include "pokemon/user/player.h"       // for Player
 
 std::string DualBattle::generateMoveSummary(Player player) {
     auto moveset = player.Team.at(0)->Moveset;
-    std::string ret = "Move 1: {} \nMove 2: {}\nMove 3: {}\nMove 4: {}";
-    return fmt::format(ret, moveset.at(0)->GetName(), moveset.at(1)->GetName(),
-                       moveset.at(2)->GetName(), moveset.at(3)->GetName());
+    std::string ret = "";
+    int i = 0;
+    for (auto m : moveset) {
+        ret += fmt::format("Move {0}: {1}\n", i, m->GetName());
+        i++;
+    }
+    return ret;
 }
 
 std::string DualBattle::generateSwapSummary(Player player) {

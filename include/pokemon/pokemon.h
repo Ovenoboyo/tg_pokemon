@@ -25,6 +25,8 @@ struct Stats {
     Stats(Stat HP, Stat Attack, Stat Defence, Stat SPDefence, Stat SPAttack,
           Stat Speed);
     Stats() = default;
+
+    std::string Serialize();
 };
 
 class Pokemon {
@@ -124,5 +126,6 @@ class Pokemon {
  * @return int Calulated stat
  */
 int getStat(int base, int iv, int ev, int level, bool isHP);
+Stats generateIV();
 
 #endif

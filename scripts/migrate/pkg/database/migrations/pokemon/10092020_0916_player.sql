@@ -1,7 +1,7 @@
 -- +migrate Up
 CREATE TABLE "player"."player" (
     "player_id" varchar(128) NOT NULL,
-    "team_id" varchar(20) NOT NULL,
+    "team_id" varchar(36) NOT NULL,
     "name" varchar(128) NOT NULL,
     "gender" integer NOT NULL,
     "pkc" money NOT NULL,

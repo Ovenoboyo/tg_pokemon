@@ -1,7 +1,7 @@
 -- +migrate Up
 CREATE TABLE "player"."box_player_bridge" (
-    "generated_id" integer NOT NULL,
-    "box_id" varchar(20) NOT NULL,
+    "generated_id" SERIAL NOT NULL,
+    "box_id" varchar(36) NOT NULL,
     "player_id" varchar(128) NOT NULL,
     CONSTRAINT "PK_box_player_bridge" PRIMARY KEY ("generated_id"),
     CONSTRAINT "FK_155" FOREIGN KEY ("box_id") REFERENCES "player"."box" ("box_id"),

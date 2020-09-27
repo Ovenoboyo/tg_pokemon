@@ -4,14 +4,15 @@
 #include <stdint.h> // for int32_t
 #include <string>   // for string
 #include <vector>   // for vector
+#include <memory>
 
-class Pokemon;
+#include "pokemon/pokemon.h"
 
 const int32_t INVALID_ID = -1;
 const int32_t BOT_ID = -2;
 
 typedef int32_t UID;
-enum Genders {MALE, FEMALE};
+enum Genders { MALE, FEMALE };
 
 class Player {
   public:
@@ -37,7 +38,7 @@ class Player {
      * @brief Team of 6 (MAX) Pokemons
      *
      */
-    std::vector<Pokemon *> Team;
+    std::vector<std::shared_ptr<Pokemon>> Team;
 
     /**
      * @brief Bool to check if next move corresponds to swapping
@@ -51,6 +52,8 @@ class Player {
      */
     int FntCount;
 
+    bool isEmpty;
+
     /**
      * @brief Construct a new Player object
      *
@@ -60,13 +63,13 @@ class Player {
      * @param team Vector with Pokemon objects
      */
     Player(UID uid, std::string name, enum Genders gender,
-           std::vector<Pokemon *> team);
+           std::vector<std::shared_ptr<Pokemon>> team);
 
     /**
      * @brief Construct a new Player object
      *
      */
-    Player() = default;
+    Player();
 };
 
 #endif

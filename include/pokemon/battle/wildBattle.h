@@ -1,27 +1,28 @@
-#ifndef DUALBATTLE_H
-#define DUALBATTLE_H
+#ifndef WILDBATTLE_H
+#define WILDBATTLE_H
 
 #include <stdint.h> // for int32_t
 #include <string>   // for string
 
-#include "pokemon/battle/baseBattle.h" // for BaseBattle
-#include "pokemon/user/player.h"            // for Player (ptr only), UID
-#include "pokemon/user/wild.h"
+#include "pokemon/battle/baseBattle.h" // for BaseBattle, DamageCalcHolder
+#include "pokemon/user/player.h"       // for Player (ptr only), UID
+#include "pokemon/pokemon.h"
 
 class Move;
+class Wild;
 
 class WildBattle : public BaseBattle {
   public:
-    Wild *com;
+    std::shared_ptr<Wild> com;
 
-    WildBattle(Player *p1, int32_t groupID);
+    WildBattle(std::shared_ptr<Player> p1, int32_t groupID);
 
-    bool isDefeated(Player *player);
-    bool isDefeated(Wild *com);
+    bool isDefeated(std::shared_ptr<Player> player);
+    bool isDefeated(std::shared_ptr<Wild> com);
 
     DamageCalcHolder getStats(Pokemon attacker, Pokemon defender, Move Move);
 
-    Pokemon *getActivePokemon(bool isPlayer);
+    std::shared_ptr<Pokemon> getActivePokemon(bool isPlayer);
 
     /**
      * @brief Generates a summary of current battle progress

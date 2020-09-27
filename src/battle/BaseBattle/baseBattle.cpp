@@ -1,14 +1,10 @@
 #include "pokemon/battle/baseBattle.h"
 
-#include <iostream>      // for std
-#include <random>        // for mt19937, random_device, uniform_int_dis...
-#include <stddef.h>      // for NULL
-#include <stdexcept>     // for runtime_error
-#include <unordered_map> // for unordered_map
-#include <vector>        // for vector
+#include <iostream> // for std
+#include <random>   // for mt19937, random_device, uniform_int_dist...
+#include <vector>   // for vector
 
-#include "pokemon/global.h"  // for ElementType
-#include "pokemon/pokemon.h" // for Pokemon, Stats, getStat
+#include "pokemon/global.h" // for ElementType
 
 using namespace std;
 
@@ -22,10 +18,10 @@ ChatInfo::ChatInfo(int32_t groupID) {
     }
 }
 
-BaseBattle::BaseBattle(Player *p1, int32_t groupID) {
+BaseBattle::BaseBattle(std::shared_ptr<Player> p1, int32_t groupID) {
     this->player1 = p1;
-
-    ChatInfo chatInfo(groupID);
+    this->isEnd = false;
+    this->chat = new ChatInfo(groupID);
 }
 
 float getAttackModifier(std::vector<ElementType> pkType, ElementType akType) {
@@ -37,7 +33,7 @@ float getAttackModifier(std::vector<ElementType> pkType, ElementType akType) {
     return 1;
 }
 
-bool isDefeated(Player *player) {
+bool isDefeated(std::shared_ptr<Player> player) {
     int maxFnt = player->Team.size();
     if (player->FntCount == maxFnt) {
         return true;
@@ -45,20 +41,21 @@ bool isDefeated(Player *player) {
     return false;
 }
 
-int BaseBattle::calculateDamage(struct DamageCalcHolder holder) {
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> distr(217, 255);
+int BaseBattle::calculateDamage(const struct DamageCalcHolder holder) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distr(217, 255);
 
-        int random = distr(gen);
+    int random = distr(gen);
 
-        // https://www.math.miami.edu/~jam/azure/compendium/battdam.htm
-        return int((((((((((2 * holder.AttackerLevel) / 5 + 2) * holder.AttackStat * holder.power) /
-                         holder.DefenceStat) /
-                        50) +
-                       2) *
-                    holder.attackModifier) *
-                     holder.typeModifier) *
-                    random) /
-                   255);
+    // https://www.math.miami.edu/~jam/azure/compendium/battdam.htm
+    return int((((((((((2 * holder.AttackerLevel) / 5 + 2) * holder.AttackStat *
+                      holder.power) /
+                     holder.DefenceStat) /
+                    50) +
+                   2) *
+                  holder.attackModifier) *
+                 holder.typeModifier) *
+                random) /
+               255);
 }
