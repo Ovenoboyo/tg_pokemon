@@ -1,19 +1,20 @@
 #include "pokemon/battle/wildBattle.h"
 
-#include <iostream>
-#include <stddef.h>      // for NULL
-#include <unordered_map> // for unordered_map
-#include <utility>       // for pair
-#include <vector>        // for vector
+#include <ext/alloc_traits.h>           // for __alloc_traits<>::value_type
+#include <stddef.h>                     // for NULL
+#include <iostream>                     // for cout, ostream
+#include <unordered_map>                // for unordered_map
+#include <utility>                      // for pair
+#include <vector>                       // for vector
 
-#include "pokemon/battle/baseBattle.h" // for getAttackModifier, DamageCalc...
-#include "pokemon/bot/bot.h"           // for bot
-#include "pokemon/bot/events/events.h" // for sendMessages
-#include "pokemon/database/conn.h"     // for PGConn, dbConn
-#include "pokemon/global.h"            // for ElementType
-#include "pokemon/moves.h"             // for Move
-#include "pokemon/pokemon.h"           // for Pokemon, Stats, getStat
-#include "pokemon/user/wild.h"         // for Wild
+#include "pokemon/battle/baseBattle.h"  // for getAttackModifier, DamageCalc...
+#include "pokemon/bot/bot.h"            // for bot
+#include "pokemon/bot/events/events.h"  // for sendMessages
+#include "pokemon/database/conn.h"      // for PGConn, dbConn
+#include "pokemon/global.h"             // for ElementType
+#include "pokemon/moves.h"              // for Move
+#include "pokemon/pokemon.h"            // for Pokemon, Stats, getStat
+#include "pokemon/user/wild.h"          // for Wild
 
 WildBattle::WildBattle(std::shared_ptr<Player> p1, int32_t groupID) : BaseBattle(p1, groupID) {
     this->com = std::shared_ptr<Wild>(new Wild(dbConn->GetWildPokemon(69)));

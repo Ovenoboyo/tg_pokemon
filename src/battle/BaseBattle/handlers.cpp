@@ -1,8 +1,7 @@
-#include <iostream>
-#include <stdexcept> // for runtime_error
+#include <stdexcept>                    // for runtime_error
 
-#include "pokemon/battle/baseBattle.h" // for BaseBattle
-#include "pokemon/user/player.h"       // for UID
+#include "pokemon/battle/baseBattle.h"  // for BaseBattle
+#include "pokemon/user/player.h"        // for UID
 
 void BaseBattle::HandleRoundStart() {
     throw std::runtime_error("Not Implemented");

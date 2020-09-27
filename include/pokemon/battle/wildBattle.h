@@ -1,14 +1,15 @@
 #ifndef WILDBATTLE_H
 #define WILDBATTLE_H
 
-#include <stdint.h> // for int32_t
-#include <string>   // for string
+#include <stdint.h>                     // for int32_t
+#include <memory>                       // for shared_ptr
+#include <string>                       // for string
 
-#include "pokemon/battle/baseBattle.h" // for BaseBattle, DamageCalcHolder
-#include "pokemon/user/player.h"       // for Player (ptr only), UID
-#include "pokemon/pokemon.h"
+#include "pokemon/battle/baseBattle.h"  // for BaseBattle, DamageCalcHolder
+#include "pokemon/user/player.h"        // for Player (ptr only), UID
 
 class Move;
+class Pokemon;
 class Wild;
 
 class WildBattle : public BaseBattle {

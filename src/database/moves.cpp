@@ -1,12 +1,13 @@
-#include <fmt/core.h> // for format
-#include <pqxx/pqxx>  // for nontransaction
-#include <stdexcept>  // for runtime_error
-#include <string>     // for string, allocator, basic_string
-#include <vector>     // for vector
+#include <fmt/core.h>               // for format
 
-#include "pokemon/database/conn.h" // for PGConn
-#include "pokemon/global.h"        // for ElementType
-#include "pokemon/moves.h"         // for Move
+#include <stdexcept>                // for runtime_error
+#include <string>                   // for string, allocator, basic_string
+#include <vector>                   // for vector
+#include <pqxx/pqxx>                // IWYU pragma: keep
+
+#include "pokemon/database/conn.h"  // for PGConn
+#include "pokemon/global.h"         // for ElementType
+#include "pokemon/moves.h"          // for Move
 
 // clang-format on
 const std::string moveset_by_level_sql =

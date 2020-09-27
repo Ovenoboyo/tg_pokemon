@@ -1,13 +1,15 @@
-#include <sstream> // for operator<<, basic_ostream
-#include <string>  // for string, operator<<, char_traits
-#include <vector>  // for vector
+#include <ext/alloc_traits.h>           // for __alloc_traits<>::value_type
+#include <memory>                       // for __shared_ptr_access, shared_ptr
+#include <sstream>                      // for operator<<, basic_ostream
+#include <string>                       // for operator<<, string, char_traits
+#include <vector>                       // for vector
 
-#include "fmt/core.h"                  // for format
-#include "pokemon/battle/wildBattle.h" // for WildBattle
-#include "pokemon/moves.h"             // for Move
-#include "pokemon/pokemon.h"           // for Pokemon
-#include "pokemon/user/player.h"       // for Player
-#include "pokemon/user/wild.h"         // for Wild
+#include "fmt/core.h"                   // for format
+#include "pokemon/battle/wildBattle.h"  // for WildBattle
+#include "pokemon/moves.h"              // for Move
+#include "pokemon/pokemon.h"            // for Pokemon
+#include "pokemon/user/player.h"        // for Player
+#include "pokemon/user/wild.h"          // for Wild
 
 std::string WildBattle::generateMoveSummary(Player player) {
     auto moveset = player.Team.at(0)->Moveset;

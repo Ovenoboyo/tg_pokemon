@@ -1,10 +1,23 @@
 #include "pokemon/bot/events/events.h"
-#include "pokemon/battle/battle.h"
-#include "pokemon/battle/baseBattle.h"
-#include "pokemon/database/conn.h"
-#include "pokemon/bot/events/starters.h"
-#include "pokemon/bot/events/dualbattle.h"
-#include "pokemon/bot/events/wildbattle.h"
+
+#include <memory>                           // for __shared_ptr_access
+#include <unordered_map>                    // for unordered_map
+#include <vector>                           // for vector
+
+#include "pokemon/battle/baseBattle.h"      // for BaseBattle
+#include "pokemon/battle/battle.h"          // for isBattleActive, allBattles
+#include "pokemon/bot/events/dualbattle.h"  // for AskBattleCommand, validat...
+#include "pokemon/bot/events/starters.h"    // for pickStarter
+#include "pokemon/bot/events/wildbattle.h"  // for validateWildBattle
+#include "pokemon/database/conn.h"          // for PGConn, dbConn
+#include "tgbot/Api.h"                      // for Api
+#include "tgbot/Bot.h"                      // for Bot
+#include "tgbot/EventBroadcaster.h"         // for EventBroadcaster
+#include "tgbot/tools/StringTools.h"        // for startsWith
+#include "tgbot/types/BotCommand.h"         // for BotCommand::Ptr, BotCommand
+#include "tgbot/types/Chat.h"               // for Chat, Chat::Ptr
+#include "tgbot/types/Message.h"            // for Message, Message::Ptr
+#include "tgbot/types/User.h"               // for User, User::Ptr
 
 void StartCommand(TgBot::Bot &bot, TgBot::Message::Ptr message) {
     bot.getApi().sendMessage(message->chat->id, "Hi!");

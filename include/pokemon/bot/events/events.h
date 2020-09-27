@@ -1,10 +1,10 @@
 #ifndef EVENTS_H
 #define EVENTS_H
 
-#include <stdint.h> // for int32_t
-#include <string>   // for string
-#include <tgbot/tgbot.h>
-#include "pokemon/user/player.h"
+#include <stdint.h>                            // for int32_t
+#include <string>                              // for string
+
+#include "tgbot/types/InlineKeyboardMarkup.h"  // for InlineKeyboardMarkup
 
 namespace TgBot {
 class Bot;

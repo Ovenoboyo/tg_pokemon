@@ -1,13 +1,14 @@
-#include <fmt/core.h> // for format
-#include <iostream>
-#include <pokemon/database/conn.h> // for PGConn
-#include <pqxx/pqxx>               // for pqxx
-#include <stdexcept>               // for runtime_error
-#include <stdint.h>                // for int32_t
-#include <string>                  // for string, basic_string, allocator
-#include <vector>                  // for vector
+#include <fmt/core.h>               // for format
+#include <pokemon/database/conn.h>  // for PGConn
+#include <pqxx/pqxx>                // IWYU pragma: keep
+#include <stdint.h>                 // for int32_t
+#include <memory>                   // for shared_ptr, make_shared
+#include <stdexcept>                // for runtime_error
+#include <string>                   // for string, basic_string, allocator
+#include <utility>                  // for move
+#include <vector>                   // for vector
 
-#include "pokemon/user/player.h" // for UID, Genders, INVALID_ID, Player
+#include "pokemon/user/player.h"    // for Player, UID, Genders, INVALID_ID
 
 class Pokemon;
 

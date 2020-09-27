@@ -1,22 +1,23 @@
 #include "pokemon/bot/events/starters.h"
 
-#include <cstdint> // for int32_t
-#include <memory>  // for __shared_ptr_access
-#include <string>  // for operator+, string, cha...
-#include <utility> // for pair
-#include <vector>  // for vector
+#include <cstdint>                             // for int32_t
+#include <memory>                              // for __shared_ptr_access
+#include <string>                              // for operator+, string, cha...
+#include <utility>                             // for pair
+#include <vector>                              // for vector
 
-#include "pokemon/database/conn.h"            // for PGConn, dbConn, starte...
-#include "tgbot/Api.h"                        // for Api
-#include "tgbot/Bot.h"                        // for Bot
-#include "tgbot/EventBroadcaster.h"           // for EventBroadcaster
-#include "tgbot/tools/StringTools.h"          // for startsWith
-#include "tgbot/types/CallbackQuery.h"        // for CallbackQuery, Callbac...
-#include "tgbot/types/Chat.h"                 // for Chat, Chat::Ptr
-#include "tgbot/types/InlineKeyboardButton.h" // for InlineKeyboardButton::Ptr
-#include "tgbot/types/InlineKeyboardMarkup.h" // for InlineKeyboardMarkup
-#include "tgbot/types/Message.h"              // for Message, Message::Ptr
-#include "tgbot/types/User.h"                 // for User, User::Ptr
+#include "pokemon/database/conn.h"             // for PGConn, dbConn, starte...
+#include "pokemon/user/player.h"               // for UID, MALE
+#include "tgbot/Api.h"                         // for Api
+#include "tgbot/Bot.h"                         // for Bot
+#include "tgbot/EventBroadcaster.h"            // for EventBroadcaster
+#include "tgbot/tools/StringTools.h"           // for startsWith
+#include "tgbot/types/CallbackQuery.h"         // for CallbackQuery, Callbac...
+#include "tgbot/types/Chat.h"                  // for Chat, Chat::Ptr
+#include "tgbot/types/InlineKeyboardButton.h"  // for InlineKeyboardButton::Ptr
+#include "tgbot/types/InlineKeyboardMarkup.h"  // for InlineKeyboardMarkup
+#include "tgbot/types/Message.h"               // for Message, Message::Ptr
+#include "tgbot/types/User.h"                  // for User, User::Ptr
 
 void sendStarterMessage(TgBot::Bot &bot, int32_t chatID, UID uid) {
     TgBot::InlineKeyboardMarkup::Ptr keyboard(new TgBot::InlineKeyboardMarkup);

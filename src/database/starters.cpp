@@ -1,20 +1,19 @@
-#include <algorithm>                       // for move, sample, copy, max
-#include <boost/lexical_cast.hpp>          // for lexical_cast
-#include <boost/uuid/random_generator.hpp> // for random_generator, rando...
-#include <boost/uuid/uuid_io.hpp>          // for operator<<
-#include <fmt/core.h>                      // for format
-#include <ios>                             // for ios_base::failure
-#include <iterator>                        // for back_insert_iterator
-#include <pqxx/pqxx>                       // for nontransaction
-#include <pqxx/transaction.hxx>            // for work
-#include <random>                          // for random_device, mt19937
-#include <stddef.h>                        // for size_t
-#include <string>                          // for string, basic_string
-#include <vector>                          // for vector
+#include <boost/lexical_cast.hpp>             // for lexical_cast
+#include <boost/uuid/random_generator.hpp>    // for random_generator, random_generator_pure::result_type
+#include <boost/uuid/uuid_io.hpp>             // for operator<<
+#include <fmt/core.h>                         // for format
+#include <pqxx/pqxx>                          // IWYU pragma: keep
+#include <stddef.h>                           // for size_t
+#include <algorithm>                          // for move, sample, copy, max
+#include <ios>                                // for ios_base::failure
+#include <iterator>                           // for back_insert_iterator, back_inserter, next
+#include <random>                             // for random_device, mt19937
+#include <string>                             // for string, basic_string, allocator
+#include <vector>                             // for vector
 
-#include "pokemon/database/conn.h" // for starterHolder, PGConn
-#include "pokemon/pokemon.h"       // for Stats, generateIV
-#include "pokemon/user/player.h"   // for Genders, UID
+#include "pokemon/database/conn.h"            // for starterHolder, PGConn
+#include "pokemon/pokemon.h"                  // for Stats, generateIV
+#include "pokemon/user/player.h"              // for Genders, UID
 
 // clang-format on
 const std::string starter_sql =

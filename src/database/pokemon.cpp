@@ -1,13 +1,14 @@
-#include <fmt/core.h> // for format
-#include <pqxx/pqxx>  // for nontransaction
-#include <stdexcept>  // for runtime_error
-#include <string>     // for string, allocator, basic_string
-#include <vector>     // for vector
+#include <fmt/core.h>               // for format
+#include <pqxx/pqxx>                // IWYU pragma: keep
+#include <memory>                   // for make_shared, shared_ptr
+#include <stdexcept>                // for runtime_error
+#include <string>                   // for string, allocator, basic_string
+#include <vector>                   // for vector
 
-#include "pokemon/database/conn.h" // for parseStats, PGConn, parseElements
-#include "pokemon/global.h"        // for ElementType, NORMAL, FLYING
-#include "pokemon/moves.h"         // for Move
-#include "pokemon/pokemon.h"       // for Stats, Pokemon
+#include "pokemon/database/conn.h"  // for parseStats, PGConn, parseElements
+#include "pokemon/global.h"         // for ElementType, NORMAL, FLYING
+#include "pokemon/moves.h"          // for Move
+#include "pokemon/pokemon.h"        // for Pokemon, Stats
 
 // clang-format off
 const std::string pokemon_sql = 

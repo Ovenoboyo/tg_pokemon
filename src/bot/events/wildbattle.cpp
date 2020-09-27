@@ -1,10 +1,17 @@
-#include "pokemon/battle/wildBattle.h"
+#include <bits/exception.h>             // for exception
+#include <stdint.h>                     // for int32_t
+#include <iostream>                     // for operator<<, cout, ostream
+#include <memory>                       // for __shared_ptr_access, shared_ptr
 
-#include "pokemon/battle/battle.h"
-#include "pokemon/database/conn.h"
-#include "pokemon/user/player.h"
-#include <memory>
-#include <tgbot/tgbot.h>
+#include "pokemon/battle/battle.h"      // for isBattleActive, registerBattle
+#include "pokemon/battle/wildBattle.h"  // for WildBattle
+#include "pokemon/database/conn.h"      // for PGConn, dbConn
+#include "pokemon/user/player.h"        // for Player, INVALID_ID
+#include "tgbot/Api.h"                  // for Api
+#include "tgbot/Bot.h"                  // for Bot
+#include "tgbot/types/Chat.h"           // for Chat, Chat::Ptr, Chat::Type
+#include "tgbot/types/Message.h"        // for Message, Message::Ptr
+#include "tgbot/types/User.h"           // for User, User::Ptr
 
 WildBattle *GetWildBattle(std::shared_ptr<Player> p,
                           TgBot::Message::Ptr message) {

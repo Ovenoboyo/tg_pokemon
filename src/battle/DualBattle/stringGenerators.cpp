@@ -1,12 +1,14 @@
-#include <sstream> // for operator<<, basic_ostream
-#include <string>  // for allocator, operator+, char_tr...
-#include <vector>  // for vector
+#include <ext/alloc_traits.h>           // for __alloc_traits<>::value_type
+#include <memory>                       // for __shared_ptr_access, shared_ptr
+#include <sstream>                      // for operator<<, basic_ostream
+#include <string>                       // for operator<<, string, char_traits
+#include <vector>                       // for vector
 
-#include "fmt/core.h"
-#include "pokemon/battle/dualBattle.h" // for DualBattle
-#include "pokemon/moves.h"             // for Move
-#include "pokemon/pokemon.h"           // for Pokemon, MoveSet
-#include "pokemon/user/player.h"       // for Player
+#include "fmt/core.h"                   // for format
+#include "pokemon/battle/dualBattle.h"  // for DualBattle
+#include "pokemon/moves.h"              // for Move
+#include "pokemon/pokemon.h"            // for Pokemon
+#include "pokemon/user/player.h"        // for Player
 
 std::string DualBattle::generateMoveSummary(Player player) {
     auto moveset = player.Team.at(0)->Moveset;

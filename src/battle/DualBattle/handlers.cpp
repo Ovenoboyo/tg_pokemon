@@ -1,17 +1,17 @@
-#include <initializer_list> // for initializer_list
-#include <iostream>
-#include <stddef.h>      // for NULL
-#include <string>        // for allocator, operator+, char_tr...
-#include <unordered_map> // for unordered_map, operator!=
-#include <utility>       // for swap, pair
-#include <vector>        // for vector
+#include <stddef.h>                     // for NULL
+#include <initializer_list>             // for initializer_list
+#include <memory>                       // for __shared_ptr_access, shared_ptr
+#include <string>                       // for allocator, operator+, char_tr...
+#include <unordered_map>                // for unordered_map, operator==
+#include <utility>                      // for pair
+#include <vector>                       // for vector
 
-#include "pokemon/battle/baseBattle.h" // for ChatInfo
-#include "pokemon/battle/battle.h"     // for deregisterBattle
-#include "pokemon/battle/dualBattle.h" // for DualBattle
-#include "pokemon/bot/bot.h"           // for bot
-#include "pokemon/bot/events/events.h" // for sendMessages
-#include "pokemon/user/player.h"       // for UID, Player
+#include "pokemon/battle/baseBattle.h"  // for ChatInfo, isDefeated
+#include "pokemon/battle/battle.h"      // for deregisterBattle
+#include "pokemon/battle/dualBattle.h"  // for DualBattle
+#include "pokemon/bot/bot.h"            // for bot
+#include "pokemon/bot/events/events.h"  // for sendMessages
+#include "pokemon/user/player.h"        // for UID, Player
 
 class Move;
 

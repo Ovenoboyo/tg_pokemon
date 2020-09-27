@@ -1,18 +1,20 @@
 #ifndef CONN_H
 #define CONN_H
 
-#include <string> // for allocator, operator+, char_traits, string
+#include <memory>                 // for shared_ptr
+#include <string>                 // for allocator, operator+, char_traits
+#include <vector>                 // for vector
 
-#include "pokemon/global.h" // for getEnvVar
+#include "pokemon/global.h"       // for getEnvVar, ElementType
+#include "pokemon/pokemon.h"      // for Pokemon (ptr only), Stats
+#include "pokemon/user/player.h"  // for UID, Genders, Player (ptr only)
 
-#include "pokemon/pokemon.h"
-#include "pokemon/user/player.h"
-#include <vector> // for vector
+class Move;
 
 namespace pqxx {
-class row;
-class nontransaction;
 class connection;
+class nontransaction;
+class row;
 } // namespace pqxx
 
 struct starterHolder {

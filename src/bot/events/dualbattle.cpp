@@ -1,13 +1,25 @@
 #include "pokemon/bot/events/dualbattle.h"
-#include "pokemon/battle/battle.h"
-#include "pokemon/battle/dualBattle.h"
-#include "pokemon/database/conn.h"
-#include "pokemon/user/player.h"
 
-#include <boost/algorithm/string/trim.hpp>
-#include <boost/algorithm/string.hpp>
-#include <memory>
-#include <tgbot/tgbot.h>
+#include <boost/algorithm/string/split.hpp>        // for split
+#include <boost/algorithm/string/trim.hpp>         // for trim
+#include <boost/iterator/iterator_facade.hpp>      // for operator!=
+#include <boost/type_index/type_index_facade.hpp>  // for operator==
+#include <cstdint>                                 // for int32_t
+#include <iostream>                                // for operator<<, cout
+#include <memory>                                  // for allocator, __share...
+#include <string>                                  // for string, operator+
+#include <utility>                                 // for pair
+#include <vector>                                  // for vector
+
+#include "pokemon/battle/battle.h"                 // for isBattleActive
+#include "pokemon/battle/dualBattle.h"             // for DualBattle
+#include "pokemon/database/conn.h"                 // for PGConn, dbConn
+#include "pokemon/user/player.h"                   // for Player, INVALID_ID
+#include "tgbot/Api.h"                             // for Api
+#include "tgbot/Bot.h"                             // for Bot
+#include "tgbot/tools/StringTools.h"               // for startsWith
+#include "tgbot/types/Chat.h"                      // for Chat, Chat::Ptr
+#include "tgbot/types/User.h"                      // for User, User::Ptr
 
 void RegisterRequest(int32_t p1, int32_t p2) {
     if (allRequests.find(p1) != allRequests.end() &&

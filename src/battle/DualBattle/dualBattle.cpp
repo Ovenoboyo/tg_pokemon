@@ -1,17 +1,17 @@
 #include "pokemon/battle/dualBattle.h"
 
-#include <iostream>      // for basic_ostream::operator<<, endl
-#include <stddef.h>      // for NULL
-#include <unordered_map> // for unordered_map
-#include <utility>       // for pair
-#include <vector>        // for vector
+#include <ext/alloc_traits.h>           // for __alloc_traits<>::value_type
+#include <stddef.h>                     // for NULL
+#include <unordered_map>                // for unordered_map
+#include <utility>                      // for pair
+#include <vector>                       // for vector
 
-#include "pokemon/battle/baseBattle.h" // for isDefeated, getAttackModifier
-#include "pokemon/bot/bot.h"           // for bot
-#include "pokemon/bot/events/events.h" // for sendMessages
-#include "pokemon/global.h"            // for ElementType
-#include "pokemon/moves.h"             // for Move
-#include "pokemon/pokemon.h"           // for Pokemon, Stats, getStat
+#include "pokemon/battle/baseBattle.h"  // for isDefeated, getAttackModifier
+#include "pokemon/bot/bot.h"            // for bot
+#include "pokemon/bot/events/events.h"  // for sendMessages
+#include "pokemon/global.h"             // for ElementType
+#include "pokemon/moves.h"              // for Move
+#include "pokemon/pokemon.h"            // for Pokemon, Stats, getStat
 
 DualBattle::DualBattle(std::shared_ptr<Player> p1, std::shared_ptr<Player> p2, int32_t groupID)
     : BaseBattle(p1, groupID) {
