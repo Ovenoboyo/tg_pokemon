@@ -94,6 +94,6 @@ Move *DualBattle::getMoveFromIndex(Player player, int moveNo) {
 void DualBattle::sendSwapReport(UID uid) {
     auto player = this->GetPlayer(uid);
     if (player->Team.size() > 1) {
-        sendMessages(*bot, uid, this->generateSwapSummary(*player));
+        sendMessage(*bot, uid, this->generateSwapSummary(*player));
     }
 }

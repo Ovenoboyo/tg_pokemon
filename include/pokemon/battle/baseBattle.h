@@ -40,6 +40,8 @@ class ChatInfo {
      */
     bool isGroup;
 
+    std::unordered_map<int32_t, int32_t> prevMessages;
+
     ChatInfo(int32_t botReportID);
 };
 
@@ -99,7 +101,7 @@ class BaseBattle {
      * @brief Handle events at start of new round
      *
      */
-    virtual void HandleRoundStart();
+    virtual std::unordered_map<int32_t, int32_t> HandleRoundStart();
 
     /**
      * @brief Handle events at end of round. Includes checking if player is
@@ -109,6 +111,8 @@ class BaseBattle {
     virtual void HandleRoundEnd();
 
     void HandleBattle(UID uid, int moveNo, bool swap);
+    void HandleBattleInit();
+    void cleanMessages(UID chatID);
 };
 
 float getAttackModifier(std::vector<ElementType> pkType, ElementType akType);

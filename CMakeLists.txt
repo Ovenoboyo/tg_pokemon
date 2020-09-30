@@ -14,7 +14,6 @@ if(NOT iwyu_path)
   message(FATAL_ERROR "Could not find the program include-what-you-use")
 endif()
 
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpqxx -lpq")
 set(PQXX /usr/local/include/pqxx)
 
 find_library(PQXX_LIB pqxx)

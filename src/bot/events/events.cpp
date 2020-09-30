@@ -23,8 +23,12 @@ void StartCommand(TgBot::Bot &bot, TgBot::Message::Ptr message) {
     bot.getApi().sendMessage(message->chat->id, "Hi!");
 }
 
-void sendMessages(TgBot::Bot &bot, int32_t chatIDs, std::string message) {
-    bot.getApi().sendMessage(chatIDs, message);
+int32_t sendMessage(TgBot::Bot &bot, int32_t chatIDs, std::string message) {
+    return bot.getApi().sendMessage(chatIDs, message)->messageId;
+}
+
+void deleteMessage(TgBot::Bot &bot, int32_t chatID, int32_t messageID) {
+    bot.getApi().deleteMessage(chatID, messageID);
 }
 
 void sendMessageWKeyboard(TgBot::Bot &bot, int32_t chatIDs, std::string message, TgBot::InlineKeyboardMarkup::Ptr keyboard) {

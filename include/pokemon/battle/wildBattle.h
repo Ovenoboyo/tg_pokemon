@@ -64,7 +64,9 @@ class WildBattle : public BaseBattle {
      * @brief Handle events at start of new round
      *
      */
-    void HandleRoundStart();
+    std::unordered_map<int32_t, int32_t> HandleRoundStart();
+
+    std::unordered_map<int32_t, int32_t> handleMessages(int32_t chatID);
 
     /**
      * @brief Handle events at end of round. Includes checking if player is

@@ -4,6 +4,7 @@
 #include <unordered_map>                // for unordered_map, operator==
 #include <utility>                      // for pair
 #include <vector>                       // for vector
+#include <iostream>
 
 #include "pokemon/battle/baseBattle.h"  // for ChatInfo, isDefeated
 #include "pokemon/battle/battle.h"      // for deregisterBattle
@@ -16,23 +17,23 @@
 
 class Move;
 
-void WildBattle::HandleRoundStart() {
+std::unordered_map<int32_t, int32_t> WildBattle::handleMessages(int32_t chatID) {
+    std::unordered_map<int32_t, int32_t> messageID;
+    messageID.insert({chatID, sendMessage(*bot, chatID, this->generateBattleSummary())});
+    messageID.insert({chatID, sendMessage(*bot, chatID, this->generateMoveSummary(*(this->player1)))});
+    return std::move(messageID);
+}
+
+std::unordered_map<int32_t, int32_t> WildBattle::HandleRoundStart() {
     if (!this->isEnd) {
-        if (this->chat->isGroup) {
-            sendMessages(*bot, this->chat->botReportID,
-                        this->generateBattleSummary());
-            sendMessages(*bot, this->chat->botReportID,
-                        this->generateMoveSummary(*(this->player1)));
-        } else {
-            sendMessages(*bot, this->player1->Uid, this->generateBattleSummary());
-            sendMessages(*bot, this->player1->Uid,
-                        this->generateMoveSummary(*(this->player1)));
-        }
+        auto reportID = (this->chat->isGroup) ? this->chat->botReportID : this->player1->Uid;
+        this->cleanMessages(reportID);
+        return std::move(this->handleMessages(reportID));
     } else {
         std::vector<UID> uidList = {this->player1->Uid};
         deregisterBattle(this, uidList);
-        return;
     }
+    return std::unordered_map<int32_t, int32_t>();
 }
 
 void WildBattle::HandleRoundEnd() {
@@ -42,18 +43,18 @@ void WildBattle::HandleRoundEnd() {
     if (isDefeated(this->player1)) {
         isEnd = true;
         if (this->chat->isGroup) {
-            sendMessages(*bot, this->chat->botReportID,
+            sendMessage(*bot, this->chat->botReportID,
                          this->player1->Name + " Lost :''(");
         }
-        sendMessages(*bot, this->player1->Uid,
+        sendMessage(*bot, this->player1->Uid,
                      this->player1->Name + " Lost :''(");
     } else if (isDefeated(this->com)) {
         isEnd = true;
         if (this->chat->isGroup) {
-            sendMessages(*bot, this->chat->botReportID,
+            sendMessage(*bot, this->chat->botReportID,
                          "Wild " + this->com->pokemon->Nickname + "Lost :''(");
         }
-        sendMessages(*bot, this->player1->Uid,
+        sendMessage(*bot, this->player1->Uid,
                      this->player1->Name + " Lost :''(");
     }
 

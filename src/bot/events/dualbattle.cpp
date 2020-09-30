@@ -99,7 +99,7 @@ void validateAndStartBattle(TgBot::Bot &bot, TgBot::Message::Ptr message) {
 
             auto battle = GetDualBattle(player1, player2, message);
             RegisterForBoth(battle, player1->Uid, player2->Uid);
-            battle->HandleRoundStart();
+            battle->HandleBattleInit();
         } else {
             bot.getApi().sendMessage(message->chat->id,
                                      "Player already in battle");

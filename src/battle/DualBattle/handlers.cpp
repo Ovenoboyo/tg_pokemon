@@ -15,31 +15,41 @@
 
 class Move;
 
-void DualBattle::HandleRoundStart() {
+std::unordered_map<int32_t, int32_t> DualBattle::handleMessages(bool isGroup) {
+    std::unordered_map<int32_t, int32_t> messageID;
+    auto players = {this->player1, this->player2};
+    if (isGroup) {
+       messageID.insert({this->chat->botReportID, sendMessage(*bot, this->chat->botReportID, this->generateBattleSummary())});
+       for (auto p : players) {
+          messageID.insert({this->chat->botReportID, sendMessage(*bot, this->chat->botReportID, this->generateMoveSummary(*p))});
+       }
+    } else {
+        for (auto p : players) {
+          messageID.insert({p->Uid, sendMessage(*bot, p->Uid, this->generateMoveSummary(*p))});
+       }   
+    }
+    return messageID;
+}
+
+std::unordered_map<int32_t, int32_t> DualBattle::HandleRoundStart() {
     if (!this->isEnd) {
         if (this->roundEndCounter == 0) {
+            this->roundEndCounter = 2;
             if (this->chat->isGroup) {
-                sendMessages(*bot, this->chat->botReportID,
-                            this->generateBattleSummary());
-            }
-
-            auto players = {this->player1, this->player2};
-            for (auto p : players) {
-                if (this->chat->isGroup) {
-                    sendMessages(*bot, this->chat->botReportID,
-                                this->generateMoveSummary(*p));
-                } else {
-                    sendMessages(*bot, p->Uid, this->generateBattleSummary());
-                    sendMessages(*bot, p->Uid, this->generateMoveSummary(*p));
+                this->cleanMessages(this->chat->botReportID);
+            } else {
+                auto players = {this->player1, this->player2};
+                for (auto p : players) {
+                    this->cleanMessages(p->Uid);
                 }
             }
-            this->roundEndCounter = 2;
+            return this->handleMessages(this->chat->isGroup);
         }
     } else {
         std::vector<UID> uidList = {this->player1->Uid, this->player2->Uid};
         deregisterBattle(this, uidList);
-        return;
     }
+    return std::unordered_map<int32_t, int32_t>();
 }
 
 void DualBattle::HandleRoundEnd() {
@@ -51,11 +61,11 @@ void DualBattle::HandleRoundEnd() {
         if (isDefeated(p)) {
             isEnd = true;
             if (this->chat->isGroup) {
-                sendMessages(*bot, this->chat->botReportID,
+                sendMessage(*bot, this->chat->botReportID,
                              p->Name + " Lost :''(");
                 break;
             }
-            sendMessages(*bot, p->Uid, p->Name + " Lost :''(");
+            sendMessage(*bot, p->Uid, p->Name + " Lost :''(");
         }
     }
     if (isEnd) {
@@ -92,7 +102,7 @@ void DualBattle::HandlePlayerChoice(UID uid, int index, bool swap) {
         if (this->roundEndCounter == 0) {
             this->ApplyMoves();
         } else {
-            sendMessages(*bot,
+            sendMessage(*bot,
                          (this->chat->isGroup) ? this->chat->botReportID : uid,
                          "Waiting for other player...");
         }

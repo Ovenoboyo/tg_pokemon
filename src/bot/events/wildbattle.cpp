@@ -46,6 +46,6 @@ void validateWildBattle(TgBot::Bot &bot, TgBot::Message::Ptr message) {
         auto battle = GetWildBattle(player1, message);
 
         registerBattle(player1->Uid, battle);
-        battle->HandleRoundStart();
+        battle->HandleBattleInit();
     }
 }

@@ -69,7 +69,7 @@ class DualBattle : public BaseBattle {
      * @brief Handle events at start of new round
      *
      */
-    void HandleRoundStart();
+    std::unordered_map<int32_t, int32_t> HandleRoundStart();
 
     /**
      * @brief Handle events at end of round. Includes checking if player is
@@ -77,6 +77,8 @@ class DualBattle : public BaseBattle {
      *
      */
     void HandleRoundEnd();
+
+    std::unordered_map<int32_t, int32_t> handleMessages(bool isGroup);
 
     /**
      * @brief Calculate damage and apply it to respective pokemons

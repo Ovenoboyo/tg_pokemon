@@ -103,6 +103,6 @@ void WildBattle::ApplyMoves() {
 void WildBattle::sendSwapReport(UID uid) {
     auto player = this->player1;
     if (player->Team.size() > 1) {
-        sendMessages(*bot, uid, this->generateSwapSummary(*player));
+        sendMessage(*bot, uid, this->generateSwapSummary(*player));
     }
 }

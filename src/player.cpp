@@ -11,6 +11,7 @@ Player::Player(UID uid, std::string name, enum Genders gender,
     this->Name = name;
     this->Gender = gender;
     this->FntCount = 0;
+    this->isEmpty = false;
     for ( const auto& e : team ) {
         this->Team.push_back( std::make_shared<Pokemon>( *e ) );
     }   
