@@ -1,9 +1,11 @@
 #include <fmt/core.h>               // for format
-
+#include <pqxx/nontransaction.hxx>  // for nontransaction
+#include <pqxx/result.hxx>          // for result
+#include <pqxx/row.hxx>             // for row, row::reference
+#include <pqxx/pqxx>                // IWYU pragma: keep
 #include <stdexcept>                // for runtime_error
 #include <string>                   // for string, allocator, basic_string
 #include <vector>                   // for vector
-#include <pqxx/pqxx>                // IWYU pragma: keep
 
 #include "pokemon/database/conn.h"  // for PGConn
 #include "pokemon/global.h"         // for ElementType

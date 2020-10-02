@@ -2,11 +2,15 @@
 #include <boost/uuid/random_generator.hpp>    // for random_generator, random_generator_pure::result_type
 #include <boost/uuid/uuid_io.hpp>             // for operator<<
 #include <fmt/core.h>                         // for format
-#include <pqxx/pqxx>                          // IWYU pragma: keep
+#include <pqxx/nontransaction.hxx>            // for nontransaction
+#include <pqxx/result.hxx>                    // for result
+#include <pqxx/row.hxx>                       // for row, row::reference
+#include <pqxx/transaction.hxx>               // for work
 #include <stddef.h>                           // for size_t
 #include <algorithm>                          // for move, sample, copy, max
 #include <ios>                                // for ios_base::failure
 #include <iterator>                           // for back_insert_iterator, back_inserter, next
+#include <pqxx/pqxx>                          // IWYU pragma: keep
 #include <random>                             // for random_device, mt19937
 #include <string>                             // for string, basic_string, allocator
 #include <vector>                             // for vector
@@ -14,6 +18,7 @@
 #include "pokemon/database/conn.h"            // for starterHolder, PGConn
 #include "pokemon/pokemon.h"                  // for Stats, generateIV
 #include "pokemon/user/player.h"              // for Genders, UID
+// IWYU pragma: no_include <boost/detail/basic_pointerbuf.hpp>
 
 // clang-format on
 const std::string starter_sql =

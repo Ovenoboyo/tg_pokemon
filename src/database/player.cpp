@@ -1,15 +1,17 @@
 #include <fmt/core.h>               // for format
-#include <pokemon/database/conn.h>  // for PGConn
-#include <pqxx/pqxx>                // IWYU pragma: keep
+#include <pqxx/field.hxx>           // for field
+#include <pqxx/nontransaction.hxx>  // for nontransaction
+#include <pqxx/result.hxx>          // for result
+#include <pqxx/row.hxx>             // for row, row::reference
 #include <stdint.h>                 // for int32_t
-#include <memory>                   // for shared_ptr, make_shared
-#include <stdexcept>                // for runtime_error
-#include <string>                   // for string, basic_string, allocator
+#include <memory>                   // for shared_ptr, allocator, make_shared
+#include <pqxx/pqxx>                // IWYU pragma: keep
+#include <string>                   // for string, basic_string, to_string
 #include <utility>                  // for move
 #include <vector>                   // for vector
 
+#include "pokemon/database/conn.h"  // for PGConn, NotRegisteredException
 #include "pokemon/user/player.h"    // for Player, UID, Genders, INVALID_ID
-#include "pokemon/database/conn.h"
 
 class Pokemon;
 

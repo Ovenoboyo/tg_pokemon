@@ -1,26 +1,29 @@
 #include "pokemon/bot/events/dualbattle.h"
 
-#include <boost/algorithm/string/split.hpp>        // for split
-#include <boost/algorithm/string/trim.hpp>         // for trim
-#include <boost/iterator/iterator_facade.hpp>      // for operator!=
-#include <boost/type_index/type_index_facade.hpp>  // for operator==
-#include <cstdint>                                 // for int32_t
-#include <iostream>                                // for operator<<, cout
-#include <memory>                                  // for allocator, __share...
-#include <string>                                  // for string, operator+
-#include <utility>                                 // for pair
-#include <vector>                                  // for vector
-#include <fmt/core.h>
+#include <boost/algorithm/string/classification.hpp>         // for is_any_of
+#include <boost/algorithm/string/detail/classification.hpp>  // for is_any_ofF
+#include <boost/algorithm/string/split.hpp>                  // for split
+#include <boost/algorithm/string/trim.hpp>                   // for trim
+#include <boost/iterator/iterator_facade.hpp>                // for operator!=
+#include <boost/range/distance.hpp>                          // for distance
+#include <boost/type_index/type_index_facade.hpp>            // for operator==
+#include <fmt/core.h>                                        // for format
+#include <cstdint>                                           // for int32_t
+#include <iostream>                                          // for operator<<, cout, ostream
+#include <memory>                                            // for allocator, __shared_ptr_access, shared_ptr
+#include <string>                                            // for string, operator+, char_traits, basic_string
+#include <utility>                                           // for pair
+#include <vector>                                            // for vector
 
-#include "pokemon/battle/battle.h"                 // for isBattleActive
-#include "pokemon/battle/dualBattle.h"             // for DualBattle
-#include "pokemon/database/conn.h"                 // for PGConn, dbConn
-#include "pokemon/user/player.h"                   // for Player, INVALID_ID
-#include "tgbot/Api.h"                             // for Api
-#include "tgbot/Bot.h"                             // for Bot
-#include "tgbot/tools/StringTools.h"               // for startsWith
-#include "tgbot/types/Chat.h"                      // for Chat, Chat::Ptr
-#include "tgbot/types/User.h"                      // for User, User::Ptr
+#include "pokemon/battle/battle.h"                           // for isBattleActive, registerBattle
+#include "pokemon/battle/dualBattle.h"                       // for DualBattle
+#include "pokemon/database/conn.h"                           // for NotRegisteredException, PGConn, dbConn
+#include "pokemon/user/player.h"                             // for INVALID_ID, Player
+#include "tgbot/Api.h"                                       // for Api
+#include "tgbot/Bot.h"                                       // for Bot
+#include "tgbot/tools/StringTools.h"                         // for startsWith
+#include "tgbot/types/Chat.h"                                // for Chat, Chat::Ptr, Chat::Type, Chat::Type::Group
+#include "tgbot/types/User.h"                                // for User, User::Ptr
 
 void RegisterRequest(int32_t p1, int32_t p2) {
     if (allRequests.find(p1) == allRequests.end() &&

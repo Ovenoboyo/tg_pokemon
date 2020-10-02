@@ -1,8 +1,11 @@
 #include <fmt/core.h>               // for format
+#include <pqxx/nontransaction.hxx>  // for nontransaction
+#include <pqxx/result.hxx>          // for result
+#include <pqxx/row.hxx>             // for row, row::reference
+#include <memory>                   // for make_shared, allocator, shared_ptr
 #include <pqxx/pqxx>                // IWYU pragma: keep
-#include <memory>                   // for make_shared, shared_ptr
 #include <stdexcept>                // for runtime_error
-#include <string>                   // for string, allocator, basic_string
+#include <string>                   // for string, basic_string
 #include <vector>                   // for vector
 
 #include "pokemon/database/conn.h"  // for parseStats, PGConn, parseElements

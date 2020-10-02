@@ -6,7 +6,8 @@
 #include <unordered_map>          // for unordered_map
 
 #include "tgbot/types/Message.h"  // for Message, Message::Ptr
-#include "pokemon/global.h"
+
+class BotArgs;
 
 namespace TgBot {
 class Bot;

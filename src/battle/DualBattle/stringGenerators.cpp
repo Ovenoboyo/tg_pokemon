@@ -1,14 +1,15 @@
-#include <ext/alloc_traits.h>           // for __alloc_traits<>::value_type
-#include <memory>                       // for __shared_ptr_access, shared_ptr
-#include <sstream>                      // for operator<<, basic_ostream
-#include <string>                       // for operator<<, string, char_traits
-#include <vector>                       // for vector
+#include <ext/alloc_traits.h>                  // for __alloc_traits<>::value_type
+#include <memory>                              // for __shared_ptr_access, shared_ptr, allocator
+#include <sstream>                             // for operator<<, basic_ostream, basic_ostream::operator<<, stringstream
+#include <string>                              // for operator<<, char_traits, string
+#include <vector>                              // for vector
 
-#include "fmt/core.h"                   // for format
-#include "pokemon/battle/dualBattle.h"  // for DualBattle
-#include "pokemon/moves.h"              // for Move
-#include "pokemon/pokemon.h"            // for Pokemon
-#include "pokemon/user/player.h"        // for Player
+#include "fmt/core.h"                          // for format
+#include "pokemon/battle/dualBattle.h"         // for DualBattle
+#include "pokemon/moves.h"                     // for Move
+#include "pokemon/pokemon.h"                   // for Pokemon
+#include "pokemon/user/player.h"               // for Player
+#include "tgbot/types/InlineKeyboardButton.h"  // for InlineKeyboardButton::Ptr, InlineKeyboardButton
 
 std::vector<TgBot::InlineKeyboardButton::Ptr> DualBattle::generateMoveSummary(Player player) {
     std::vector<TgBot::InlineKeyboardButton::Ptr> row;

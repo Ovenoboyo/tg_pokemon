@@ -1,9 +1,6 @@
 #include "pokemon/user/player.h"
 
-#include <algorithm> // for max
-#include <iterator>  // for move_iterator, make_move_iterator
-
-class Pokemon;
+#include "pokemon/pokemon.h"  // for Pokemon
 
 Player::Player(UID uid, std::string name, enum Genders gender,
             std::vector<std::shared_ptr<Pokemon>> team) {

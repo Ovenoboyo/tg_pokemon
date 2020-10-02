@@ -1,19 +1,21 @@
-#include <stddef.h>                     // for NULL
-#include <memory>                       // for shared_ptr, __shared_ptr_access
-#include <string>                       // for allocator, operator+, char_tr...
-#include <unordered_map>                // for unordered_map, operator==
-#include <utility>                      // for pair
-#include <vector>                       // for vector
-#include <iostream>
+#include <stddef.h>                            // for NULL
+#include <cstdint>                             // for int32_t
+#include <memory>                              // for allocator, shared_ptr, __shared_ptr_access, swap
+#include <string>                              // for operator+, char_traits, basic_string
+#include <unordered_map>                       // for unordered_map, operator==, unordered_map<>::iterator, _Node_iterator...
+#include <utility>                             // for move, pair
+#include <vector>                              // for vector
 
-#include "pokemon/battle/baseBattle.h"  // for ChatInfo, isDefeated
-#include "pokemon/battle/battle.h"      // for deregisterBattle
-#include "pokemon/battle/wildBattle.h"  // for WildBattle
-#include "pokemon/bot/bot.h"            // for bot
-#include "pokemon/bot/events/events.h"  // for sendMessages
-#include "pokemon/pokemon.h"            // for Pokemon
-#include "pokemon/user/player.h"        // for UID, Player
-#include "pokemon/user/wild.h"          // for Wild
+#include "pokemon/battle/baseBattle.h"         // for ChatInfo, isDefeated
+#include "pokemon/battle/battle.h"             // for deregisterBattle
+#include "pokemon/battle/wildBattle.h"         // for WildBattle
+#include "pokemon/bot/bot.h"                   // for bot
+#include "pokemon/bot/events/events.h"         // for sendMessage, sendMessageWKeyboard
+#include "pokemon/pokemon.h"                   // for Pokemon
+#include "pokemon/user/player.h"               // for UID, Player
+#include "pokemon/user/wild.h"                 // for Wild
+#include "tgbot/types/InlineKeyboardButton.h"  // for InlineKeyboardButton::Ptr
+#include "tgbot/types/InlineKeyboardMarkup.h"  // for InlineKeyboardMarkup, InlineKeyboardMarkup::Ptr
 
 class Move;
 

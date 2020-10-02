@@ -1,12 +1,14 @@
 #include "pokemon/bot/events/battle.h"
 
-#include "pokemon/user/player.h"
-#include "pokemon/battle/battle.h"
-#include "pokemon/battle/baseBattle.h"
-#include "pokemon/global.h"
-#include <tgbot/tgbot.h>
-#include <iostream>
-#include <string>
+#include <string>                       // for allocator, stoi
+#include <unordered_map>                // for unordered_map
+
+#include "pokemon/battle/baseBattle.h"  // for BaseBattle
+#include "pokemon/battle/battle.h"      // for isBattleActive, allBattles
+#include "pokemon/global.h"             // for BotArgs
+#include "pokemon/user/player.h"        // for INVALID_ID, UID
+#include "tgbot/Api.h"                  // for Api
+#include "tgbot/Bot.h"                  // for Bot
 
 void moveCallback(TgBot::Bot &bot, BotArgs args) {
     if (args.size() > 2) {

@@ -1,9 +1,10 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
-#include <string>
-#include <unordered_map>
-#include <tgbot/tgbot.h>
+#include <string>                       // for string, allocator
+#include <unordered_map>                // for unordered_map
+
+#include "tgbot/types/CallbackQuery.h"  // for CallbackQuery, CallbackQuery::Ptr
 
 enum ElementType {
     NIL,

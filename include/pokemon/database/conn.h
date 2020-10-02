@@ -1,8 +1,9 @@
 #ifndef CONN_H
 #define CONN_H
 
-#include <memory>                 // for shared_ptr
-#include <string>                 // for allocator, operator+, char_traits
+#include <bits/exception.h>       // for exception
+#include <memory>                 // for allocator, shared_ptr
+#include <string>                 // for operator+, char_traits, string
 #include <vector>                 // for vector
 
 #include "pokemon/global.h"       // for getEnvVar, ElementType

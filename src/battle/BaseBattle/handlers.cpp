@@ -1,9 +1,13 @@
+#include <cstdint>                      // for int32_t
 #include <stdexcept>                    // for runtime_error
+#include <unordered_map>                // for unordered_map, _Map_base<>::mapped_type
+#include <utility>                      // for pair
+#include <vector>                       // for vector
 
-#include "pokemon/battle/baseBattle.h"  // for BaseBattle
+#include "pokemon/battle/baseBattle.h"  // for BaseBattle, ChatInfo
+#include "pokemon/bot/bot.h"            // for bot
+#include "pokemon/bot/events/events.h"  // for deleteMessage
 #include "pokemon/user/player.h"        // for UID
-#include "pokemon/bot/bot.h"
-#include "pokemon/bot/events/events.h" 
 
 std::unordered_map<int32_t, int32_t> BaseBattle::HandleRoundStart() {
     throw std::runtime_error("Not Implemented");

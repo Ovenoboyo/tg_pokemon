@@ -1,17 +1,20 @@
-#include <stddef.h>                     // for NULL
-#include <initializer_list>             // for initializer_list
-#include <memory>                       // for __shared_ptr_access, shared_ptr
-#include <string>                       // for allocator, operator+, char_tr...
-#include <unordered_map>                // for unordered_map, operator==
-#include <utility>                      // for pair
-#include <vector>                       // for vector
+#include <stddef.h>                            // for NULL
+#include <cstdint>                             // for int32_t
+#include <initializer_list>                    // for initializer_list
+#include <memory>                              // for allocator, __shared_ptr_access, shared_ptr, swap
+#include <string>                              // for operator+, char_traits, basic_string
+#include <unordered_map>                       // for unordered_map, operator==, unordered_map<>::iterator, _Node_iterator...
+#include <utility>                             // for pair
+#include <vector>                              // for vector
 
-#include "pokemon/battle/baseBattle.h"  // for ChatInfo, isDefeated
-#include "pokemon/battle/battle.h"      // for deregisterBattle
-#include "pokemon/battle/dualBattle.h"  // for DualBattle
-#include "pokemon/bot/bot.h"            // for bot
-#include "pokemon/bot/events/events.h"  // for sendMessages
-#include "pokemon/user/player.h"        // for UID, Player
+#include "pokemon/battle/baseBattle.h"         // for ChatInfo, isDefeated
+#include "pokemon/battle/battle.h"             // for deregisterBattle
+#include "pokemon/battle/dualBattle.h"         // for DualBattle
+#include "pokemon/bot/bot.h"                   // for bot
+#include "pokemon/bot/events/events.h"         // for sendMessage, sendMessageWKeyboard
+#include "pokemon/user/player.h"               // for UID, Player
+#include "tgbot/types/InlineKeyboardButton.h"  // for InlineKeyboardButton::Ptr
+#include "tgbot/types/InlineKeyboardMarkup.h"  // for InlineKeyboardMarkup, InlineKeyboardMarkup::Ptr
 
 class Move;
 

@@ -1,12 +1,12 @@
 #ifndef Player_H
 #define Player_H
 
-#include <stdint.h> // for int32_t
-#include <string>   // for string
-#include <vector>   // for vector
-#include <memory>
+#include <stdint.h>  // for int32_t
+#include <memory>    // for shared_ptr
+#include <string>    // for string
+#include <vector>    // for vector
 
-#include "pokemon/pokemon.h"
+class Pokemon;
 
 const int32_t INVALID_ID = -1;
 const int32_t BOT_ID = -2;
