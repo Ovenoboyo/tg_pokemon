@@ -40,7 +40,7 @@ class ChatInfo {
      */
     bool isGroup;
 
-    std::unordered_map<int32_t, int32_t> prevMessages;
+    std::unordered_map<int32_t, std::vector<int32_t>> prevMessages;
 
     ChatInfo(int32_t botReportID);
 };

@@ -19,7 +19,9 @@ void BaseBattle::HandlePlayerChoice(UID uid, int index, bool swap) {
 
 void BaseBattle::cleanMessages(UID chatID) {
     for (auto m : this->chat->prevMessages) {
-        deleteMessage(*bot, m.first, m.second);
+        for (auto i : m.second) {
+            deleteMessage(*bot, m.first, i);
+        }
     }
     this->chat->prevMessages.clear();
 }
@@ -27,11 +29,13 @@ void BaseBattle::cleanMessages(UID chatID) {
 void BaseBattle::HandleBattle(UID uid, int moveNo, bool swap) {
     this->HandlePlayerChoice(uid, moveNo, swap);
     this->HandleRoundEnd();
-    auto IDs = this->HandleRoundStart();
-    this->chat->prevMessages.merge(IDs);
+    for (auto i : this->HandleRoundStart()) {
+        this->chat->prevMessages[i.first].push_back(i.second);
+    }
 }
 
 void BaseBattle::HandleBattleInit() {
-    auto IDs = this->HandleRoundStart();
-    this->chat->prevMessages.merge(IDs);
+    for (auto i : this->HandleRoundStart()) {
+        this->chat->prevMessages[i.first].push_back(i.second);
+    }
 }

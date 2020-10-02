@@ -9,6 +9,7 @@
 #include <vector>                   // for vector
 
 #include "pokemon/user/player.h"    // for Player, UID, Genders, INVALID_ID
+#include "pokemon/database/conn.h"
 
 class Pokemon;
 
@@ -45,7 +46,7 @@ std::shared_ptr<Player> PGConn::FetchPlayer(UID uid) {
         return player;
     }
     N.~nontransaction();
-    throw std::runtime_error("Player not found");
+    throw NotRegisteredException(std::to_string(uid));
 }
 
 UID PGConn::isPlayerRegistered(std::string username) {

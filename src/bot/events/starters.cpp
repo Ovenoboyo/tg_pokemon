@@ -30,7 +30,7 @@ void sendStarterMessage(TgBot::Bot &bot, int32_t chatID, UID uid) {
     auto starters = dbConn->getStarters();
     for (auto s : starters) {
         checkButton->text = s.name;
-        checkButton->callbackData = "starter-" + std::to_string(i);
+        checkButton->callbackData = "type=starterCallback,starter=" + std::to_string(i);
         row0.push_back(checkButton);
         i++;
     }
@@ -43,28 +43,27 @@ void sendStarterMessage(TgBot::Bot &bot, int32_t chatID, UID uid) {
     starterMessages.insert(std::pair<UID, int32_t>(uid, messageIdBot));
 }
 
-void handleStarterCallback(TgBot::Bot &bot) {
-    bot.getEvents().onCallbackQuery([&bot](TgBot::CallbackQuery::Ptr query) {
-        if (StringTools::startsWith(query->data, "starter-")) {
-            auto it = starterMessages.find(query->from->id);
-            if (it != starterMessages.end()) {
-                auto selected =
-                    dbConn->getStarters().at(std::stoi(query->data.substr(8)));
+void starterCallback(TgBot::Bot &bot, BotArgs args) {
+    auto fromID = std::stoi(args.get("queryFromID"));
+    auto it = starterMessages.find(fromID);
+    if (!dbConn->isPlayerRegistered(fromID) && it != starterMessages.end()) {
+        auto fromUsername = args.get("queryFromUsername");
+        auto fromChatID = std::stoi(args.get("queryChatID"));
 
-                // TODO: Register selected pokemon
-                dbConn->registerStarter(query->from->id, query->from->username,
-                                        selected.pokedex_no, MALE);
+        auto selected = dbConn->getStarters().at(std::stoi(args.get("starter")));
 
-                std::string response = "You chose " + selected.name;
+        dbConn->registerStarter(fromID, fromUsername,
+                                selected.pokedex_no, MALE);
 
-                bot.getApi().deleteMessage(query->message->chat->id,
-                                           starterMessages.at(query->from->id));
-                starterMessages.erase(it);
+        std::string response = "You chose " + selected.name;
 
-                bot.getApi().sendMessage(query->message->chat->id, response);
-            }
-        }
-    });
+        bot.getApi().deleteMessage(fromChatID, starterMessages.at(fromID));
+        bot.getApi().sendMessage(fromChatID, response);
+
+        starterMessages.erase(it);
+    } else {
+        bot.getApi().answerCallbackQuery(args.get("queryID"), "Message expired or invalid...");
+    }
 }
 
 void pickStarter(TgBot::Bot &bot, TgBot::Message::Ptr message) {

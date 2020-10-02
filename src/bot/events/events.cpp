@@ -6,6 +6,7 @@
 
 #include "pokemon/battle/baseBattle.h"      // for BaseBattle
 #include "pokemon/battle/battle.h"          // for isBattleActive, allBattles
+#include "pokemon/bot/events/battle.h"
 #include "pokemon/bot/events/dualbattle.h"  // for AskBattleCommand, validat...
 #include "pokemon/bot/events/starters.h"    // for pickStarter
 #include "pokemon/bot/events/wildbattle.h"  // for validateWildBattle
@@ -31,8 +32,8 @@ void deleteMessage(TgBot::Bot &bot, int32_t chatID, int32_t messageID) {
     bot.getApi().deleteMessage(chatID, messageID);
 }
 
-void sendMessageWKeyboard(TgBot::Bot &bot, int32_t chatIDs, std::string message, TgBot::InlineKeyboardMarkup::Ptr keyboard) {
-    bot.getApi().sendMessage(chatIDs, message, true, 0, keyboard, "Markdown");
+int32_t sendMessageWKeyboard(TgBot::Bot &bot, int32_t chatIDs, std::string message, TgBot::InlineKeyboardMarkup::Ptr keyboard) {
+    return bot.getApi().sendMessage(chatIDs, message, true, 0, keyboard, "Markdown")->messageId;
 }
 
 void handlePlayerAttack(TgBot::Message::Ptr message) {
@@ -73,6 +74,21 @@ void handleCommands(TgBot::Bot &bot) {
             handlePlayerAttack(message);
         } else if (StringTools::startsWith(message->text, "/wild")) {
             validateWildBattle(bot, message);
+        }
+    });
+}
+
+
+void handleCallbacks(TgBot::Bot &bot) {
+    bot.getEvents().onCallbackQuery([&bot](TgBot::CallbackQuery::Ptr query) {
+        BotArgs args;
+        args.parseQueryDetails(query);
+        if (args.size() > 0) {
+            if (args.get("type").compare("starterCallback") == 0) {
+                starterCallback(bot, args);
+            } else if (args.get("type").compare("moveCallback") == 0) {
+                moveCallback(bot, args);
+            }
         }
     });
 }

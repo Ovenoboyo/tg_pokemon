@@ -10,6 +10,7 @@
 #include <string>                                  // for string, operator+
 #include <utility>                                 // for pair
 #include <vector>                                  // for vector
+#include <fmt/core.h>
 
 #include "pokemon/battle/battle.h"                 // for isBattleActive
 #include "pokemon/battle/dualBattle.h"             // for DualBattle
@@ -22,8 +23,8 @@
 #include "tgbot/types/User.h"                      // for User, User::Ptr
 
 void RegisterRequest(int32_t p1, int32_t p2) {
-    if (allRequests.find(p1) != allRequests.end() &&
-        allRequests.find(p2) != allRequests.end()) {
+    if (allRequests.find(p1) == allRequests.end() &&
+        allRequests.find(p2) == allRequests.end()) {
         allRequests.insert(std::pair<int32_t, int32_t>(p1, p2));
         return;
     }
@@ -48,13 +49,8 @@ bool HasRequested(int32_t requester) {
 }
 
 std::shared_ptr<Player> GetPlayerByID(int32_t id) {
-    try {
-        auto player1 = dbConn->FetchPlayer(id);
-        return player1;
-    } catch (const std::exception &e) {
-        std::cout << e.what();
-        return std::make_shared<Player>();
-    }
+    auto player1 = dbConn->FetchPlayer(id);
+    return player1;
 }
 
 DualBattle *GetDualBattle(std::shared_ptr<Player> p1,
@@ -88,18 +84,19 @@ void validateAndStartBattle(TgBot::Bot &bot, TgBot::Message::Ptr message) {
     if (HasRequested(requester)) {
         auto requested = GetRequested(requester);
         if (!isBattleActive(requester) && !isBattleActive(requested)) {
-            auto player1 = GetPlayerByID(requester);
-            auto player2 = GetPlayerByID(requested);
+            try {
+                auto player1 = GetPlayerByID(requester);
+                auto player2 = GetPlayerByID(requested);
 
-            if (player1->isEmpty || player2->isEmpty) {
+                auto battle = GetDualBattle(player1, player2, message);
+                RegisterForBoth(battle, player1->Uid, player2->Uid);
+                battle->HandleBattleInit();
+            } catch (const NotRegisteredException &e) {
+                std::cout << e.what();
                 bot.getApi().sendMessage(message->chat->id,
-                                         "Either of the users not registered");
+                                            fmt::format("player {} not registered", e.what()));
                 return;
             }
-
-            auto battle = GetDualBattle(player1, player2, message);
-            RegisterForBoth(battle, player1->Uid, player2->Uid);
-            battle->HandleBattleInit();
         } else {
             bot.getApi().sendMessage(message->chat->id,
                                      "Player already in battle");
@@ -109,10 +106,10 @@ void validateAndStartBattle(TgBot::Bot &bot, TgBot::Message::Ptr message) {
 
 void AskBattleCommand(TgBot::Bot &bot, TgBot::Message::Ptr message) {
     std::vector<std::string> args;
-    boost::split(args, message->text, [](char c){return c == ' ';});
+    boost::split(args, message->text, boost::is_any_of(" "));
     if (args.size() > 0) {
         int32_t requesterID = message->from->id;
-        int32_t requestedID = getIDFromUsername(args.at(0));
+        int32_t requestedID = getIDFromUsername(args.at(1));
 
         if (requestedID != INVALID_ID) {
             try {

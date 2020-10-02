@@ -52,9 +52,6 @@ std::shared_ptr<Pokemon> WildBattle::getActivePokemon(bool isPlayer) {
 
 void WildBattle::ApplyMoves() {
     for (auto m : this->playedMove) {
-        std::cout << this->player1->Team.at(0)->Nickname;
-
-
         UID uid = m.first;
 
         //Set attacker and defender

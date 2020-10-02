@@ -20,6 +20,6 @@ int main(int argc, char const *argv[], char *envp[]) {
 
     registerCommands(*bot);
     handleCommands(*bot);
-    handleStarterCallback(*bot);
+    handleCallbacks(*bot);
     pollBot(*bot);
 }

@@ -19,8 +19,9 @@ class Move;
 
 std::unordered_map<int32_t, int32_t> WildBattle::handleMessages(int32_t chatID) {
     std::unordered_map<int32_t, int32_t> messageID;
-    messageID.insert({chatID, sendMessage(*bot, chatID, this->generateBattleSummary())});
-    messageID.insert({chatID, sendMessage(*bot, chatID, this->generateMoveSummary(*(this->player1)))});
+    TgBot::InlineKeyboardMarkup::Ptr keyboard(new TgBot::InlineKeyboardMarkup);
+    keyboard->inlineKeyboard.push_back(this->generateMoveSummary(*(this->player1)));
+    messageID.insert({chatID, sendMessageWKeyboard(*bot, chatID, this->generateBattleSummary(), keyboard)});
     return std::move(messageID);
 }
 

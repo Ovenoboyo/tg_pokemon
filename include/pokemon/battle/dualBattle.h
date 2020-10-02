@@ -43,7 +43,7 @@ class DualBattle : public BaseBattle {
      * @param player Player object
      * @return std::string summary
      */
-    std::string generateMoveSummary(Player player);
+    std::vector<TgBot::InlineKeyboardButton::Ptr> generateMoveSummary(Player player);
 
     /**
      * @brief Generates a summary of valid swappable pokemons
@@ -78,7 +78,7 @@ class DualBattle : public BaseBattle {
      */
     void HandleRoundEnd();
 
-    std::unordered_map<int32_t, int32_t> handleMessages(bool isGroup);
+    std::unordered_map<int32_t, int32_t> handleMessages();
 
     /**
      * @brief Calculate damage and apply it to respective pokemons

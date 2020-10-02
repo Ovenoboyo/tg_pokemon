@@ -11,9 +11,10 @@ class Bot;
 } // namespace TgBot
 
 int32_t sendMessage(TgBot::Bot &bot, int32_t chatID, std::string message);
-void sendMessageWKeyboard(TgBot::Bot &bot, int32_t chatIDs, std::string message, TgBot::InlineKeyboardMarkup::Ptr keyboard);
+int32_t sendMessageWKeyboard(TgBot::Bot &bot, int32_t chatIDs, std::string message, TgBot::InlineKeyboardMarkup::Ptr keyboard);
 void deleteMessage(TgBot::Bot &bot, int32_t chatIDs, int32_t messageID);
 void registerCommands(TgBot::Bot &bot);
 void handleCommands(TgBot::Bot &bot);
+void handleCallbacks(TgBot::Bot &bot);
 
 #endif

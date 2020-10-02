@@ -22,6 +22,16 @@ struct starterHolder {
     int pokedex_no;
 };
 
+struct NotRegisteredException: public std::exception {
+  std::string player;
+  const char * what () const throw () {
+    return "Player already in battle";
+  }
+  NotRegisteredException(std::string player) {
+    this->player = player;
+  }
+};
+
 const std::string connString =
     "user=" + getEnvVar("username") + " password=" + getEnvVar("password") +
     " host=" + getEnvVar("hostname") + " port=" + getEnvVar("hostport") +

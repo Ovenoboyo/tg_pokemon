@@ -10,15 +10,18 @@
 #include "pokemon/pokemon.h"            // for Pokemon
 #include "pokemon/user/player.h"        // for Player
 
-std::string DualBattle::generateMoveSummary(Player player) {
+std::vector<TgBot::InlineKeyboardButton::Ptr> DualBattle::generateMoveSummary(Player player) {
+    std::vector<TgBot::InlineKeyboardButton::Ptr> row;
     auto moveset = player.Team.at(0)->Moveset;
-    std::string ret = "";
     int i = 0;
     for (auto m : moveset) {
-        ret += fmt::format("Move {0}: {1}\n", i, m->GetName());
+        TgBot::InlineKeyboardButton::Ptr button(new TgBot::InlineKeyboardButton);
+        button->callbackData = fmt::format("type={},move={}", "moveCallback", i);
+        button->text = m->GetName();
+        row.push_back(button);
         i++;
     }
-    return ret;
+    return row;
 }
 
 std::string DualBattle::generateSwapSummary(Player player) {

@@ -15,18 +15,19 @@
 
 class Move;
 
-std::unordered_map<int32_t, int32_t> DualBattle::handleMessages(bool isGroup) {
+std::unordered_map<int32_t, int32_t> DualBattle::handleMessages() {
     std::unordered_map<int32_t, int32_t> messageID;
+    TgBot::InlineKeyboardMarkup::Ptr keyboard(new TgBot::InlineKeyboardMarkup);
     auto players = {this->player1, this->player2};
-    if (isGroup) {
-       messageID.insert({this->chat->botReportID, sendMessage(*bot, this->chat->botReportID, this->generateBattleSummary())});
-       for (auto p : players) {
-          messageID.insert({this->chat->botReportID, sendMessage(*bot, this->chat->botReportID, this->generateMoveSummary(*p))});
-       }
-    } else {
-        for (auto p : players) {
-          messageID.insert({p->Uid, sendMessage(*bot, p->Uid, this->generateMoveSummary(*p))});
-       }   
+    for (auto p : players) {
+        keyboard->inlineKeyboard.push_back(this->generateMoveSummary(*p));
+        if (!this->chat->isGroup) {
+            messageID.insert({this->chat->botReportID, sendMessageWKeyboard(*bot, p->Uid, this->generateBattleSummary(), keyboard)});
+            keyboard->inlineKeyboard.clear();
+        }
+    }
+    if (this->chat->isGroup) {
+       messageID.insert({this->chat->botReportID, sendMessageWKeyboard(*bot, this->chat->botReportID, this->generateBattleSummary(), keyboard)});
     }
     return messageID;
 }
@@ -43,7 +44,7 @@ std::unordered_map<int32_t, int32_t> DualBattle::HandleRoundStart() {
                     this->cleanMessages(p->Uid);
                 }
             }
-            return this->handleMessages(this->chat->isGroup);
+            return this->handleMessages();
         }
     } else {
         std::vector<UID> uidList = {this->player1->Uid, this->player2->Uid};

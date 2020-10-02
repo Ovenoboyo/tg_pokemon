@@ -38,7 +38,7 @@ class WildBattle : public BaseBattle {
      * @param player Player object
      * @return std::string summary
      */
-    std::string generateMoveSummary(Player player);
+    std::vector<TgBot::InlineKeyboardButton::Ptr> generateMoveSummary(Player player);
 
     /**
      * @brief Generates a summary of valid swappable pokemons
