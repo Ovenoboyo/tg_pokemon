@@ -21,7 +21,6 @@ find_library(PQ_LIB pq)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(SKIP_BUILD_TEST on)
-# set(BUILD_SHARED_LIBS OFF)
 
 if(WIN32)
     macro(get_WIN32_WINNT version)
@@ -56,13 +55,41 @@ if(CCACHE_PROGRAM)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
 endif()
 
-file(GLOB_RECURSE SOURCES src/*.cpp)
+set(SOURCES
+    src/box.cpp
+    src/global.cpp
+    src/main.cpp
+    src/moves.cpp
+    src/pokemon.cpp
+    src/battle/battle.cpp
+    src/battle/BaseBattle/baseBattle.cpp
+    src/battle/BaseBattle/handlers.cpp
+    src/battle/DualBattle/dualBattle.cpp
+    src/battle/DualBattle/handlers.cpp
+    src/battle/DualBattle/stringGenerators.cpp
+    src/battle/WildBattle/wildBattle.cpp
+    src/battle/WildBattle/handlers.cpp
+    src/battle/WildBattle/stringGenerators.cpp
+    src/bot/bot.cpp
+    src/bot/events/battle.cpp
+    src/bot/events/dualbattle.cpp
+    src/bot/events/events.cpp
+    src/bot/events/starters.cpp
+    src/bot/events/wildbattle.cpp
+    src/database/conn.cpp
+    src/database/moves.cpp
+    src/database/player.cpp
+    src/database/pokemon.cpp
+    src/database/starters.cpp
+    src/database/utils.cpp
+    src/user/player.cpp
+    src/user/wild.cpp
+)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-set(PostgreSQL_FOUND true)
 set(PostgresSQL_INCLUDE_DIR ${PostgresSQL_INCLUDE_DIRS})
 set(PostgresSQL_TYPE_INCLUDE_DIR ${PostgresSQL_INCLUDE_DIRS})
 
@@ -71,7 +98,7 @@ include_directories(include ${OPENSSL_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
 add_subdirectory(vendor/tgbot)
 
 add_executable(Pokemon_TG ${SOURCES})
-set_property(TARGET Pokemon_TG PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
+# set_property(TARGET Pokemon_TG PROPERTY CXX_INCLUDE_WHAT_YOU_USE ${iwyu_path})
 
 if (CURL_FOUND)
     include_directories(${CURL_INCLUDE_DIRS})
