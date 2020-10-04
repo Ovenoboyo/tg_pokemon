@@ -1,46 +1,42 @@
-#include <boost/lexical_cast.hpp>             // for lexical_cast
-#include <boost/uuid/random_generator.hpp>    // for random_generator, random_generator_pure::result_type
-#include <boost/uuid/uuid_io.hpp>             // for operator<<
-#include <fmt/core.h>                         // for format
-#include <pqxx/nontransaction.hxx>            // for nontransaction
-#include <pqxx/result.hxx>                    // for result
-#include <pqxx/row.hxx>                       // for row, row::reference
-#include <pqxx/transaction.hxx>               // for work
-#include <stddef.h>                           // for size_t
-#include <algorithm>                          // for move, sample, copy, max
-#include <ios>                                // for ios_base::failure
-#include <iterator>                           // for back_insert_iterator, back_inserter, next
-#include <pqxx/pqxx>                          // IWYU pragma: keep
-#include <random>                             // for random_device, mt19937
-#include <string>                             // for string, basic_string, allocator
-#include <vector>                             // for vector
+#include <algorithm>                       // for move, sample, copy, max
+#include <boost/lexical_cast.hpp>          // for lexical_cast
+#include <boost/uuid/random_generator.hpp> // for random_generator, random_generator_pure::result_type
+#include <boost/uuid/uuid_io.hpp>          // for operator<<
+#include <fmt/core.h>                      // for format
+#include <ios>                             // for ios_base::failure
+#include <iterator>                        // for back_insert_iterator, back_inserter, next
+#include <pqxx/nontransaction.hxx>         // for nontransaction
+#include <pqxx/pqxx>                       // IWYU pragma: keep
+#include <pqxx/result.hxx>                 // for result
+#include <pqxx/row.hxx>                    // for row, row::reference
+#include <pqxx/transaction.hxx>            // for work
+#include <random>                          // for random_device, mt19937
+#include <stddef.h>                        // for size_t
+#include <string>                          // for string, basic_string, allocator
+#include <vector>                          // for vector
 
-#include "pokemon/database/conn.h"            // for starterHolder, PGConn
-#include "pokemon/pokemon.h"                  // for Stats, generateIV
-#include "pokemon/user/player.h"              // for Genders, UID
+#include "pokemon/database/conn.h" // for starterHolder, PGConn
+#include "pokemon/pokemon.h"       // for Stats, generateIV
+#include "pokemon/user/player.h"   // for Genders, UID
 // IWYU pragma: no_include <boost/detail/basic_pointerbuf.hpp>
 
 // clang-format on
-const std::string starter_sql =
-    "SELECT public.pokemon.name, public.pokemon.pokedex_no FROM "
-    "public.starters INNER JOIN public.pokemon ON (public.starters.pokedex_no "
-    "= public.pokemon.pokedex_no);";
+const std::string starter_sql = "SELECT public.pokemon.name, public.pokemon.pokedex_no FROM "
+                                "public.starters INNER JOIN public.pokemon ON (public.starters.pokedex_no "
+                                "= public.pokemon.pokedex_no);";
 
 const std::string insertStats = "INSERT INTO player.{0} ({1}, hp, attack, "
                                 "defence, sp_attack, sp_defence, speed) "
                                 "VALUES ('{2}', {3});";
-const std::string insertPlayerPokemon =
-    "INSERT INTO player.user_pokemon (pokemon_id, pokedex_no, ev_id, iv_id, "
-    "nickname, level) "
-    "VALUES ('{0}', {1}, '{2}', '{3}', '{4}', {5})";
+const std::string insertPlayerPokemon = "INSERT INTO player.user_pokemon (pokemon_id, pokedex_no, ev_id, iv_id, "
+                                        "nickname, level) "
+                                        "VALUES ('{0}', {1}, '{2}', '{3}', '{4}', {5})";
 
-const std::string insertTeamPokemon =
-    "INSERT INTO player.team (team_id, pokemon_id_{0}) "
-    "VALUES ('{1}', '{2}');";
+const std::string insertTeamPokemon = "INSERT INTO player.team (team_id, pokemon_id_{0}) "
+                                      "VALUES ('{1}', '{2}');";
 
-const std::string insertPlayer =
-    "INSERT INTO player.player (player_id, team_id, name, gender, pkc) "
-    "VALUES ('{0}', '{1}', '{2}', {3}, {4})";
+const std::string insertPlayer = "INSERT INTO player.player (player_id, team_id, name, gender, pkc) "
+                                 "VALUES ('{0}', '{1}', '{2}', {3}, {4})";
 
 // clang-format off
 

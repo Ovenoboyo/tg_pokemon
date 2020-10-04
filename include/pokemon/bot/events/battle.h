@@ -4,7 +4,7 @@
 class BotArgs;
 namespace TgBot {
 class Bot;
-}  // namespace TgBot
+} // namespace TgBot
 
 void moveCallback(TgBot::Bot &bot, BotArgs args);
 

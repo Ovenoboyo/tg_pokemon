@@ -22,8 +22,7 @@ struct Stats {
     Stat SPDefence;
     Stat Speed;
 
-    Stats(Stat HP, Stat Attack, Stat Defence, Stat SPDefence, Stat SPAttack,
-          Stat Speed);
+    Stats(Stat HP, Stat Attack, Stat Defence, Stat SPDefence, Stat SPAttack, Stat Speed);
     Stats() = default;
 
     std::string Serialize();
@@ -104,9 +103,8 @@ class Pokemon {
      * @param IVStats IVstats of pokemon
      * @param EVStats EVstats of pokemon
      */
-    Pokemon(std::string name, std::vector<ElementType> types, int level,
-            std::vector<Move *> moveset, Stats baseStats, Stats IVStats,
-            Stats EVStats);
+    Pokemon(std::string name, std::vector<ElementType> types, int level, std::vector<Move *> moveset, Stats baseStats,
+            Stats IVStats, Stats EVStats);
 
     /**
      * @brief Construct a new Pokemon object

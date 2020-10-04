@@ -1,13 +1,13 @@
 #ifndef BASEBATTLE_H
 #define BASEBATTLE_H
 
-#include <stdint.h>               // for int32_t
-#include <memory>                 // for shared_ptr
-#include <unordered_map>          // for unordered_map
-#include <vector>                 // for vector
+#include <memory>        // for shared_ptr
+#include <stdint.h>      // for int32_t
+#include <unordered_map> // for unordered_map
+#include <vector>        // for vector
 
-#include "pokemon/global.h"       // for ElementType
-#include "pokemon/user/player.h"  // for Player (ptr only), UID
+#include "pokemon/global.h"      // for ElementType
+#include "pokemon/user/player.h" // for Player (ptr only), UID
 
 class Move;
 

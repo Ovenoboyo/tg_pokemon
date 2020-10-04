@@ -1,36 +1,48 @@
-#include <stddef.h>                            // for NULL
-#include <cstdint>                             // for int32_t
-#include <initializer_list>                    // for initializer_list
-#include <memory>                              // for allocator, __shared_ptr_access, shared_ptr, swap
-#include <string>                              // for operator+, char_traits, basic_string
-#include <unordered_map>                       // for unordered_map, operator==, unordered_map<>::iterator, _Node_iterator...
-#include <utility>                             // for pair
-#include <vector>                              // for vector
+#include <cstdint>          // for int32_t
+#include <initializer_list> // for initializer_list
+#include <memory>           // for allocator, __shared_ptr_access, shared_ptr, swap
+#include <stddef.h>         // for NULL
+#include <string>           // for operator+, char_traits, basic_string
+#include <unordered_map>    // for unordered_map, operator==, unordered_map<>::iterator, _Node_iterator...
+#include <utility>          // for pair
+#include <vector>           // for vector
 
-#include "pokemon/battle/baseBattle.h"         // for ChatInfo, isDefeated
-#include "pokemon/battle/battle.h"             // for deregisterBattle
-#include "pokemon/battle/dualBattle.h"         // for DualBattle
-#include "pokemon/bot/bot.h"                   // for bot
-#include "pokemon/bot/events/events.h"         // for sendMessage, sendMessageWKeyboard
-#include "pokemon/user/player.h"               // for UID, Player
-#include "tgbot/types/InlineKeyboardButton.h"  // for InlineKeyboardButton::Ptr
-#include "tgbot/types/InlineKeyboardMarkup.h"  // for InlineKeyboardMarkup, InlineKeyboardMarkup::Ptr
+#include "pokemon/battle/baseBattle.h"        // for ChatInfo, isDefeated
+#include "pokemon/battle/battle.h"            // for deregisterBattle
+#include "pokemon/battle/dualBattle.h"        // for DualBattle
+#include "pokemon/bot/bot.h"                  // for bot
+#include "pokemon/bot/events/events.h"        // for sendMessage, sendMessageWKeyboard
+#include "pokemon/user/player.h"              // for UID, Player
+#include "tgbot/types/InlineKeyboardButton.h" // for InlineKeyboardButton::Ptr
+#include "tgbot/types/InlineKeyboardMarkup.h" // for InlineKeyboardMarkup, InlineKeyboardMarkup::Ptr
 
 class Move;
+
+std::vector<TgBot::InlineKeyboardButton::Ptr> generatePlaceholderRow(Player player) {
+    std::vector<TgBot::InlineKeyboardButton::Ptr> row;
+    TgBot::InlineKeyboardButton::Ptr button(new TgBot::InlineKeyboardButton);
+    button->callbackData = "placeholder";
+    button->text = player.Name;
+    row.push_back(button);
+    return row;
+}
 
 std::unordered_map<int32_t, int32_t> DualBattle::handleMessages() {
     std::unordered_map<int32_t, int32_t> messageID;
     TgBot::InlineKeyboardMarkup::Ptr keyboard(new TgBot::InlineKeyboardMarkup);
     auto players = {this->player1, this->player2};
     for (auto p : players) {
+        keyboard->inlineKeyboard.push_back(generatePlaceholderRow(*p));
         keyboard->inlineKeyboard.push_back(this->generateMoveSummary(*p));
         if (!this->chat->isGroup) {
-            messageID.insert({this->chat->botReportID, sendMessageWKeyboard(*bot, p->Uid, this->generateBattleSummary(), keyboard)});
+            messageID.insert(
+                {this->chat->botReportID, sendMessageWKeyboard(*bot, p->Uid, this->generateBattleSummary(), keyboard)});
             keyboard->inlineKeyboard.clear();
         }
     }
     if (this->chat->isGroup) {
-       messageID.insert({this->chat->botReportID, sendMessageWKeyboard(*bot, this->chat->botReportID, this->generateBattleSummary(), keyboard)});
+        messageID.insert({this->chat->botReportID, sendMessageWKeyboard(*bot, this->chat->botReportID,
+                                                                        this->generateBattleSummary(), keyboard)});
     }
     return messageID;
 }
@@ -65,8 +77,7 @@ void DualBattle::HandleRoundEnd() {
         if (isDefeated(p)) {
             isEnd = true;
             if (this->chat->isGroup) {
-                sendMessage(*bot, this->chat->botReportID,
-                             p->Name + " Lost :''(");
+                sendMessage(*bot, this->chat->botReportID, p->Name + " Lost :''(");
                 break;
             }
             sendMessage(*bot, p->Uid, p->Name + " Lost :''(");
@@ -88,8 +99,7 @@ void DualBattle::HandlePlayerChoice(UID uid, int index, bool swap) {
             player->isSwapping = false;
 
             // Make getMoveFromIndex return empty move
-            this->playedMove.insert(
-                std::pair<UID, Move *>(uid, getMoveFromIndex(*player, 69)));
+            this->playedMove.insert(std::pair<UID, Move *>(uid, getMoveFromIndex(*player, 69)));
         } else {
             auto move = getMoveFromIndex(*player, index);
             if (move != NULL) {
@@ -106,9 +116,8 @@ void DualBattle::HandlePlayerChoice(UID uid, int index, bool swap) {
         if (this->roundEndCounter == 0) {
             this->ApplyMoves();
         } else {
-            sendMessage(*bot,
-                         (this->chat->isGroup) ? this->chat->botReportID : uid,
-                         "Waiting for other player...");
+            auto chatID = (this->chat->isGroup) ? this->chat->botReportID : uid;
+            this->chat->prevMessages[chatID].push_back(sendMessage(*bot, chatID, "Waiting for other player..."));
         }
     } else {
         // Player already moved

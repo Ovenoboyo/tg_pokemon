@@ -1,15 +1,15 @@
 #ifndef WILDBATTLE_H
 #define WILDBATTLE_H
 
-#include <stdint.h>                            // for int32_t
-#include <memory>                              // for shared_ptr
-#include <string>                              // for string
-#include <unordered_map>                       // for unordered_map
-#include <vector>                              // for vector
+#include <memory>        // for shared_ptr
+#include <stdint.h>      // for int32_t
+#include <string>        // for string
+#include <unordered_map> // for unordered_map
+#include <vector>        // for vector
 
-#include "pokemon/battle/baseBattle.h"         // for BaseBattle, DamageCalcHolder
-#include "pokemon/user/player.h"               // for Player (ptr only), UID
-#include "tgbot/types/InlineKeyboardButton.h"  // for InlineKeyboardButton, InlineKeyboardButton::Ptr
+#include "pokemon/battle/baseBattle.h"        // for BaseBattle, DamageCalcHolder
+#include "pokemon/user/player.h"              // for Player (ptr only), UID
+#include "tgbot/types/InlineKeyboardButton.h" // for InlineKeyboardButton, InlineKeyboardButton::Ptr
 
 class Move;
 class Pokemon;

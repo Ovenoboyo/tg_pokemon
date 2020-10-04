@@ -1,30 +1,28 @@
-#include <fmt/core.h>               // for format
-#include <pqxx/nontransaction.hxx>  // for nontransaction
-#include <pqxx/result.hxx>          // for result
-#include <pqxx/row.hxx>             // for row, row::reference
-#include <pqxx/pqxx>                // IWYU pragma: keep
-#include <stdexcept>                // for runtime_error
-#include <string>                   // for string, allocator, basic_string
-#include <vector>                   // for vector
+#include <fmt/core.h>              // for format
+#include <pqxx/nontransaction.hxx> // for nontransaction
+#include <pqxx/pqxx>               // IWYU pragma: keep
+#include <pqxx/result.hxx>         // for result
+#include <pqxx/row.hxx>            // for row, row::reference
+#include <stdexcept>               // for runtime_error
+#include <string>                  // for string, allocator, basic_string
+#include <vector>                  // for vector
 
-#include "pokemon/database/conn.h"  // for PGConn
-#include "pokemon/global.h"         // for ElementType
-#include "pokemon/moves.h"          // for Move
+#include "pokemon/database/conn.h" // for PGConn
+#include "pokemon/global.h"        // for ElementType
+#include "pokemon/moves.h"         // for Move
 
 // clang-format on
-const std::string moveset_by_level_sql =
-    "SELECT move_id FROM public.pokemon_move_bridge WHERE "
-    "(public.pokemon_move_bridge.pokedex_no = {0} AND "
-    "public.pokemon_move_bridge.level <= {1}) ORDER BY "
-    "public.pokemon_move_bridge.level ASC;";
+const std::string moveset_by_level_sql = "SELECT move_id FROM public.pokemon_move_bridge WHERE "
+                                         "(public.pokemon_move_bridge.pokedex_no = {0} AND "
+                                         "public.pokemon_move_bridge.level <= {1}) ORDER BY "
+                                         "public.pokemon_move_bridge.level ASC;";
 
-const std::string move_sql =
-    "SELECT public.move.name, public.move.element_type, public.move.damage, "
-    "public.move.accuracy, public.move.max_pp, "
-    "player.player_move_bridge.position "
-    "FROM player.player_move_bridge "
-    "INNER JOIN public.move ON (player.player_move_bridge.move_id = "
-    "public.move.move_id) WHERE player.player_move_bridge.pokemon_id = \'{}\';";
+const std::string move_sql = "SELECT public.move.name, public.move.element_type, public.move.damage, "
+                             "public.move.accuracy, public.move.max_pp, "
+                             "player.player_move_bridge.position "
+                             "FROM player.player_move_bridge "
+                             "INNER JOIN public.move ON (player.player_move_bridge.move_id = "
+                             "public.move.move_id) WHERE player.player_move_bridge.pokemon_id = \'{}\';";
 
 const std::string insertMoves = "INSERT INTO player.player_move_bridge "
                                 "(move_id, pokemon_id, position) VALUES ";

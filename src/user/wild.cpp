@@ -2,6 +2,4 @@
 
 class Pokemon;
 
-Wild::Wild(std::shared_ptr<Pokemon> p) {
-     this->pokemon = p; 
-}
+Wild::Wild(std::shared_ptr<Pokemon> p) { this->pokemon = p; }

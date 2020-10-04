@@ -49,13 +49,11 @@ int BaseBattle::calculateDamage(const struct DamageCalcHolder holder) {
     int random = distr(gen);
 
     // https://www.math.miami.edu/~jam/azure/compendium/battdam.htm
-    return int((((((((((2 * holder.AttackerLevel) / 5 + 2) * holder.AttackStat *
-                      holder.power) /
-                     holder.DefenceStat) /
-                    50) +
-                   2) *
-                  holder.attackModifier) *
-                 holder.typeModifier) *
-                random) /
-               255);
+    return int(
+        (((((((((2 * holder.AttackerLevel) / 5 + 2) * holder.AttackStat * holder.power) / holder.DefenceStat) / 50) +
+            2) *
+           holder.attackModifier) *
+          holder.typeModifier) *
+         random) /
+        255);
 }

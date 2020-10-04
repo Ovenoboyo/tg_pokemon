@@ -1,17 +1,17 @@
-#include <fmt/core.h>               // for format
-#include <pqxx/nontransaction.hxx>  // for nontransaction
-#include <pqxx/result.hxx>          // for result
-#include <pqxx/row.hxx>             // for row, row::reference
-#include <memory>                   // for make_shared, allocator, shared_ptr
-#include <pqxx/pqxx>                // IWYU pragma: keep
-#include <stdexcept>                // for runtime_error
-#include <string>                   // for string, basic_string
-#include <vector>                   // for vector
+#include <fmt/core.h>              // for format
+#include <memory>                  // for make_shared, allocator, shared_ptr
+#include <pqxx/nontransaction.hxx> // for nontransaction
+#include <pqxx/pqxx>               // IWYU pragma: keep
+#include <pqxx/result.hxx>         // for result
+#include <pqxx/row.hxx>            // for row, row::reference
+#include <stdexcept>               // for runtime_error
+#include <string>                  // for string, basic_string
+#include <vector>                  // for vector
 
-#include "pokemon/database/conn.h"  // for parseStats, PGConn, parseElements
-#include "pokemon/global.h"         // for ElementType, NORMAL, FLYING
-#include "pokemon/moves.h"          // for Move
-#include "pokemon/pokemon.h"        // for Pokemon, Stats
+#include "pokemon/database/conn.h" // for parseStats, PGConn, parseElements
+#include "pokemon/global.h"        // for ElementType, NORMAL, FLYING
+#include "pokemon/moves.h"         // for Move
+#include "pokemon/pokemon.h"       // for Pokemon, Stats
 
 // clang-format off
 const std::string pokemon_sql = 
@@ -30,8 +30,7 @@ const std::string pokemon_sql =
 
 // clang-format on
 
-std::shared_ptr<Pokemon> PGConn::FetchUserokemon(std::string pokemonID,
-                                 pqxx::nontransaction &N) {
+std::shared_ptr<Pokemon> PGConn::FetchUserokemon(std::string pokemonID, pqxx::nontransaction &N) {
     pqxx::result R(N.exec(fmt::format(pokemon_sql, pokemonID)));
 
     for (auto c : R) {

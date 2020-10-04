@@ -5,9 +5,8 @@
 
 class Move;
 
-Pokemon::Pokemon(std::string name, std::vector<ElementType> types, int level,
-                 std::vector<Move *> moveset, Stats baseStats, Stats IVStats,
-                 Stats EVStats) {
+Pokemon::Pokemon(std::string name, std::vector<ElementType> types, int level, std::vector<Move *> moveset,
+                 Stats baseStats, Stats IVStats, Stats EVStats) {
     this->Nickname = name;
     this->baseStats = baseStats;
     this->EVStats = EVStats;
@@ -16,8 +15,7 @@ Pokemon::Pokemon(std::string name, std::vector<ElementType> types, int level,
     this->isFNT = false;
 
     // TODO: Work on health logic
-    this->Health =
-        getStat(baseStats.MaxHP, IVStats.MaxHP, EVStats.MaxHP, level, true);
+    this->Health = getStat(baseStats.MaxHP, IVStats.MaxHP, EVStats.MaxHP, level, true);
 
     this->type.insert(this->type.end(), types.begin(), types.end());
     this->Moveset.insert(this->Moveset.end(), moveset.begin(), moveset.end());
@@ -32,8 +30,7 @@ Pokemon::Pokemon() {
     this->isEmpty = true;
 }
 
-Stats::Stats(Stat HP, Stat Attack, Stat Defence, Stat SPDefence, Stat SPAttack,
-             Stat Speed) {
+Stats::Stats(Stat HP, Stat Attack, Stat Defence, Stat SPDefence, Stat SPAttack, Stat Speed) {
     this->MaxHP = HP;
     this->Speed = Speed;
     this->Attack = Attack;
@@ -43,8 +40,7 @@ Stats::Stats(Stat HP, Stat Attack, Stat Defence, Stat SPDefence, Stat SPAttack,
 }
 
 std::string Stats::Serialize() {
-    return fmt::format("{0}, {1}, {2}, {3}, {4}, {5}", this->MaxHP,
-                       this->Attack, this->Defence, this->SPAttack,
+    return fmt::format("{0}, {1}, {2}, {3}, {4}, {5}", this->MaxHP, this->Attack, this->Defence, this->SPAttack,
                        this->SPDefence, this->Speed);
 }
 
@@ -62,7 +58,6 @@ Stats generateIV() {
     std::mt19937 random_engine(random_device());
     std::uniform_int_distribution<int> distribution(1, 31);
 
-    return Stats(distribution(random_engine), distribution(random_engine),
-                 distribution(random_engine), distribution(random_engine),
-                 distribution(random_engine), distribution(random_engine));
+    return Stats(distribution(random_engine), distribution(random_engine), distribution(random_engine),
+                 distribution(random_engine), distribution(random_engine), distribution(random_engine));
 }

@@ -1,21 +1,21 @@
-#include <stddef.h>                            // for NULL
-#include <cstdint>                             // for int32_t
-#include <memory>                              // for allocator, shared_ptr, __shared_ptr_access, swap
-#include <string>                              // for operator+, char_traits, basic_string
-#include <unordered_map>                       // for unordered_map, operator==, unordered_map<>::iterator, _Node_iterator...
-#include <utility>                             // for move, pair
-#include <vector>                              // for vector
+#include <cstdint>       // for int32_t
+#include <memory>        // for allocator, shared_ptr, __shared_ptr_access, swap
+#include <stddef.h>      // for NULL
+#include <string>        // for operator+, char_traits, basic_string
+#include <unordered_map> // for unordered_map, operator==, unordered_map<>::iterator, _Node_iterator...
+#include <utility>       // for move, pair
+#include <vector>        // for vector
 
-#include "pokemon/battle/baseBattle.h"         // for ChatInfo, isDefeated
-#include "pokemon/battle/battle.h"             // for deregisterBattle
-#include "pokemon/battle/wildBattle.h"         // for WildBattle
-#include "pokemon/bot/bot.h"                   // for bot
-#include "pokemon/bot/events/events.h"         // for sendMessage, sendMessageWKeyboard
-#include "pokemon/pokemon.h"                   // for Pokemon
-#include "pokemon/user/player.h"               // for UID, Player
-#include "pokemon/user/wild.h"                 // for Wild
-#include "tgbot/types/InlineKeyboardButton.h"  // for InlineKeyboardButton::Ptr
-#include "tgbot/types/InlineKeyboardMarkup.h"  // for InlineKeyboardMarkup, InlineKeyboardMarkup::Ptr
+#include "pokemon/battle/baseBattle.h"        // for ChatInfo, isDefeated
+#include "pokemon/battle/battle.h"            // for deregisterBattle
+#include "pokemon/battle/wildBattle.h"        // for WildBattle
+#include "pokemon/bot/bot.h"                  // for bot
+#include "pokemon/bot/events/events.h"        // for sendMessage, sendMessageWKeyboard
+#include "pokemon/pokemon.h"                  // for Pokemon
+#include "pokemon/user/player.h"              // for UID, Player
+#include "pokemon/user/wild.h"                // for Wild
+#include "tgbot/types/InlineKeyboardButton.h" // for InlineKeyboardButton::Ptr
+#include "tgbot/types/InlineKeyboardMarkup.h" // for InlineKeyboardMarkup, InlineKeyboardMarkup::Ptr
 
 class Move;
 
@@ -46,19 +46,15 @@ void WildBattle::HandleRoundEnd() {
     if (isDefeated(this->player1)) {
         isEnd = true;
         if (this->chat->isGroup) {
-            sendMessage(*bot, this->chat->botReportID,
-                         this->player1->Name + " Lost :''(");
+            sendMessage(*bot, this->chat->botReportID, this->player1->Name + " Lost :''(");
         }
-        sendMessage(*bot, this->player1->Uid,
-                     this->player1->Name + " Lost :''(");
+        sendMessage(*bot, this->player1->Uid, this->player1->Name + " Lost :''(");
     } else if (isDefeated(this->com)) {
         isEnd = true;
         if (this->chat->isGroup) {
-            sendMessage(*bot, this->chat->botReportID,
-                         "Wild " + this->com->pokemon->Nickname + "Lost :''(");
+            sendMessage(*bot, this->chat->botReportID, "Wild " + this->com->pokemon->Nickname + "Lost :''(");
         }
-        sendMessage(*bot, this->player1->Uid,
-                     this->player1->Name + " Lost :''(");
+        sendMessage(*bot, this->player1->Uid, this->player1->Name + " Lost :''(");
     }
 
     if (isEnd) {
@@ -77,8 +73,7 @@ void WildBattle::HandlePlayerChoice(UID uid, int index, bool swap) {
             player->isSwapping = false;
 
             // Make getMoveFromIndex return empty move
-            this->playedMove.insert(
-                std::pair<UID, Move *>(uid, getMoveFromIndex(*player, 69)));
+            this->playedMove.insert(std::pair<UID, Move *>(uid, getMoveFromIndex(*player, 69)));
         } else {
             auto move = getMoveFromIndex(*player, index);
             if (move != NULL) {

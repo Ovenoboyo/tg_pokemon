@@ -1,7 +1,6 @@
 #include "pokemon/moves.h"
 
-Move::Move(const std::string name, ElementType type, int damage, int accuracy,
-           int pp) {
+Move::Move(const std::string name, ElementType type, int damage, int accuracy, int pp) {
     this->name = name;
     this->type = type;
     this->PP = pp;

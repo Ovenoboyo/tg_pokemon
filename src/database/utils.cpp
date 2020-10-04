@@ -8,8 +8,8 @@
 
 Stats parseStats(pqxx::row row) {
     if (row.size() == 6) {
-        return Stats(row[0].as<int>(), row[1].as<int>(), row[2].as<int>(),
-                     row[3].as<int>(), row[4].as<int>(), row[5].as<int>());
+        return Stats(row[0].as<int>(), row[1].as<int>(), row[2].as<int>(), row[3].as<int>(), row[4].as<int>(),
+                     row[5].as<int>());
     }
     return Stats();
 }

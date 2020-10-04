@@ -1,10 +1,10 @@
 #ifndef Player_H
 #define Player_H
 
-#include <stdint.h>  // for int32_t
-#include <memory>    // for shared_ptr
-#include <string>    // for string
-#include <vector>    // for vector
+#include <memory>   // for shared_ptr
+#include <stdint.h> // for int32_t
+#include <string>   // for string
+#include <vector>   // for vector
 
 class Pokemon;
 
@@ -62,8 +62,7 @@ class Player {
      * @param gender Gender of player
      * @param team Vector with Pokemon objects
      */
-    Player(UID uid, std::string name, enum Genders gender,
-           std::vector<std::shared_ptr<Pokemon>> team);
+    Player(UID uid, std::string name, enum Genders gender, std::vector<std::shared_ptr<Pokemon>> team);
 
     /**
      * @brief Construct a new Player object

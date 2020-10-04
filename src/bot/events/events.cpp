@@ -1,30 +1,28 @@
 #include "pokemon/bot/events/events.h"
 
-#include <memory>                           // for __shared_ptr_access
-#include <unordered_map>                    // for unordered_map
-#include <vector>                           // for vector
+#include <memory>        // for __shared_ptr_access
+#include <unordered_map> // for unordered_map
+#include <vector>        // for vector
 
-#include "pokemon/battle/baseBattle.h"      // for BaseBattle
-#include "pokemon/battle/battle.h"          // for isBattleActive, allBattles
-#include "pokemon/bot/events/battle.h"      // for moveCallback
-#include "pokemon/bot/events/dualbattle.h"  // for AskBattleCommand, validateAndStartBattle
-#include "pokemon/bot/events/starters.h"    // for pickStarter, starterCallback
-#include "pokemon/bot/events/wildbattle.h"  // for validateWildBattle
-#include "pokemon/database/conn.h"          // for PGConn, dbConn
-#include "pokemon/global.h"                 // for BotArgs
-#include "tgbot/Api.h"                      // for Api
-#include "tgbot/Bot.h"                      // for Bot
-#include "tgbot/EventBroadcaster.h"         // for EventBroadcaster
-#include "tgbot/tools/StringTools.h"        // for startsWith
-#include "tgbot/types/BotCommand.h"         // for BotCommand::Ptr, BotCommand
-#include "tgbot/types/CallbackQuery.h"      // for CallbackQuery, CallbackQuery::Ptr
-#include "tgbot/types/Chat.h"               // for Chat, Chat::Ptr
-#include "tgbot/types/Message.h"            // for Message, Message::Ptr
-#include "tgbot/types/User.h"               // for User, User::Ptr
+#include "pokemon/battle/baseBattle.h"     // for BaseBattle
+#include "pokemon/battle/battle.h"         // for isBattleActive, allBattles
+#include "pokemon/bot/events/battle.h"     // for moveCallback
+#include "pokemon/bot/events/dualbattle.h" // for AskBattleCommand, validateAndStartBattle
+#include "pokemon/bot/events/starters.h"   // for pickStarter, starterCallback
+#include "pokemon/bot/events/wildbattle.h" // for validateWildBattle
+#include "pokemon/database/conn.h"         // for PGConn, dbConn
+#include "pokemon/global.h"                // for BotArgs
+#include "tgbot/Api.h"                     // for Api
+#include "tgbot/Bot.h"                     // for Bot
+#include "tgbot/EventBroadcaster.h"        // for EventBroadcaster
+#include "tgbot/tools/StringTools.h"       // for startsWith
+#include "tgbot/types/BotCommand.h"        // for BotCommand::Ptr, BotCommand
+#include "tgbot/types/CallbackQuery.h"     // for CallbackQuery, CallbackQuery::Ptr
+#include "tgbot/types/Chat.h"              // for Chat, Chat::Ptr
+#include "tgbot/types/Message.h"           // for Message, Message::Ptr
+#include "tgbot/types/User.h"              // for User, User::Ptr
 
-void StartCommand(TgBot::Bot &bot, TgBot::Message::Ptr message) {
-    bot.getApi().sendMessage(message->chat->id, "Hi!");
-}
+void StartCommand(TgBot::Bot &bot, TgBot::Message::Ptr message) { bot.getApi().sendMessage(message->chat->id, "Hi!"); }
 
 int32_t sendMessage(TgBot::Bot &bot, int32_t chatIDs, std::string message) {
     return bot.getApi().sendMessage(chatIDs, message)->messageId;
@@ -34,7 +32,8 @@ void deleteMessage(TgBot::Bot &bot, int32_t chatID, int32_t messageID) {
     bot.getApi().deleteMessage(chatID, messageID);
 }
 
-int32_t sendMessageWKeyboard(TgBot::Bot &bot, int32_t chatIDs, std::string message, TgBot::InlineKeyboardMarkup::Ptr keyboard) {
+int32_t sendMessageWKeyboard(TgBot::Bot &bot, int32_t chatIDs, std::string message,
+                             TgBot::InlineKeyboardMarkup::Ptr keyboard) {
     return bot.getApi().sendMessage(chatIDs, message, true, 0, keyboard, "Markdown")->messageId;
 }
 
@@ -80,11 +79,12 @@ void handleCommands(TgBot::Bot &bot) {
     });
 }
 
-
 void handleCallbacks(TgBot::Bot &bot) {
     bot.getEvents().onCallbackQuery([&bot](TgBot::CallbackQuery::Ptr query) {
         BotArgs args;
         args.parseQueryDetails(query);
+        std::cout << query->data << std::endl;
+        std::cout << args.get("type");
         if (args.size() > 0) {
             if (args.get("type").compare("starterCallback") == 0) {
                 starterCallback(bot, args);

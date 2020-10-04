@@ -1,17 +1,17 @@
-#include <fmt/core.h>               // for format
-#include <pqxx/field.hxx>           // for field
-#include <pqxx/nontransaction.hxx>  // for nontransaction
-#include <pqxx/result.hxx>          // for result
-#include <pqxx/row.hxx>             // for row, row::reference
-#include <stdint.h>                 // for int32_t
-#include <memory>                   // for shared_ptr, allocator, make_shared
-#include <pqxx/pqxx>                // IWYU pragma: keep
-#include <string>                   // for string, basic_string, to_string
-#include <utility>                  // for move
-#include <vector>                   // for vector
+#include <fmt/core.h>              // for format
+#include <memory>                  // for shared_ptr, allocator, make_shared
+#include <pqxx/field.hxx>          // for field
+#include <pqxx/nontransaction.hxx> // for nontransaction
+#include <pqxx/pqxx>               // IWYU pragma: keep
+#include <pqxx/result.hxx>         // for result
+#include <pqxx/row.hxx>            // for row, row::reference
+#include <stdint.h>                // for int32_t
+#include <string>                  // for string, basic_string, to_string
+#include <utility>                 // for move
+#include <vector>                  // for vector
 
-#include "pokemon/database/conn.h"  // for PGConn, NotRegisteredException
-#include "pokemon/user/player.h"    // for Player, UID, Genders, INVALID_ID
+#include "pokemon/database/conn.h" // for PGConn, NotRegisteredException
+#include "pokemon/user/player.h"   // for Player, UID, Genders, INVALID_ID
 
 class Pokemon;
 
@@ -38,8 +38,7 @@ std::shared_ptr<Player> PGConn::FetchPlayer(UID uid) {
         int i = 0;
         for (auto p : c.slice(3, 9)) {
             if (!p.is_null()) {
-                team.insert(team.begin() + i,
-                            FetchUserokemon(p.as<std::string>(), N));
+                team.insert(team.begin() + i, FetchUserokemon(p.as<std::string>(), N));
             }
             i++;
         }
@@ -55,19 +54,13 @@ UID PGConn::isPlayerRegistered(std::string username) {
     pqxx::nontransaction N(*conn);
     pqxx::result R(N.exec(fmt::format(registered_sql, username)));
     N.~nontransaction();
-    return (R.size() > 0)
-               ? ((R.at(0).at(0).is_null()) ? INVALID_ID
-                                            : R.at(0).at(0).as<int32_t>())
-               : INVALID_ID;
+    return (R.size() > 0) ? ((R.at(0).at(0).is_null()) ? INVALID_ID : R.at(0).at(0).as<int32_t>()) : INVALID_ID;
 }
 
 bool PGConn::isPlayerRegistered(UID uid) {
     pqxx::nontransaction N(*conn);
     pqxx::result R(N.exec(fmt::format(registered_sql_uid, uid)));
     N.~nontransaction();
-    return (R.size() > 0)
-               ? ((R.at(0).at(0).is_null())
-                      ? false
-                      : (R.at(0).at(0).as<std::string>().compare("t") == 0))
-               : false;
+    return (R.size() > 0) ? ((R.at(0).at(0).is_null()) ? false : (R.at(0).at(0).as<std::string>().compare("t") == 0))
+                          : false;
 }
