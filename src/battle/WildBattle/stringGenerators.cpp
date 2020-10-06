@@ -20,7 +20,7 @@ std::vector<TgBot::InlineKeyboardButton::Ptr> WildBattle::generateMoveSummary(Pl
     int i = 0;
     for (auto m : moveset) {
         TgBot::InlineKeyboardButton::Ptr button(new TgBot::InlineKeyboardButton);
-        button->callbackData = fmt::format("type={},move={},moveFor={}", "moveCallback", i, player.Uid);
+        button->callbackData = fmt::format("type={},move={},for={}", "moveCallback", i, player.Uid);
         button->text = m->GetName();
         row.push_back(button);
         i++;
@@ -28,9 +28,27 @@ std::vector<TgBot::InlineKeyboardButton::Ptr> WildBattle::generateMoveSummary(Pl
     return row;
 }
 
-std::string WildBattle::generateSwapSummary(Player player) {
-    // TODO: Generate swap summary
-    return "keks";
+std::vector<std::vector<TgBot::InlineKeyboardButton::Ptr>> WildBattle::GenerateSwapReport() {
+    std::vector<std::vector<TgBot::InlineKeyboardButton::Ptr>> rowHolder;
+    int i = 0, j = -1;
+    for (auto p : this->player1->Team) {
+        if (i % 3 == 0) {
+            std::vector<TgBot::InlineKeyboardButton::Ptr> row;
+            rowHolder.push_back(row);
+            j++;
+        }
+        TgBot::InlineKeyboardButton::Ptr button(new TgBot::InlineKeyboardButton);
+        button->callbackData = fmt::format("type={},for={}", "swapPokemonCallback", this->player1->Uid);
+        button->text = p->Nickname;
+        rowHolder.at(j).push_back(button);
+        i++;
+    }
+
+    TgBot::InlineKeyboardButton::Ptr button(new TgBot::InlineKeyboardButton);
+    button->callbackData = fmt::format("type={},for={}", "swapSummaryCallback", this->player1->Uid);
+    button->text = "<";
+    rowHolder.at(j).push_back(button);
+    return rowHolder;
 }
 
 std::string WildBattle::generateBattleSummary() {

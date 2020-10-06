@@ -46,6 +46,8 @@ class Player {
      */
     bool isSwapping;
 
+    bool hasPlayed;
+
     /**
      * @brief Counter to keep track of fainted pokemons
      *

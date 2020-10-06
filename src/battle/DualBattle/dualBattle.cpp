@@ -16,7 +16,6 @@
 DualBattle::DualBattle(std::shared_ptr<Player> p1, std::shared_ptr<Player> p2, int32_t groupID)
     : BaseBattle(p1, groupID) {
     this->player2 = p2;
-    this->roundEndCounter = 0;
 }
 
 DamageCalcHolder *DualBattle::getStats(Pokemon attacker, Pokemon defender, Move move) {
@@ -72,11 +71,11 @@ void DualBattle::ApplyMoves() {
 }
 
 std::shared_ptr<Player> DualBattle::GetOtherPlayer(UID uid) {
-    return (uid == this->player1->Uid) ? this->player1 : this->player2;
+    return (uid == this->player1->Uid) ? this->player2 : this->player1;
 }
 
 std::shared_ptr<Player> DualBattle::GetPlayer(UID uid) {
-    return (uid == this->player1->Uid) ? this->player2 : this->player1;
+    return (uid == this->player1->Uid) ? this->player1 : this->player2;
 }
 
 Move *DualBattle::getMoveFromIndex(Player player, int moveNo) {
@@ -90,6 +89,6 @@ Move *DualBattle::getMoveFromIndex(Player player, int moveNo) {
 void DualBattle::sendSwapReport(UID uid) {
     auto player = this->GetPlayer(uid);
     if (player->Team.size() > 1) {
-        sendMessage(*bot, uid, this->generateSwapSummary(*player));
+        //this->chat->prevMessages[(this->chat->isGroup) ? this->chat->botReportID : uid].push_back(sendMessage(*bot, uid, this->GenerateSwapReport(uid)));
     }
 }

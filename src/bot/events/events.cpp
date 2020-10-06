@@ -3,6 +3,7 @@
 #include <memory>        // for __shared_ptr_access
 #include <unordered_map> // for unordered_map
 #include <vector>        // for vector
+#include <iostream>
 
 #include "pokemon/battle/baseBattle.h"     // for BaseBattle
 #include "pokemon/battle/battle.h"         // for isBattleActive, allBattles
@@ -35,6 +36,15 @@ void deleteMessage(TgBot::Bot &bot, int32_t chatID, int32_t messageID) {
 int32_t sendMessageWKeyboard(TgBot::Bot &bot, int32_t chatIDs, std::string message,
                              TgBot::InlineKeyboardMarkup::Ptr keyboard) {
     return bot.getApi().sendMessage(chatIDs, message, true, 0, keyboard, "Markdown")->messageId;
+}
+
+void editInlineKeyboard(TgBot::Bot &bot, int32_t chatID, int32_t messageID, TgBot::InlineKeyboardMarkup::Ptr keyboard) {
+    try {
+        bot.getApi().editMessageReplyMarkup(chatID, messageID, "", keyboard);
+    } catch (const TgBot::TgException &e) {
+        std::cout << e.what() << std::endl;
+        return;
+    }
 }
 
 void handlePlayerAttack(TgBot::Message::Ptr message) {
@@ -80,17 +90,21 @@ void handleCommands(TgBot::Bot &bot) {
 }
 
 void handleCallbacks(TgBot::Bot &bot) {
-    bot.getEvents().onCallbackQuery([&bot](TgBot::CallbackQuery::Ptr query) {
-        BotArgs args;
-        args.parseQueryDetails(query);
-        std::cout << query->data << std::endl;
-        std::cout << args.get("type");
-        if (args.size() > 0) {
-            if (args.get("type").compare("starterCallback") == 0) {
-                starterCallback(bot, args);
-            } else if (args.get("type").compare("moveCallback") == 0) {
-                moveCallback(bot, args);
+    try {
+        bot.getEvents().onCallbackQuery([&bot](TgBot::CallbackQuery::Ptr query) {
+            BotArgs args;
+            args.parseQueryDetails(query);
+            if (args.size() > 0) {
+                if (args.get("type").compare("starterCallback") == 0) {
+                    starterCallback(bot, args);
+                } else if (args.get("type").compare("moveCallback") == 0) {
+                    moveCallback(bot, args);
+                } else if (args.get("type").compare("swapSummaryCallback") == 0) {
+                    swapSummaryCallback(bot, args);
+                }
             }
-        }
-    });
+        });
+    } catch (const TgBot::TgException &e) {
+        std::cout << e.what() << std::endl;
+    }
 }

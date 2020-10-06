@@ -6,6 +6,8 @@
 #include <unordered_map>    // for unordered_map, operator==, unordered_map<>::iterator, _Node_iterator...
 #include <utility>          // for pair
 #include <vector>           // for vector
+#include <fmt/core.h>
+#include <iostream>
 
 #include "pokemon/battle/baseBattle.h"        // for ChatInfo, isDefeated
 #include "pokemon/battle/battle.h"            // for deregisterBattle
@@ -27,30 +29,66 @@ std::vector<TgBot::InlineKeyboardButton::Ptr> generatePlaceholderRow(Player play
     return row;
 }
 
-std::unordered_map<int32_t, int32_t> DualBattle::handleMessages() {
-    std::unordered_map<int32_t, int32_t> messageID;
+std::vector<TgBot::InlineKeyboardButton::Ptr> DualBattle::generateExtraRow(Player player) {
+    std::vector<TgBot::InlineKeyboardButton::Ptr> row;
+    TgBot::InlineKeyboardButton::Ptr swapButton(new TgBot::InlineKeyboardButton);
+    swapButton->callbackData = fmt::format("type={},for={}", "swapSummaryCallback", player.Uid);
+    swapButton->text = "Swap Pokemon";
+    row.push_back(swapButton);
+    return row;
+}
+
+void DualBattle::UpdateKeyboard() {
+    TgBot::InlineKeyboardMarkup::Ptr keyboard(new TgBot::InlineKeyboardMarkup);
+    auto players = {this->player1, this->player2};
+    for (auto p : players) {
+        if (!p->hasPlayed) {
+            keyboard->inlineKeyboard.push_back(generatePlaceholderRow(*p));
+            if (this->chat->showSwapMessage.find(p->Uid) != this->chat->showSwapMessage.end() && this->chat->showSwapMessage[p->Uid]) {
+                for (auto k : this->GenerateSwapReport(p->Uid)) {
+                    keyboard->inlineKeyboard.push_back(k);
+                }
+                continue;
+            }
+            keyboard->inlineKeyboard.push_back(this->generateMoveSummary(*p));
+            keyboard->inlineKeyboard.push_back(this->generateExtraRow(*p));
+
+            if (!this->chat->isGroup) {
+                editInlineKeyboard(*bot, p->Uid, this->chat->battleMessage[p->Uid], keyboard);
+                keyboard->inlineKeyboard.clear();
+            }
+        }
+    }  
+    if (this->chat->isGroup) {
+        editInlineKeyboard(*bot, this->chat->botReportID, this->chat->battleMessage[this->chat->botReportID], keyboard);
+    } 
+}
+
+void DualBattle::handleMessages() {
     TgBot::InlineKeyboardMarkup::Ptr keyboard(new TgBot::InlineKeyboardMarkup);
     auto players = {this->player1, this->player2};
     for (auto p : players) {
         keyboard->inlineKeyboard.push_back(generatePlaceholderRow(*p));
         keyboard->inlineKeyboard.push_back(this->generateMoveSummary(*p));
+        keyboard->inlineKeyboard.push_back(generateExtraRow(*p));
         if (!this->chat->isGroup) {
-            messageID.insert(
-                {this->chat->botReportID, sendMessageWKeyboard(*bot, p->Uid, this->generateBattleSummary(), keyboard)});
+            auto messageID = sendMessageWKeyboard(*bot, p->Uid, this->generateBattleSummary(), keyboard);
+            this->chat->prevMessages[p->Uid].push_back(messageID);
+            this->chat->battleMessage[p->Uid] = messageID;
             keyboard->inlineKeyboard.clear();
         }
     }
     if (this->chat->isGroup) {
-        messageID.insert({this->chat->botReportID, sendMessageWKeyboard(*bot, this->chat->botReportID,
-                                                                        this->generateBattleSummary(), keyboard)});
+        auto messageID = sendMessageWKeyboard(*bot, this->chat->botReportID, this->generateBattleSummary(), keyboard);
+        this->chat->prevMessages[this->chat->botReportID].push_back(messageID);
+        this->chat->battleMessage[this->chat->botReportID] = messageID;
     }
-    return messageID;
 }
 
-std::unordered_map<int32_t, int32_t> DualBattle::HandleRoundStart() {
+void DualBattle::HandleRoundStart() {
     if (!this->isEnd) {
-        if (this->roundEndCounter == 0) {
-            this->roundEndCounter = 2;
+        if (this->isRoundEnd()) {
+            this->resetPlayerPlayed();
             if (this->chat->isGroup) {
                 this->cleanMessages(this->chat->botReportID);
             } else {
@@ -59,13 +97,13 @@ std::unordered_map<int32_t, int32_t> DualBattle::HandleRoundStart() {
                     this->cleanMessages(p->Uid);
                 }
             }
-            return this->handleMessages();
+            this->handleMessages();
+            return;
         }
     } else {
         std::vector<UID> uidList = {this->player1->Uid, this->player2->Uid};
         deregisterBattle(this, uidList);
     }
-    return std::unordered_map<int32_t, int32_t>();
 }
 
 void DualBattle::HandleRoundEnd() {
@@ -75,7 +113,7 @@ void DualBattle::HandleRoundEnd() {
     auto players = {this->player1, this->player2};
     for (auto p : players) {
         if (isDefeated(p)) {
-            isEnd = true;
+            this->isEnd = true;
             if (this->chat->isGroup) {
                 sendMessage(*bot, this->chat->botReportID, p->Name + " Lost :''(");
                 break;
@@ -83,10 +121,15 @@ void DualBattle::HandleRoundEnd() {
             sendMessage(*bot, p->Uid, p->Name + " Lost :''(");
         }
     }
-    if (isEnd) {
-        this->isEnd = true;
-        return;
-    }
+}
+
+bool DualBattle::isRoundEnd() {
+    return (this->player1->hasPlayed && this->player2->hasPlayed);
+}
+
+void DualBattle::resetPlayerPlayed() {
+    this->player1->hasPlayed = false;
+    this->player2->hasPlayed = false;
 }
 
 void DualBattle::HandlePlayerChoice(UID uid, int index, bool swap) {
@@ -109,11 +152,10 @@ void DualBattle::HandlePlayerChoice(UID uid, int index, bool swap) {
                 return;
             }
         }
-
-        this->roundEndCounter--;
-
+        this->GetPlayer(uid)->hasPlayed = true;
+        this->UpdateKeyboard();
         // Check if round ended
-        if (this->roundEndCounter == 0) {
+        if (this->isRoundEnd()) {
             this->ApplyMoves();
         } else {
             auto chatID = (this->chat->isGroup) ? this->chat->botReportID : uid;

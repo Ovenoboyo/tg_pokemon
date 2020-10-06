@@ -5,6 +5,8 @@
 #include <unordered_map> // for unordered_map, operator==, unordered_map<>::iterator, _Node_iterator...
 #include <utility>       // for move, pair
 #include <vector>        // for vector
+#include <fmt/core.h>
+#include <iostream>
 
 #include "pokemon/battle/baseBattle.h"        // for ChatInfo, isDefeated
 #include "pokemon/battle/battle.h"            // for deregisterBattle
@@ -19,24 +21,51 @@
 
 class Move;
 
-std::unordered_map<int32_t, int32_t> WildBattle::handleMessages(int32_t chatID) {
-    std::unordered_map<int32_t, int32_t> messageID;
+void WildBattle::handleMessages(int32_t chatID) {
     TgBot::InlineKeyboardMarkup::Ptr keyboard(new TgBot::InlineKeyboardMarkup);
     keyboard->inlineKeyboard.push_back(this->generateMoveSummary(*(this->player1)));
-    messageID.insert({chatID, sendMessageWKeyboard(*bot, chatID, this->generateBattleSummary(), keyboard)});
-    return std::move(messageID);
+    keyboard->inlineKeyboard.push_back(this->generateExtraRow());
+    auto messageID = sendMessageWKeyboard(*bot, chatID, this->generateBattleSummary(), keyboard);
+    this->chat->prevMessages[chatID].push_back(messageID);
+    this->chat->battleMessage[chatID] = messageID;
+    return;
 }
 
-std::unordered_map<int32_t, int32_t> WildBattle::HandleRoundStart() {
+void WildBattle::HandleRoundStart() {
     if (!this->isEnd) {
         auto reportID = (this->chat->isGroup) ? this->chat->botReportID : this->player1->Uid;
         this->cleanMessages(reportID);
-        return std::move(this->handleMessages(reportID));
+        this->handleMessages(reportID);
+        return;
     } else {
         std::vector<UID> uidList = {this->player1->Uid};
         deregisterBattle(this, uidList);
     }
-    return std::unordered_map<int32_t, int32_t>();
+}
+
+std::vector<TgBot::InlineKeyboardButton::Ptr> WildBattle::generateExtraRow() {
+    std::vector<TgBot::InlineKeyboardButton::Ptr> row;
+    TgBot::InlineKeyboardButton::Ptr swapButton(new TgBot::InlineKeyboardButton);
+    swapButton->callbackData = fmt::format("type={},for={}", "swapSummaryCallback", this->player1->Uid);
+    swapButton->text = "Swap Pokemon";
+    row.push_back(swapButton);
+    return row;
+}
+
+void WildBattle::UpdateKeyboard() {
+    TgBot::InlineKeyboardMarkup::Ptr keyboard(new TgBot::InlineKeyboardMarkup);
+    if (this->chat->showSwapMessage.find(this->player1->Uid) != this->chat->showSwapMessage.end() && this->chat->showSwapMessage[this->player1->Uid]) {
+        for (auto k : this->GenerateSwapReport()) {
+            std::cout << k.at(0)->text;
+            keyboard->inlineKeyboard.push_back(k);
+        }
+    } else {
+        keyboard->inlineKeyboard.push_back(this->generateMoveSummary(*this->player1));
+        keyboard->inlineKeyboard.push_back(this->generateExtraRow());
+    }
+
+    auto reportID = (this->chat->isGroup) ? this->chat->botReportID : this->player1->Uid;
+    editInlineKeyboard(*bot, reportID, this->chat->battleMessage[reportID], keyboard);
 }
 
 void WildBattle::HandleRoundEnd() {

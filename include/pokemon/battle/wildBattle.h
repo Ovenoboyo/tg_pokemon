@@ -49,9 +49,11 @@ class WildBattle : public BaseBattle {
      * @param player Player object
      * @return std::string summary
      */
-    std::string generateSwapSummary(Player player);
+    std::vector<std::vector<TgBot::InlineKeyboardButton::Ptr>> GenerateSwapReport();
 
     void sendSwapReport(UID uid);
+
+    std::vector<TgBot::InlineKeyboardButton::Ptr> generateExtraRow();
 
     /**
      * @brief Handles player moves, swap and roundEndCounter
@@ -67,9 +69,9 @@ class WildBattle : public BaseBattle {
      * @brief Handle events at start of new round
      *
      */
-    std::unordered_map<int32_t, int32_t> HandleRoundStart();
+    void HandleRoundStart();
 
-    std::unordered_map<int32_t, int32_t> handleMessages(int32_t chatID);
+    void handleMessages(int32_t chatID);
 
     /**
      * @brief Handle events at end of round. Includes checking if player is
@@ -98,6 +100,8 @@ class WildBattle : public BaseBattle {
      * @return Move
      */
     Move *getMoveFromIndex(Player player, int moveNo);
+
+    void UpdateKeyboard();
 };
 
 #endif

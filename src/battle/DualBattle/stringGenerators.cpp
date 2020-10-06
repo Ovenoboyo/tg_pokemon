@@ -3,6 +3,7 @@
 #include <sstream>            // for operator<<, basic_ostream, basic_ostream::operator<<, stringstream
 #include <string>             // for operator<<, char_traits, string
 #include <vector>             // for vector
+#include <iostream>
 
 #include "fmt/core.h"                         // for format
 #include "pokemon/battle/dualBattle.h"        // for DualBattle
@@ -17,7 +18,7 @@ std::vector<TgBot::InlineKeyboardButton::Ptr> DualBattle::generateMoveSummary(Pl
     int i = 0;
     for (auto m : moveset) {
         TgBot::InlineKeyboardButton::Ptr button(new TgBot::InlineKeyboardButton);
-        button->callbackData = fmt::format("type={},move={},moveFor={}", "moveCallback", i, player.Uid);
+        button->callbackData = fmt::format("type={},move={},for={}", "moveCallback", i, player.Uid);
         button->text = m->GetName();
         row.push_back(button);
         i++;
@@ -25,9 +26,38 @@ std::vector<TgBot::InlineKeyboardButton::Ptr> DualBattle::generateMoveSummary(Pl
     return row;
 }
 
-std::string DualBattle::generateSwapSummary(Player player) {
-    // TODO: Generate swap summary
-    return "keks";
+std::vector<std::vector<TgBot::InlineKeyboardButton::Ptr>> DualBattle::GenerateSwapReport(UID uid) {
+    std::vector<std::vector<TgBot::InlineKeyboardButton::Ptr>> rowHolder;
+    std::shared_ptr<Player> player;
+    if (this->player1->Uid == uid) {
+        player = this->player1;
+    } else if (this->player2->Uid == uid) {
+        player = this->player2;
+    } else {
+        // TODO: Throw an exception here
+    }
+
+    std::string ret = "";
+    int i = 0, j = -1;
+    for (auto p : player->Team) {
+        if (i % 3 == 0) {
+            std::vector<TgBot::InlineKeyboardButton::Ptr> row;
+            rowHolder.push_back(row);
+            j++;
+        }
+        TgBot::InlineKeyboardButton::Ptr button(new TgBot::InlineKeyboardButton);
+        button->callbackData = fmt::format("type={},for={}", "swapPokemonCallback", uid);
+        button->text = p->Nickname;
+        rowHolder.at(j).push_back(button);
+        i++;
+    }
+
+    TgBot::InlineKeyboardButton::Ptr button(new TgBot::InlineKeyboardButton);
+    button->callbackData = fmt::format("type={},for={}", "swapSummaryCallback", uid);
+    std::cout << uid << std::endl;
+    button->text = "<";
+    rowHolder.at(j).push_back(button);
+    return rowHolder;
 }
 
 std::string DualBattle::generateBattleSummary() {

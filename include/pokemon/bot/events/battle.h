@@ -7,5 +7,6 @@ class Bot;
 } // namespace TgBot
 
 void moveCallback(TgBot::Bot &bot, BotArgs args);
+void swapSummaryCallback(TgBot::Bot &bot, BotArgs args);
 
 #endif // FD3F51AF_A841_4C9D_8119_226C88F5D7E0
