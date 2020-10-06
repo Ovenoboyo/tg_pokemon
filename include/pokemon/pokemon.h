@@ -30,6 +30,8 @@ struct Stats {
 
 class Pokemon {
   public:
+
+    typedef std::shared_ptr<Pokemon> Ptr;
     /**
      * @brief Nickname of pokemon (User defined)
      *

@@ -132,7 +132,7 @@ bool WildBattle::isDefeated(std::shared_ptr<Wild> com) {
     return false;
 }
 
-bool WildBattle::isDefeated(std::shared_ptr<Player> player) {
+bool WildBattle::isDefeated(Player::Ptr player) {
     using ::isDefeated;
     return isDefeated(player);
 }

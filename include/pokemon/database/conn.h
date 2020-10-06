@@ -44,13 +44,13 @@ class PGConn {
     std::string insertMovesQuery(std::vector<int> moves, std::string pokemonID);
 
     // Players
-    std::shared_ptr<Player> FetchPlayer(UID uid);
+    Player::Ptr FetchPlayer(UID uid);
     UID isPlayerRegistered(std::string username);
     bool isPlayerRegistered(UID uid);
 
     // Pokemon
-    std::shared_ptr<Pokemon> FetchUserokemon(std::string pokemonID, pqxx::nontransaction &N);
-    std::shared_ptr<Pokemon> GetWildPokemon(int route_no);
+    Pokemon::Ptr FetchUserokemon(std::string pokemonID, pqxx::nontransaction &N);
+    Pokemon::Ptr GetWildPokemon(int route_no);
 
     // Starters
     std::vector<starterHolder> getStarters();

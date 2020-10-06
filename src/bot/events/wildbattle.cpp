@@ -13,7 +13,7 @@
 #include "tgbot/types/Message.h"       // for Message, Message::Ptr
 #include "tgbot/types/User.h"          // for User, User::Ptr
 
-WildBattle *GetWildBattle(std::shared_ptr<Player> p, TgBot::Message::Ptr message) {
+WildBattle *GetWildBattle(Player::Ptr p, TgBot::Message::Ptr message) {
     WildBattle *battle;
 
     if (message->chat->type == TgBot::Chat::Type::Group) {
@@ -24,7 +24,7 @@ WildBattle *GetWildBattle(std::shared_ptr<Player> p, TgBot::Message::Ptr message
     return battle;
 }
 
-std::shared_ptr<Player> GetPlayerFromID(int32_t id) {
+Player::Ptr GetPlayerFromID(int32_t id) {
     try {
         return dbConn->FetchPlayer(id);
     } catch (const std::exception &e) {

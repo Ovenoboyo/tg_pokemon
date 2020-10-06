@@ -2,7 +2,7 @@
 
 #include "pokemon/pokemon.h" // for Pokemon
 
-Player::Player(UID uid, std::string name, enum Genders gender, std::vector<std::shared_ptr<Pokemon>> team) {
+Player::Player(UID uid, std::string name, enum Genders gender, std::vector<Pokemon::Ptr> team) {
     this->Uid = uid;
     this->Name = name;
     this->Gender = gender;

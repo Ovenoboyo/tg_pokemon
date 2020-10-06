@@ -1,5 +1,4 @@
 #include "pokemon/user/wild.h"
+#include "pokemon/pokemon.h"
 
-class Pokemon;
-
-Wild::Wild(std::shared_ptr<Pokemon> p) { this->pokemon = p; }
+Wild::Wild(Pokemon::Ptr p) { this->pokemon = p; }

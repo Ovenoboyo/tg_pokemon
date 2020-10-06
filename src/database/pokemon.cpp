@@ -30,7 +30,7 @@ const std::string pokemon_sql =
 
 // clang-format on
 
-std::shared_ptr<Pokemon> PGConn::FetchUserokemon(std::string pokemonID, pqxx::nontransaction &N) {
+Pokemon::Ptr PGConn::FetchUserokemon(std::string pokemonID, pqxx::nontransaction &N) {
     pqxx::result R(N.exec(fmt::format(pokemon_sql, pokemonID)));
 
     for (auto c : R) {
@@ -47,7 +47,7 @@ std::shared_ptr<Pokemon> PGConn::FetchUserokemon(std::string pokemonID, pqxx::no
     throw std::runtime_error("Couldn't find pokemon");
 }
 
-std::shared_ptr<Pokemon> PGConn::GetWildPokemon(int route_no) {
+Pokemon::Ptr PGConn::GetWildPokemon(int route_no) {
     std::vector<ElementType> types = {NORMAL, FLYING};
     std::vector<Move *> moveset = {new Move("Tackle", NORMAL, 69, 100, 32)};
     Stats stats = Stats{1, 1, 1, 1, 1, 1};

@@ -28,7 +28,7 @@ std::vector<TgBot::InlineKeyboardButton::Ptr> DualBattle::generateMoveSummary(Pl
 
 std::vector<std::vector<TgBot::InlineKeyboardButton::Ptr>> DualBattle::GenerateSwapReport(UID uid) {
     std::vector<std::vector<TgBot::InlineKeyboardButton::Ptr>> rowHolder;
-    std::shared_ptr<Player> player;
+    Player::Ptr player;
     if (this->player1->Uid == uid) {
         player = this->player1;
     } else if (this->player2->Uid == uid) {

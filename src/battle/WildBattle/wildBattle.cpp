@@ -15,7 +15,7 @@
 #include "pokemon/pokemon.h"           // for Pokemon, Stats, getStat
 #include "pokemon/user/wild.h"         // for Wild
 
-WildBattle::WildBattle(std::shared_ptr<Player> p1, int32_t groupID) : BaseBattle(p1, groupID) {
+WildBattle::WildBattle(Player::Ptr p1, int32_t groupID) : BaseBattle(p1, groupID) {
     this->com = std::shared_ptr<Wild>(new Wild(dbConn->GetWildPokemon(69)));
 }
 
@@ -42,7 +42,7 @@ DamageCalcHolder WildBattle::getStats(Pokemon attacker, Pokemon defender, Move m
     };
 }
 
-std::shared_ptr<Pokemon> WildBattle::getActivePokemon(bool isPlayer) {
+Pokemon::Ptr WildBattle::getActivePokemon(bool isPlayer) {
     return (isPlayer) ? this->player1->Team.at(0) : this->com->pokemon;
 }
 

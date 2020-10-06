@@ -13,7 +13,7 @@
 #include "pokemon/moves.h"             // for Move
 #include "pokemon/pokemon.h"           // for Pokemon, Stats, getStat
 
-DualBattle::DualBattle(std::shared_ptr<Player> p1, std::shared_ptr<Player> p2, int32_t groupID)
+DualBattle::DualBattle(Player::Ptr p1, Player::Ptr p2, int32_t groupID)
     : BaseBattle(p1, groupID) {
     this->player2 = p2;
 }
@@ -70,11 +70,11 @@ void DualBattle::ApplyMoves() {
     this->playedMove.clear();
 }
 
-std::shared_ptr<Player> DualBattle::GetOtherPlayer(UID uid) {
+Player::Ptr DualBattle::GetOtherPlayer(UID uid) {
     return (uid == this->player1->Uid) ? this->player2 : this->player1;
 }
 
-std::shared_ptr<Player> DualBattle::GetPlayer(UID uid) {
+Player::Ptr DualBattle::GetPlayer(UID uid) {
     return (uid == this->player1->Uid) ? this->player1 : this->player2;
 }
 

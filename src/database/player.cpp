@@ -26,7 +26,7 @@ const std::string registered_sql = "SELECT player_id FROM player.player WHERE pl
 const std::string registered_sql_uid = "SELECT EXISTS(SELECT 1 FROM player.player WHERE player.player.player_id='{}') LIMIT 1 ";
 // clang-format on
 
-std::shared_ptr<Player> PGConn::FetchPlayer(UID uid) {
+Player::Ptr PGConn::FetchPlayer(UID uid) {
     pqxx::nontransaction N(*conn);
     pqxx::result R(N.exec(fmt::format(all_pokemon_sql, std::to_string(uid))));
 
@@ -34,7 +34,7 @@ std::shared_ptr<Player> PGConn::FetchPlayer(UID uid) {
         std::string name = c[0].as<std::string>();
         // int pkc = c[1].as<int>();
         Genders gender = Genders(c[2].as<int>());
-        std::vector<std::shared_ptr<Pokemon>> team;
+        std::vector<Pokemon::Ptr> team;
         int i = 0;
         for (auto p : c.slice(3, 9)) {
             if (!p.is_null()) {

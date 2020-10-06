@@ -48,12 +48,12 @@ int32_t GetRequested(int32_t requester) {
 
 bool HasRequested(int32_t requester) { return allRequests.find(requester) != allRequests.end(); }
 
-std::shared_ptr<Player> GetPlayerByID(int32_t id) {
+Player::Ptr GetPlayerByID(int32_t id) {
     auto player1 = dbConn->FetchPlayer(id);
     return player1;
 }
 
-DualBattle *GetDualBattle(std::shared_ptr<Player> p1, std::shared_ptr<Player> p2, TgBot::Message::Ptr message) {
+DualBattle *GetDualBattle(Player::Ptr p1, Player::Ptr p2, TgBot::Message::Ptr message) {
     DualBattle *battle;
     if (message->chat->type == TgBot::Chat::Type::Group) {
         battle = new DualBattle(p1, p2, message->chat->id);

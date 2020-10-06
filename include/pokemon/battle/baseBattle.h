@@ -72,7 +72,7 @@ class BaseBattle {
      * @brief First Player
      *
      */
-    std::shared_ptr<Player> player1;
+    Player::Ptr player1;
 
     /**
      * @brief Construct a new Battle Holder object
@@ -81,7 +81,7 @@ class BaseBattle {
      * @param com Pokemon in Wild
      * @param groupID -1 if valid
      */
-    BaseBattle(std::shared_ptr<Player> p1, int32_t groupID);
+    BaseBattle(Player::Ptr p1, int32_t groupID);
 
     /**
      * @brief Destroy the Battle Holder object
@@ -120,6 +120,6 @@ class BaseBattle {
 };
 
 float getAttackModifier(std::vector<ElementType> pkType, ElementType akType);
-bool isDefeated(std::shared_ptr<Player> player);
+bool isDefeated(Player::Ptr player);
 
 #endif

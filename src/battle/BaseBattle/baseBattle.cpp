@@ -18,7 +18,7 @@ ChatInfo::ChatInfo(int32_t groupID) {
     }
 }
 
-BaseBattle::BaseBattle(std::shared_ptr<Player> p1, int32_t groupID) {
+BaseBattle::BaseBattle(Player::Ptr p1, int32_t groupID) {
     this->player1 = p1;
     this->isEnd = false;
     this->chat = new ChatInfo(groupID);
@@ -33,7 +33,7 @@ float getAttackModifier(std::vector<ElementType> pkType, ElementType akType) {
     return 1;
 }
 
-bool isDefeated(std::shared_ptr<Player> player) {
+bool isDefeated(Player::Ptr player) {
     int maxFnt = player->Team.size();
     if (player->FntCount == maxFnt) {
         return true;

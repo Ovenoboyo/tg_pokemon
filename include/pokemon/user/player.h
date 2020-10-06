@@ -5,8 +5,8 @@
 #include <stdint.h> // for int32_t
 #include <string>   // for string
 #include <vector>   // for vector
+#include "pokemon/pokemon.h"
 
-class Pokemon;
 
 const int32_t INVALID_ID = -1;
 const int32_t BOT_ID = -2;
@@ -16,6 +16,8 @@ enum Genders { MALE, FEMALE };
 
 class Player {
   public:
+
+    typedef std::shared_ptr<Player> Ptr;
     /**
      * @brief Unique ID for player. Usually User-ID provided by telegram
      *
@@ -38,7 +40,7 @@ class Player {
      * @brief Team of 6 (MAX) Pokemons
      *
      */
-    std::vector<std::shared_ptr<Pokemon>> Team;
+    std::vector<Pokemon::Ptr> Team;
 
     /**
      * @brief Bool to check if next move corresponds to swapping
@@ -64,7 +66,7 @@ class Player {
      * @param gender Gender of player
      * @param team Vector with Pokemon objects
      */
-    Player(UID uid, std::string name, enum Genders gender, std::vector<std::shared_ptr<Pokemon>> team);
+    Player(UID uid, std::string name, enum Genders gender, std::vector<Pokemon::Ptr> team);
 
     /**
      * @brief Construct a new Player object

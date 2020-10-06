@@ -16,13 +16,13 @@ class Pokemon;
 
 class DualBattle : public BaseBattle {
   public:
-    std::shared_ptr<Player> player2;
+    Player::Ptr player2;
 
-    DualBattle(std::shared_ptr<Player> p1, std::shared_ptr<Player> p2, int32_t groupID);
+    DualBattle(Player::Ptr p1, Player::Ptr p2, int32_t groupID);
 
-    std::shared_ptr<Player> GetOtherPlayer(UID uid);
+    Player::Ptr GetOtherPlayer(UID uid);
 
-    std::shared_ptr<Player> GetPlayer(UID uid);
+    Player::Ptr GetPlayer(UID uid);
 
     DamageCalcHolder *getStats(Pokemon attacker, Pokemon defender, Move Move);
 

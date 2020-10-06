@@ -7,26 +7,26 @@
 #include <unordered_map> // for unordered_map
 #include <vector>        // for vector
 
+#include "pokemon/pokemon.h"
 #include "pokemon/battle/baseBattle.h"        // for BaseBattle, DamageCalcHolder
 #include "pokemon/user/player.h"              // for Player (ptr only), UID
 #include "tgbot/types/InlineKeyboardButton.h" // for InlineKeyboardButton, InlineKeyboardButton::Ptr
 
 class Move;
-class Pokemon;
 class Wild;
 
 class WildBattle : public BaseBattle {
   public:
     std::shared_ptr<Wild> com;
 
-    WildBattle(std::shared_ptr<Player> p1, int32_t groupID);
+    WildBattle(Player::Ptr p1, int32_t groupID);
 
-    bool isDefeated(std::shared_ptr<Player> player);
+    bool isDefeated(Player::Ptr player);
     bool isDefeated(std::shared_ptr<Wild> com);
 
     DamageCalcHolder getStats(Pokemon attacker, Pokemon defender, Move Move);
 
-    std::shared_ptr<Pokemon> getActivePokemon(bool isPlayer);
+    Pokemon::Ptr getActivePokemon(bool isPlayer);
 
     /**
      * @brief Generates a summary of current battle progress
