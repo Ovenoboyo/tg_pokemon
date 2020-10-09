@@ -1,20 +1,19 @@
 #include "pokemon/global.h"
 
-#include <boost/algorithm/string/classification.hpp>        // for is_any_of
-#include <boost/algorithm/string/detail/classification.hpp> // for is_any_ofF
-#include <boost/algorithm/string/split.hpp>                 // for split
-#include <boost/iterator/iterator_facade.hpp>               // for operator!=
-#include <boost/range/distance.hpp>                         // for distance
-#include <boost/type_index/type_index_facade.hpp>           // for operator==
-#include <iostream>
-#include <memory>        // for __shared_ptr_access
-#include <stdlib.h>      // for getenv, NULL
-#include <unordered_map> // for unordered_map, unordered_map<>::mapped_type, operator!=
-#include <vector>        // for vector
+#include <boost/algorithm/string/classification.hpp>         // for is_any_of
+#include <boost/algorithm/string/detail/classification.hpp>  // for is_any_ofF
+#include <boost/algorithm/string/split.hpp>                  // for split
+#include <boost/iterator/iterator_facade.hpp>                // for operator!=
+#include <boost/range/distance.hpp>                          // for distance
+#include <boost/type_index/type_index_facade.hpp>            // for operator==
+#include <stdlib.h>                                          // for getenv, NULL
+#include <memory>                                            // for __shared_ptr_access
+#include <unordered_map>                                     // for unordered_map, unordered_map<>::mapped_type, operator!=
+#include <vector>                                            // for vector
 
-#include "tgbot/types/Chat.h"    // for Chat, Chat::Ptr
-#include "tgbot/types/Message.h" // for Message, Message::Ptr
-#include "tgbot/types/User.h"    // for User, User::Ptr
+#include "tgbot/types/Chat.h"                                // for Chat, Chat::Ptr
+#include "tgbot/types/Message.h"                             // for Message, Message::Ptr
+#include "tgbot/types/User.h"                                // for User, User::Ptr
 
 std::string getEnvVar(std::string const &key) {
     char const *val = getenv(key.c_str());

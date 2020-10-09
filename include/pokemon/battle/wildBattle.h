@@ -1,59 +1,18 @@
 #ifndef WILDBATTLE_H
 #define WILDBATTLE_H
 
-#include <memory>        // for shared_ptr
-#include <stdint.h>      // for int32_t
-#include <string>        // for string
-#include <unordered_map> // for unordered_map
-#include <vector>        // for vector
+#include <stdint.h>                     // for int32_t
+#include <list>                         // for list
 
-#include "pokemon/pokemon.h"
-#include "pokemon/battle/baseBattle.h"        // for BaseBattle, DamageCalcHolder
-#include "pokemon/user/player.h"              // for Player (ptr only), UID
-#include "tgbot/types/InlineKeyboardButton.h" // for InlineKeyboardButton, InlineKeyboardButton::Ptr
+#include "pokemon/battle/baseBattle.h"  // for BaseBattle
+#include "pokemon/user/player.h"        // for Player, Player::Ptr, UID
 
 class Move;
-class Wild;
 
 class WildBattle : public BaseBattle {
   public:
-    std::shared_ptr<Wild> com;
 
-    WildBattle(Player::Ptr p1, int32_t groupID);
-
-    bool isDefeated(Player::Ptr player);
-    bool isDefeated(std::shared_ptr<Wild> com);
-
-    DamageCalcHolder getStats(Pokemon attacker, Pokemon defender, Move Move);
-
-    Pokemon::Ptr getActivePokemon(bool isPlayer);
-
-    /**
-     * @brief Generates a summary of current battle progress
-     *
-     * @return std::string summary
-     */
-    std::string generateBattleSummary();
-
-    /**
-     * @brief Get move summary for specified player
-     *
-     * @param player Player object
-     * @return std::string summary
-     */
-    std::vector<TgBot::InlineKeyboardButton::Ptr> generateMoveSummary(Player player);
-
-    /**
-     * @brief Generates a summary of valid swappable pokemons
-     *
-     * @param player Player object
-     * @return std::string summary
-     */
-    std::vector<std::vector<TgBot::InlineKeyboardButton::Ptr>> GenerateSwapReport();
-
-    void sendSwapReport(UID uid);
-
-    std::vector<TgBot::InlineKeyboardButton::Ptr> generateExtraRow();
+    WildBattle(std::list<Player::Ptr> players, int32_t groupID);
 
     /**
      * @brief Handles player moves, swap and roundEndCounter
@@ -79,20 +38,6 @@ class WildBattle : public BaseBattle {
      *
      */
     void HandleRoundEnd();
-
-    /**
-     * @brief Calculate damage and apply it to respective pokemons
-     *
-     */
-    void ApplyMoves();
-
-    /**
-     * @brief Swap 2 pokemon in team
-     *
-     * @param uid UID of player
-     * @param index Index of pokemon to be swapped with Index 0
-     */
-    void SwapPokemon(UID uid, int index);
 
     /**
      * @brief Get the Move corresponding to index

@@ -1,27 +1,28 @@
 #include "pokemon/bot/events/events.h"
 
-#include <memory>        // for __shared_ptr_access
-#include <unordered_map> // for unordered_map
-#include <vector>        // for vector
-#include <iostream>
+#include <iostream>                         // for operator<<, endl, basic_ostream, cout, ostream
+#include <memory>                           // for __shared_ptr_access
+#include <unordered_map>                    // for unordered_map
+#include <vector>                           // for vector
 
-#include "pokemon/battle/baseBattle.h"     // for BaseBattle
-#include "pokemon/battle/battle.h"         // for isBattleActive, allBattles
-#include "pokemon/bot/events/battle.h"     // for moveCallback
-#include "pokemon/bot/events/dualbattle.h" // for AskBattleCommand, validateAndStartBattle
-#include "pokemon/bot/events/starters.h"   // for pickStarter, starterCallback
-#include "pokemon/bot/events/wildbattle.h" // for validateWildBattle
-#include "pokemon/database/conn.h"         // for PGConn, dbConn
-#include "pokemon/global.h"                // for BotArgs
-#include "tgbot/Api.h"                     // for Api
-#include "tgbot/Bot.h"                     // for Bot
-#include "tgbot/EventBroadcaster.h"        // for EventBroadcaster
-#include "tgbot/tools/StringTools.h"       // for startsWith
-#include "tgbot/types/BotCommand.h"        // for BotCommand::Ptr, BotCommand
-#include "tgbot/types/CallbackQuery.h"     // for CallbackQuery, CallbackQuery::Ptr
-#include "tgbot/types/Chat.h"              // for Chat, Chat::Ptr
-#include "tgbot/types/Message.h"           // for Message, Message::Ptr
-#include "tgbot/types/User.h"              // for User, User::Ptr
+#include "pokemon/battle/baseBattle.h"      // for BaseBattle
+#include "pokemon/battle/battle.h"          // for isBattleActive, allBattles
+#include "pokemon/bot/events/battle.h"      // for moveCallback, swapSummaryCallback
+#include "pokemon/bot/events/dualbattle.h"  // for AskBattleCommand, validateAndStartBattle
+#include "pokemon/bot/events/starters.h"    // for pickStarter, starterCallback
+#include "pokemon/bot/events/wildbattle.h"  // for validateWildBattle
+#include "pokemon/database/conn.h"          // for PGConn, dbConn
+#include "pokemon/global.h"                 // for BotArgs
+#include "tgbot/Api.h"                      // for Api
+#include "tgbot/Bot.h"                      // for Bot
+#include "tgbot/EventBroadcaster.h"         // for EventBroadcaster
+#include "tgbot/TgException.h"              // for TgException
+#include "tgbot/tools/StringTools.h"        // for startsWith
+#include "tgbot/types/BotCommand.h"         // for BotCommand::Ptr, BotCommand
+#include "tgbot/types/CallbackQuery.h"      // for CallbackQuery, CallbackQuery::Ptr
+#include "tgbot/types/Chat.h"               // for Chat, Chat::Ptr
+#include "tgbot/types/Message.h"            // for Message, Message::Ptr
+#include "tgbot/types/User.h"               // for User, User::Ptr
 
 void StartCommand(TgBot::Bot &bot, TgBot::Message::Ptr message) { bot.getApi().sendMessage(message->chat->id, "Hi!"); }
 

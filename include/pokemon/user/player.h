@@ -50,6 +50,8 @@ class Player {
 
     bool hasPlayed;
 
+    bool isWild;
+
     /**
      * @brief Counter to keep track of fainted pokemons
      *
@@ -67,6 +69,8 @@ class Player {
      * @param team Vector with Pokemon objects
      */
     Player(UID uid, std::string name, enum Genders gender, std::vector<Pokemon::Ptr> team);
+
+    Player(bool isWild);
 
     /**
      * @brief Construct a new Player object

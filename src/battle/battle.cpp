@@ -1,6 +1,9 @@
-#include "pokemon/battle/baseBattle.h"
-#include "pokemon/battle/battle.h"
-#include "pokemon/user/player.h"
+#include <unordered_map>                // for unordered_map, operator!=, unordered_map<>::iterator, _Node_iterator_base
+#include <vector>                       // for vector
+
+#include "pokemon/battle/baseBattle.h"  // for BaseBattle
+#include "pokemon/battle/battle.h"      // for allBattles, deregisterBattle, isBattleActive, registerBattle
+#include "pokemon/user/player.h"        // for UID
 
 bool isBattleActive(UID uid) {
     std::unordered_map<UID, BaseBattle *>::iterator it = allBattles.find(uid);

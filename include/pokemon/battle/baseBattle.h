@@ -1,17 +1,22 @@
 #ifndef BASEBATTLE_H
 #define BASEBATTLE_H
 
-#include <memory>        // for shared_ptr
-#include <stdint.h>      // for int32_t
-#include <unordered_map> // for unordered_map
-#include <vector>        // for vector
+#include <stdint.h>                            // for int32_t
+#include <list>                                // for list
+#include <memory>                              // for shared_ptr
+#include <string>                              // for string
+#include <unordered_map>                       // for unordered_map
+#include <vector>                              // for vector
 
-#include "pokemon/global.h"      // for ElementType
-#include "pokemon/user/player.h" // for Player (ptr only), UID
+#include "pokemon/global.h"                    // for ElementType
+#include "pokemon/user/player.h"               // for UID, Player, Player::Ptr
+#include "tgbot/types/InlineKeyboardButton.h"  // for InlineKeyboardButton, InlineKeyboardButton::Ptr
 
 class Move;
+class Pokemon;
 
 struct DamageCalcHolder {
+    typedef std::shared_ptr<DamageCalcHolder> Ptr;
     // Attacker
     int AttackerLevel;
     int AttackStat;
@@ -72,7 +77,7 @@ class BaseBattle {
      * @brief First Player
      *
      */
-    Player::Ptr player1;
+    std::unordered_map<UID, Player::Ptr> players;
 
     /**
      * @brief Construct a new Battle Holder object
@@ -81,7 +86,7 @@ class BaseBattle {
      * @param com Pokemon in Wild
      * @param groupID -1 if valid
      */
-    BaseBattle(Player::Ptr p1, int32_t groupID);
+    BaseBattle(std::list<Player::Ptr> players, int32_t groupID);
 
     /**
      * @brief Destroy the Battle Holder object
@@ -105,6 +110,10 @@ class BaseBattle {
      */
     virtual void HandleRoundStart();
 
+    Player::Ptr GetPlayer(UID uid);
+
+    Player::Ptr GetOtherPlayer(UID uid);
+
     /**
      * @brief Handle events at end of round. Includes checking if player is
      * defeated.
@@ -113,6 +122,19 @@ class BaseBattle {
     virtual void HandleRoundEnd();
 
     virtual void UpdateKeyboard();
+
+    Move *GetMoveFromIndex(Player player, int moveNo);
+
+    DamageCalcHolder::Ptr getStats(Pokemon attacker, Pokemon defender, Move move);
+    void ApplyMoves();
+
+    std::vector<TgBot::InlineKeyboardButton::Ptr> GenerateMoveSummary(Player player);
+    std::vector<std::vector<TgBot::InlineKeyboardButton::Ptr>> GenerateSwapReport(UID uid);
+    std::string GenerateBattleSummary();
+    std::vector<TgBot::InlineKeyboardButton::Ptr> GenerateExtraRow(UID uid);
+
+    void SwapPokemon(UID uid, int index);
+    void sendSwapReport(UID uid);
 
     void HandleBattle(UID uid, int moveNo, bool swap);
     void HandleBattleInit();

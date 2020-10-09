@@ -1,10 +1,11 @@
 #ifndef Pokemon_H
 #define Pokemon_H
 
-#include <string> // for string
-#include <vector> // for vector
+#include <memory>            // for shared_ptr
+#include <string>            // for string
+#include <vector>            // for vector
 
-#include "pokemon/global.h" // for ElementType
+#include "pokemon/global.h"  // for ElementType
 
 class Move;
 

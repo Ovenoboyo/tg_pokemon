@@ -2,7 +2,6 @@
 #define CONN_H
 
 #include <bits/exception.h> // for exception
-#include <memory>           // for allocator, shared_ptr
 #include <string>           // for operator+, char_traits, string
 #include <vector>           // for vector
 

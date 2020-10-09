@@ -56,9 +56,9 @@ Player::Ptr GetPlayerByID(int32_t id) {
 DualBattle *GetDualBattle(Player::Ptr p1, Player::Ptr p2, TgBot::Message::Ptr message) {
     DualBattle *battle;
     if (message->chat->type == TgBot::Chat::Type::Group) {
-        battle = new DualBattle(p1, p2, message->chat->id);
+        battle = new DualBattle({p1, p2}, message->chat->id);
     } else {
-        battle = new DualBattle(p1, p2, INVALID_ID);
+        battle = new DualBattle({p1, p2}, INVALID_ID);
     }
     return battle;
 }

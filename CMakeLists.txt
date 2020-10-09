@@ -64,12 +64,11 @@ set(SOURCES
     src/battle/battle.cpp
     src/battle/BaseBattle/baseBattle.cpp
     src/battle/BaseBattle/handlers.cpp
+    src/battle/BaseBattle/generators.cpp
     src/battle/DualBattle/dualBattle.cpp
     src/battle/DualBattle/handlers.cpp
-    src/battle/DualBattle/stringGenerators.cpp
     src/battle/WildBattle/wildBattle.cpp
     src/battle/WildBattle/handlers.cpp
-    src/battle/WildBattle/stringGenerators.cpp
     src/bot/bot.cpp
     src/bot/events/battle.cpp
     src/bot/events/dualbattle.cpp
@@ -83,7 +82,6 @@ set(SOURCES
     src/database/starters.cpp
     src/database/utils.cpp
     src/user/player.cpp
-    src/user/wild.cpp
 )
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)

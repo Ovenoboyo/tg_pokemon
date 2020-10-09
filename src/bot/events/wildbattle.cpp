@@ -15,11 +15,11 @@
 
 WildBattle *GetWildBattle(Player::Ptr p, TgBot::Message::Ptr message) {
     WildBattle *battle;
-
+    auto wild = std::make_shared<Player>(true);
     if (message->chat->type == TgBot::Chat::Type::Group) {
-        battle = new WildBattle(p, message->chat->id);
+        battle = new WildBattle({p, wild}, message->chat->id);
     } else {
-        battle = new WildBattle(p, INVALID_ID);
+        battle = new WildBattle({p, wild}, INVALID_ID);
     }
     return battle;
 }
