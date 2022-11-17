@@ -1,4 +1,8 @@
 build/*
 vc140.pdb
 *.env
-.vscode/*
+.vscode/c_cpp_properties.json
+.vscode/settings.json
+environment.env
+.history/*
+>>>>>>> 4720c3d99b3b7ab83644a2da86702af7e89d91ba

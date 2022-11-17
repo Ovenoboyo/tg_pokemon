@@ -4,16 +4,10 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "conan install",
+            "label": "docker build",
             "type": "shell",
-            "command": "conan install . --install-folder build -s build_type=Debug",
+            "command": "docker build --pull --rm -f \"Dockerfile\" -t tgpokemon:latest \".\"",
             "group": "build",
-            "presentation": {
-                // Reveal the output only if unrecognized errors occur.
-                "reveal": "silent"
-            },
-            // Use the standard MS compiler pattern to detect errors, warnings and infos
-            "problemMatcher": "$msCompile"
-        },
+        }
     ]
 }

@@ -1,25 +1,28 @@
-#include "moves.h"
+#include "pokemon/moves.h"
 
-Move::Move(std::string name, ElementType type, int pp, int damage, int accuracy) {
+Move::Move(const std::string name, ElementType type, int damage, int accuracy,
+           int pp) {
     this->name = name;
     this->type = type;
     this->PP = pp;
     this->Damage = damage;
     this->Accuracy = accuracy;
+    this->isEmpty = false;
 }
 
-std::string Move::GetName() {
-    return this->name;
+Move::Move() {
+    this->name = "";
+    this->type = NIL;
+    this->PP = 0;
+    this->Damage = 0;
+    this->Accuracy = 0;
+    this->isEmpty = true;
 }
 
-ElementType Move::GetType() {
-        return this->type;
-}
+std::string Move::GetName() { return this->name; }
 
-int Move::GetDamage() {
-    return this->Damage;
-}
+ElementType Move::GetType() { return this->type; }
 
-int Move::GetAccuracy() {
-    return this->Accuracy;
-}
+int Move::GetDamage() { return this->Damage; }
+
+int Move::GetAccuracy() { return this->Accuracy; }
